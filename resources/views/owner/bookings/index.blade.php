@@ -37,6 +37,7 @@
                             <th class="ps-4 py-3">Penyewa</th>
                             <th class="py-3">Properti</th>
                             <th class="py-3">Tanggal Mulai</th>
+                            <th class="py-3">Lama Sewa</th>
                             <th class="py-3">Status</th>
                             <th class="py-3 text-end pe-4">Aksi</th>
                         </tr>
@@ -65,6 +66,13 @@
                             <td>
                                 <a href="#" class="text-decoration-none fw-medium text-primary">
                                     {{ $b->property->name }}
+                                </a>
+                            </td>
+
+                            {{-- Lama Sewa --}}
+                            <td>
+                                <a href="#" class="text-decoration-none fw-medium text-primary">
+                                    {{ $b->property->months }}
                                 </a>
                             </td>
 
