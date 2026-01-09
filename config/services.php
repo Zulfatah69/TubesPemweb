@@ -8,9 +8,13 @@ return [
     |--------------------------------------------------------------------------
     |
     | This file is for storing the credentials for third party services such
+<<<<<<< HEAD
     | as Mailgun, Postmark, AWS and more. This file provides the de facto
     | location for this type of information, allowing packages to have
     | a conventional file to locate the various service credentials.
+=======
+    | as Mailgun, Postmark, AWS and more.
+>>>>>>> zulfatah
     |
     */
 
@@ -23,7 +27,11 @@ return [
     ],
 
     'ses' => [
+<<<<<<< HEAD
         'key' => env('AWS_ACCESS_KEY_ID'),
+=======
+        'key'    => env('AWS_ACCESS_KEY_ID'),
+>>>>>>> zulfatah
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
@@ -31,8 +39,28 @@ return [
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
+<<<<<<< HEAD
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
 
+=======
+            'channel'              => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Midtrans
+    |--------------------------------------------------------------------------
+    */
+    'midtrans' => [
+        'server_key'    => env('MIDTRANS_SERVER_KEY'),
+        'client_key'    => env('MIDTRANS_CLIENT_KEY'),
+        'is_production' => env('MIDTRANS_IS_PRODUCTION', false),
+        'is_sanitized'  => env('MIDTRANS_SANITIZED', true),
+        'is_3ds'        => env('MIDTRANS_3DS', true),
+    ],
+
+>>>>>>> zulfatah
 ];

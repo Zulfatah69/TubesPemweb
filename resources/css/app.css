@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -9,3 +10,125 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+=======
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* --- GLOBAL SETTINGS --- */
+:root {
+    --primary-color: #0D6EFD;
+    --secondary-color: #6C757D;
+    --bg-color: #F8F9FA;
+    --text-color: #212529;
+    --border-color: #DEE2E6;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    -webkit-font-smoothing: antialiased; /* Agar font lebih tajam */
+}
+
+a {
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+/* --- NAVBAR --- */
+/* Kita biarkan warna dihandle oleh class 'bg-primary' di HTML, 
+   tapi kita atur spacing dan font-nya disini */
+.navbar {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    font-size: 1.35rem;
+}
+
+/* --- CARDS --- */
+.card {
+    border: 1px solid var(--border-color); /* Sesuai request ada border abu */
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    /* Hilangkan shadow default bootstrap, ganti yang lebih halus */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02); 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Class tambahan jika ingin card bisa di-hover (seperti di daftar kos) */
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+    border-color: #cfe2ff; /* Sedikit biru saat hover */
+}
+
+.card-header {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+}
+
+/* --- TABLE (Untuk Dashboard Owner nanti) --- */
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background-color: #F8F9FA; /* Abu muda */
+    color: #6C757D; /* Text abu gelap */
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--border-color);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.table td {
+    vertical-align: middle;
+    padding: 1rem 0.75rem;
+    color: var(--text-color);
+}
+
+/* --- BADGE STATUS --- */
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    border-radius: 6px; /* Pill shape tapi agak kotak dikit biar modern */
+}
+
+/* --- BUTTONS --- */
+.btn {
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+/* Override warna primary bootstrap agar benar-benar sesuai hex request */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7; /* Versi sedikit lebih gelap dari #0D6EFD */
+    border-color: #0a58ca;
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+>>>>>>> zulfatah
