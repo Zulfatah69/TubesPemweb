@@ -5,7 +5,14 @@
 <div class="container py-4">
 
     <h3>Dashboard Pemilik</h3>
-
+    <div class="mb-3">
+        <a href="{{ route('owner.chats') }}" class="btn btn-primary">
+            💬 Chat Masuk
+            @if(isset($totalChats))
+                <span class="badge bg-light text-dark">{{ $totalChats }}</span>
+            @endif
+        </a>
+    </div>
     <div class="row mt-3">
 
         <div class="col-md-4">

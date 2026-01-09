@@ -11,10 +11,19 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+
+        // ALIAS MIDDLEWARE (ROLE)
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);
+
+        // 🔔 EXCEPT CSRF UNTUK WEBHOOK MIDTRANS
+        $middleware->validateCsrfTokens(except: [
+            'midtrans/webhook',
+        ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->create();

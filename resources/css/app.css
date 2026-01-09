@@ -1,11 +1,60 @@
-@import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f5f7fb;
+    color: #1f2937;
+}
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+/* Navbar */
+.navbar {
+    background: linear-gradient(90deg, #2563eb, #1e40af);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+/* Card */
+.card {
+    border: none;
+    border-radius: 12px;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+/* Table */
+.table thead th {
+    background-color: #f1f5f9;
+    color: #374151;
+    font-weight: 600;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* Badge status */
+.badge {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* Button */
+.btn-primary {
+    background-color: #2563eb;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #1e40af;
+}
+
+/* Empty state */
+.text-muted {
+    font-size: 0.9rem;
 }

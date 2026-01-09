@@ -2,63 +2,59 @@
 
 @section('content')
 
-<h4>Booking Saya</h4>
+<h4 class="mb-4">Booking Saya</h4>
 
-<div class="card shadow-sm">
-<div class="card-body">
-
-<table class="table table-bordered align-middle">
-
-<thead>
-<tr>
-<th>Properti</th>
-<th>Tanggal Mulai</th>
-<th>Status</th>
-<th>Aksi</th>
-</tr>
-</thead>
-
-<tbody>
-
-@forelse($bookings as $b)
-<tr>
-<td>
-{{ $b->property->name ?? '-' }}<br>
-<small class="text-muted">
-{{ $b->property->city ?? '' }},
-{{ $b->property->province ?? '' }}
-</small>
-</td>
-
-<td>{{ $b->start_date }}</td>
-
-<td>
-@if($b->status=='pending')
-<span class="badge bg-warning text-dark">Menunggu</span>
-@elseif($b->status=='approved')
-<span class="badge bg-success">Diterima</span>
-@else
-<span class="badge bg-danger">Ditolak</span>
+@if($bookings->count() == 0)
+    <div class="alert alert-info">
+        Belum ada booking.
+    </div>
 @endif
-</td>
 
-<td>
-<a href="{{ route('user.property.show',$b->property_id) }}" class="btn btn-sm btn-primary">
-Detail
-</a>
-</td>
-</tr>
-@empty
-<tr>
-<td colspan="4" class="text-center text-muted">Belum ada booking.</td>
-</tr>
-@endforelse
+@foreach($bookings as $booking)
+<div class="card mb-3">
+    <div class="card-body">
 
-</tbody>
+        <h5>{{ $booking->property->name }}</h5>
 
-</table>
+        <p class="mb-1">
+            Mulai Sewa: <strong>{{ $booking->start_date }}</strong>
+        </p>
 
+        <p class="mb-1">
+            Status Booking:
+            <span class="badge bg-secondary">
+                {{ strtoupper($booking->status) }}
+            </span>
+        </p>
+
+        <p class="mb-1">
+            Status Pembayaran:
+            @if($booking->payment_status === 'paid')
+                <span class="badge bg-success">LUNAS</span>
+            @elseif($booking->payment_status === 'failed')
+                <span class="badge bg-danger">GAGAL</span>
+            @else
+                <span class="badge bg-warning text-dark">BELUM BAYAR</span>
+            @endif
+        </p>
+
+        <p class="mt-2">
+            Total:
+            <strong class="text-success">
+                Rp {{ number_format($booking->total_price,0,',','.') }}
+            </strong>
+        </p>
+
+        {{-- TOMBOL BAYAR --}}
+        @if($booking->payment_status === 'unpaid')
+            <a href="{{ route('booking.pay', $booking->id) }}"
+               class="btn btn-primary btn-sm">
+                💳 Bayar Sekarang
+            </a>
+        @endif
+
+    </div>
 </div>
-</div>
+@endforeach
 
 @endsection

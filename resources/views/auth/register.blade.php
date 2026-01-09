@@ -16,7 +16,7 @@
             <div class="card shadow-sm">
                 <div class="card-body">
 
-                    <h4 class="text-center mb-4">Daftar Akun</h4>
+                    <h4 class="text-cente   r mb-4">Daftar Akun</h4>
 
                     <form method="POST" action="{{ url('/register') }}">
                         @csrf
