@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use App\Models\User;
+=======
+>>>>>>> zulfatah
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,6 +18,7 @@ class AuthController extends Controller
 
     public function showRegister()
     {
+<<<<<<< HEAD
         return view('auth.register');
     }
 
@@ -35,10 +39,14 @@ class AuthController extends Controller
 
         return redirect($this->redirectRolePath($user->role))
             ->with('success', 'Registrasi berhasil!');
+=======
+        return redirect()->route('register.email');
+>>>>>>> zulfatah
     }
 
     public function login(Request $request)
     {
+<<<<<<< HEAD
         $request->validate([
             'login'    => ['required'],
             'password' => ['required'],
@@ -65,11 +73,47 @@ class AuthController extends Controller
         return back()->withErrors([
             'login' => 'Email/Username atau password salah.',
         ])->onlyInput('login');
+=======
+        $request->validate(
+            [
+                'login'    => 'required',
+                'password' => 'required',
+            ],
+            [
+                'login.required'    => 'Email atau Username wajib diisi',
+                'password.required' => 'Password wajib diisi',
+            ]
+        );
+
+        $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL)
+            ? 'email'
+            : 'username';
+
+        if (Auth::attempt([
+            $loginType => $request->login,
+            'password' => $request->password,
+        ])) {
+            $request->session()->regenerate();
+
+            return redirect(match (Auth::user()->role) {
+                'admin' => '/admin/dashboard',
+                'owner' => '/owner/dashboard',
+                default => '/user/dashboard',
+            });
+        }
+
+        return back()
+            ->withErrors([
+                'login' => 'Email/Username atau password salah',
+            ])
+            ->withInput();
+>>>>>>> zulfatah
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
+<<<<<<< HEAD
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -84,5 +128,11 @@ class AuthController extends Controller
             'owner' => '/owner/dashboard',
             default => '/user/dashboard',
         };
+=======
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
+>>>>>>> zulfatah
     }
 }
