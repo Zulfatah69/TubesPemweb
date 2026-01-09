@@ -2,63 +2,69 @@
 
 @section('content')
 
-<h4>Booking Saya</h4>
+<div class="booking-page">
 
-<div class="card shadow-sm">
-<div class="card-body">
+  <h4 class="page-title">Booking Saya</h4>
 
-<table class="table table-bordered align-middle">
+  <div class="card booking-card shadow-sm">
+    <div class="card-body">
 
-<thead>
-<tr>
-<th>Properti</th>
-<th>Tanggal Mulai</th>
-<th>Status</th>
-<th>Aksi</th>
-</tr>
-</thead>
+      <table class="table table-bordered align-middle table-custom">
+        <thead>
+          <tr>
+            <th>Properti</th>
+            <th>Tanggal Mulai</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
 
-<tbody>
+        <tbody>
+        @forelse($bookings as $b)
+          <tr>
+            <td>
+              <div class="property-name">
+                {{ $b->property->name ?? '-' }}
+              </div>
+              <small class="property-location">
+                {{ $b->property->city ?? '' }},
+                {{ $b->property->province ?? '' }}
+              </small>
+            </td>
 
-@forelse($bookings as $b)
-<tr>
-<td>
-{{ $b->property->name ?? '-' }}<br>
-<small class="text-muted">
-{{ $b->property->city ?? '' }},
-{{ $b->property->province ?? '' }}
-</small>
-</td>
+            <td>{{ $b->start_date }}</td>
 
-<td>{{ $b->start_date }}</td>
+            <td>
+              @if($b->status == 'pending')
+                <span class="badge badge-warning">Menunggu</span>
+              @elseif($b->status == 'approved')
+                <span class="badge badge-success">Diterima</span>
+              @else
+                <span class="badge badge-danger">Ditolak</span>
+              @endif
+            </td>
 
-<td>
-@if($b->status=='pending')
-<span class="badge bg-warning text-dark">Menunggu</span>
-@elseif($b->status=='approved')
-<span class="badge bg-success">Diterima</span>
-@else
-<span class="badge bg-danger">Ditolak</span>
-@endif
-</td>
+            <td>
+              <a href="{{ route('user.property.show', $b->property_id) }}"
+                 class="btn btn-primary btn-sm">
+                Detail
+              </a>
+            </td>
+          </tr>
+        @empty
+          <tr>
+            <td colspan="4" class="text-center empty-state">
+              Belum ada booking.
+            </td>
+          </tr>
+        @endforelse
+        </tbody>
 
-<td>
-<a href="{{ route('user.property.show',$b->property_id) }}" class="btn btn-sm btn-primary">
-Detail
-</a>
-</td>
-</tr>
-@empty
-<tr>
-<td colspan="4" class="text-center text-muted">Belum ada booking.</td>
-</tr>
-@endforelse
+      </table>
 
-</tbody>
+    </div>
+  </div>
 
-</table>
-
-</div>
 </div>
 
 @endsection

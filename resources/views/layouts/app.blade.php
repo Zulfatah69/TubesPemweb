@@ -5,12 +5,14 @@
 
 <title>{{ $title ?? 'KosConnect' }}</title>
 
+<!-- BOOTSTRAP -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<style>
-    body{ background:#f5f6fa }
-    .navbar-brand{ font-weight:bold }
-</style>
+<!-- GOOGLE FONT : INTER -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- CSS KUSTOM -->
+<link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
 </head>
 
@@ -19,11 +21,11 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
     <div class="container">
 
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand fw-semibold" href="#">
             KosConnect
         </a>
 
-        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -68,28 +70,27 @@
                 @endif
             </ul>
 
-            <span class="navbar-text me-3">
+            <span class="navbar-text me-3 text-white">
                 Halo, {{ Auth::user()->name }}
             </span>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button class="btn btn-outline-light btn-sm">Logout</button>
+                <button class="btn btn-outline-light btn-sm">
+                    Logout
+                </button>
             </form>
 
         </div>
     </div>
 </nav>
 
-
-
+<!-- CONTENT -->
 <div class="container py-4">
-
     @yield('content')
-
 </div>
 
-
+<!-- BOOTSTRAP JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
