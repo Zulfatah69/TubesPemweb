@@ -35,6 +35,9 @@ class PropertyController extends Controller
             'district'  => ['required'],
             'address'   => ['nullable'],
 
+            // ✅ KATEGORI KOS
+            'gender_type' => ['required', 'in:putra,putri,campuran'],
+
             'facilities' => ['array'],
             'custom_facilities' => ['nullable'],
 
@@ -53,15 +56,18 @@ class PropertyController extends Controller
             'district' => $request->district,
             'address'  => $request->address,
 
+            // ✅ SIMPAN KATEGORI
+            'gender_type' => $request->gender_type,
+
             'facilities' => $request->facilities ?? [],
             'custom_facilities' => $request->custom_facilities
                 ? explode(',', $request->custom_facilities)
                 : [],
         ]);
 
-        if($request->hasFile('photos')){
-            foreach($request->file('photos') as $index => $photo){
-                $path = $photo->store('properties','public');
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $index => $photo) {
+                $path = $photo->store('properties', 'public');
 
                 PropertyImage::create([
                     'property_id' => $property->id,
@@ -77,7 +83,7 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
-        if($property->owner_id !== Auth::id()) abort(403);
+        if ($property->owner_id !== Auth::id()) abort(403);
 
         $property->load('images');
 
@@ -86,7 +92,7 @@ class PropertyController extends Controller
 
     public function update(Request $request, Property $property)
     {
-        if($property->owner_id !== Auth::id()) abort(403);
+        if ($property->owner_id !== Auth::id()) abort(403);
 
         $request->validate([
             'name'      => ['required'],
@@ -98,6 +104,9 @@ class PropertyController extends Controller
             'city'      => ['required'],
             'district'  => ['required'],
             'address'   => ['nullable'],
+
+            // ✅ KATEGORI KOS
+            'gender_type' => ['required', 'in:putra,putri,campuran'],
 
             'facilities' => ['array'],
             'custom_facilities' => ['nullable'],
@@ -116,15 +125,18 @@ class PropertyController extends Controller
             'district' => $request->district,
             'address'  => $request->address,
 
+            // ✅ UPDATE KATEGORI
+            'gender_type' => $request->gender_type,
+
             'facilities' => $request->facilities ?? [],
             'custom_facilities' => $request->custom_facilities
                 ? explode(',', $request->custom_facilities)
                 : [],
         ]);
 
-        if($request->hasFile('photos')){
-            foreach($request->file('photos') as $photo){
-                $path = $photo->store('properties','public');
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                $path = $photo->store('properties', 'public');
 
                 PropertyImage::create([
                     'property_id' => $property->id,
@@ -140,21 +152,20 @@ class PropertyController extends Controller
     {
         $property = $image->property;
 
-        if($property->owner_id !== Auth::id()){
+        if ($property->owner_id !== Auth::id()) {
             abort(403);
         }
 
-        if(Storage::disk('public')->exists($image->file_path)){
+        if (Storage::disk('public')->exists($image->file_path)) {
             Storage::disk('public')->delete($image->file_path);
         }
 
         $wasMain = $image->is_main;
-
         $image->delete();
 
-        if($wasMain){
-            $newMain = PropertyImage::where('property_id',$property->id)->first();
-            if($newMain){
+        if ($wasMain) {
+            $newMain = PropertyImage::where('property_id', $property->id)->first();
+            if ($newMain) {
                 $newMain->update(['is_main' => true]);
             }
         }
@@ -162,22 +173,17 @@ class PropertyController extends Controller
         return back()->with('success','Foto berhasil dihapus');
     }
 
-    // ==========================
-    // SET FOTO UTAMA
-    // ==========================
     public function setMain(PropertyImage $image)
     {
         $property = $image->property;
 
-        if($property->owner_id !== Auth::id()){
+        if ($property->owner_id !== Auth::id()) {
             abort(403);
         }
 
-        // reset semua ke 0
         PropertyImage::where('property_id', $property->id)
             ->update(['is_main' => false]);
 
-        // set foto terpilih jadi utama
         $image->update(['is_main' => true]);
 
         return back()->with('success','Foto utama berhasil diubah');

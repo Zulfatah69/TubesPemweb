@@ -35,6 +35,11 @@ class UserPropertyController extends Controller
                 $query->whereJsonContains('facilities', $f);
             }
         }
+        
+        if ($request->gender_type) {
+            $query->where('gender_type', $request->gender_type);
+        }
+
 
         $properties = $query->latest()->get();
 

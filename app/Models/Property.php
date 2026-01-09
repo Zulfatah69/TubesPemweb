@@ -19,6 +19,7 @@ class Property extends Model
         'city',
         'district',
         'address',
+        'gender_type',
         'facilities',
         'custom_facilities'
     ];

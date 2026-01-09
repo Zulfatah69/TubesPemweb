@@ -1,558 +1,140 @@
 @extends('layouts.app')
 
+@section('title', 'Tambah Properti')
+
 @section('content')
+<div class="container py-4">
 
-<h4>Tambah Properti</h4>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold mb-1">Tambah Properti Baru</h4>
+            <p class="text-muted small mb-0">Isi informasi kos yang akan disewakan</p>
+        </div>
+        <a href="{{ route('owner.properties.index') }}" class="btn btn-outline-secondary btn-sm">
+            Kembali
+        </a>
+    </div>
 
-<form method="POST" action="{{ route('owner.properties.store') }}" enctype="multipart/form-data">
-@csrf
+    <form method="POST" action="{{ route('owner.properties.store') }}" enctype="multipart/form-data">
+        @csrf
 
-<div class="mb-3">
-<label>Nama Properti</label>
-<input type="text" name="name" class="form-control" required>
+        <div class="row g-4">
+            <div class="col-lg-8">
+
+                {{-- INFORMASI DASAR --}}
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+
+                        <div class="mb-3">
+                            <label class="form-label">Nama Properti</label>
+                            <input type="text"
+                                   name="name"
+                                   class="form-control"
+                                   value="{{ old('name') }}"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Kategori Kos</label><br>
+                            @foreach(['putra','putri','campuran'] as $g)
+                                <label class="me-3">
+                                    <input type="radio"
+                                           name="gender_type"
+                                           value="{{ $g }}"
+                                           {{ old('gender_type') === $g ? 'checked' : '' }}
+                                           required>
+                                    {{ ucfirst($g) }}
+                                </label>
+                            @endforeach
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Harga / Bulan</label>
+                                <input type="number"
+                                       name="price"
+                                       class="form-control"
+                                       value="{{ old('price') }}"
+                                       required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Lokasi Singkat</label>
+                                <input type="text"
+                                       name="location"
+                                       class="form-control"
+                                       value="{{ old('location') }}"
+                                       required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Deskripsi</label>
+                            <textarea name="description"
+                                      class="form-control">{{ old('description') }}</textarea>
+                        </div>
+
+                    </div>
+                </div>
+
+                {{-- ALAMAT --}}
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Provinsi</label>
+                                <select id="provinsi"
+                                        name="province"
+                                        class="form-select"
+                                        data-old="{{ old('province') }}"
+                                        required>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Kota / Kabupaten</label>
+                                <select id="kota"
+                                        name="city"
+                                        class="form-select"
+                                        data-old="{{ old('city') }}"
+                                        required>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Kecamatan</label>
+                                <select id="kecamatan"
+                                        name="district"
+                                        class="form-select"
+                                        data-old="{{ old('district') }}"
+                                        required>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Alamat Lengkap</label>
+                            <textarea name="address"
+                                      class="form-control">{{ old('address') }}</textarea>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <input type="file" name="photos[]" multiple class="form-control">
+                    </div>
+                </div>
+
+                <button class="btn btn-success w-100">
+                    Simpan Properti
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
-
-<div class="mb-3">
-<label>Lokasi Singkat</label>
-<input type="text" name="location" class="form-control" required>
-</div>
-
-<hr>
-
-<h6>Alamat Detail</h6>
-
-<div class="row">
-<div class="col-md-4 mb-3">
-<label>Provinsi</label>
-<select id="provinsi" name="province" class="form-select" required></select>
-</div>
-
-<div class="col-md-4 mb-3">
-<label>Kota/Kabupaten</label>
-<select id="kota" name="city" class="form-select" required></select>
-</div>
-
-<div class="col-md-4 mb-3">
-<label>Kecamatan</label>
-<select id="kecamatan" name="district" class="form-select" required></select>
-</div>
-</div>
-
-<div class="mb-3">
-<label>Alamat Lengkap</label>
-<input type="text" name="address" class="form-control">
-</div>
-
-<hr>
-
-<div class="mb-3">
-<label>Harga / Bulan</label>
-<input type="number" name="price" class="form-control" required>
-</div>
-
-<div class="mb-3">
-<label>Deskripsi</label>
-<textarea name="description" class="form-control"></textarea>
-</div>
-
-<hr>
-
-<h6>Fasilitas (bisa difilter)</h6>
-
-@php
-$defaultFacilities = ['WiFi','AC','Kamar mandi dalam','Parkir Motor','Parkir Mobil','Dapur','Kasur','Lemari','Meja belajar'];
-@endphp
-
-<div class="row">
-@foreach($defaultFacilities as $f)
-<div class="col-md-4">
-<label>
-<input type="checkbox" name="facilities[]" value="{{ $f }}">
-{{ $f }}
-</label>
-</div>
-@endforeach
-</div>
-
-<div class="mt-3">
-<label>Fasilitas tambahan (pisahkan dengan koma)</label>
-<input type="text" name="custom_facilities" class="form-control" placeholder="contoh: TV, Dispenser">
-<small class="text-muted">Fasilitas ini tidak ikut filter</small>
-</div>
-
-<hr>
-
-<div class="mb-3">
-<label>Foto Properti (bisa lebih dari 1)</label>
-<input type="file" name="photos[]" class="form-control" multiple>
-<small class="text-muted">Foto pertama akan jadi foto utama</small>
-</div>
-
-<button class="btn btn-success">Simpan</button>
-<a href="{{ route('owner.properties.index') }}" class="btn btn-secondary">Batal</a>
-
-</form>
-
-<script>
-
-const wilayah = [
-  {
-    prov: "DKI Jakarta",
-    kota: [
-      {
-        nama: "Kepulauan Seribu",
-        kec: [
-          "Kepulauan Seribu Selatan",
-          "Kepulauan Seribu Utara"
-        ]
-      },
-      {
-        nama: "Jakarta Pusat",
-        kec: [
-          "Cempaka Putih",
-          "Gambir",
-          "Johar Baru",
-          "Kemayoran",
-          "Menteng",
-          "Sawah Besar",
-          "Senen",
-          "Tanah Abang"
-        ]
-      },
-      {
-        nama: "Jakarta Utara",
-        kec: [
-          "Cilincing",
-          "Kelapa Gading",
-          "Koja",
-          "Pademangan",
-          "Penjaringan",
-          "Tanjung Priok"
-        ]
-      },
-      {
-        nama: "Jakarta Barat",
-        kec: [
-          "Cengkareng",
-          "Grogol Petamburan",
-          "Kalideres",
-          "Kebon Jeruk",
-          "Kembangan",
-          "Palmerah",
-          "Taman Sari",
-          "Tambora"
-        ]
-      },
-      {
-        nama: "Jakarta Selatan",
-        kec: [
-          "Cilandak",
-          "Jagakarsa",
-          "Kebayoran Baru",
-          "Kebayoran Lama",
-          "Mampang Prapatan",
-          "Pancoran",
-          "Pasar Minggu",
-          "Pesanggrahan",
-          "Setiabudi",
-          "Tebet"
-        ]
-      },
-      {
-        nama: "Jakarta Timur",
-        kec: [
-          "Cakung",
-          "Cipayung",
-          "Ciracas",
-          "Duren Sawit",
-          "Jatinegara",
-          "Kramat Jati",
-          "Makasar",
-          "Matraman",
-          "Pasar Rebo",
-          "Pulo Gadung"
-        ]
-      }
-    ]
-  },
-
-  {
-    prov: "Banten",
-    kota: [
-      {
-        nama: "Kabupaten Pandeglang",
-        kec: [
-          "Angsana","Banjar","Bojong","Cadasari","Carita","Cibaliung","Cibitung",
-          "Cigeulis","Cikedal","Cikeusik","Cimanggu","Cimanuk","Cipeucang",
-          "Cisata","Jiput","Kaduhejo","Karang Tanjung","Koroncong","Labuan",
-          "Majasari","Mandalawangi","Mekarjaya","Menes","Munjul","Pagelaran",
-          "Pandeglang","Panimbang","Patia","Picung","Pulosari","Saketi",
-          "Sindangresmi","Sobang","Sukaresmi","Sumur"
-        ]
-      },
-      {
-        nama: "Kabupaten Lebak",
-        kec: [
-          "Banjarsari","Bayah","Bojongmanik","Cibadak","Cibeber","Cigemblong",
-          "Cihara","Cijaku","Cikulur","Cileles","Cilograng","Cimarga","Cipanas",
-          "Cirinten","Curugbitung","Gunung Kencana","Kalanganyar","Lebakgedong",
-          "Leuwidamar","Maja","Malingping","Muncang","Panggarangan",
-          "Rangkasbitung","Sajira","Sobang","Wanasalam","Warunggunung"
-        ]
-      },
-      {
-        nama: "Kabupaten Tangerang",
-        kec: [
-          "Balaraja","Cikupa","Cisauk","Cisoka","Curug","Gunung Kaler","Jambe",
-          "Jayanti","Kelapa Dua","Kemiri","Kosambi","Kresek","Kronjo","Legok",
-          "Mauk","Mekar Baru","Pagedangan","Pakuhaji","Panongan","Pasar Kemis",
-          "Rajeg","Sepatan","Sepatan Timur","Sindang Jaya","Solear","Sukadiri",
-          "Sukamulya","Teluknaga","Tigaraksa"
-        ]
-      },
-      {
-        nama: "Kabupaten Serang",
-        kec: [
-          "Anyar","Bandung","Baros","Binuang","Bojonegara","Carenang","Cikande",
-          "Cikeusal","Cinangka","Ciomas","Ciruas","Gunungsari","Jawilan","Kibin",
-          "Kopo","Kragilan","Kramatwatu","Lebakwangi","Mancak","Pabuaran",
-          "Padarincang","Petir","Pontang","Pulo Ampel","Tanara","Tirtayasa",
-          "Tunjung Teja","Waringinkurung"
-        ]
-      },
-      {
-        nama: "Kota Tangerang",
-        kec: [
-          "Batuceper","Benda","Cibodas","Ciledug","Cipondoh","Jatiuwung",
-          "Karangtengah","Karawaci","Larangan","Neglasari","Periuk","Pinang",
-          "Tangerang"
-        ]
-      },
-      {
-        nama: "Kota Tangerang Selatan",
-        kec: [
-          "Ciputat","Ciputat Timur","Pamulang","Pondok Aren","Serpong",
-          "Serpong Utara","Setu"
-        ]
-      },
-      {
-        nama: "Kota Serang",
-        kec: [
-          "Cipocok Jaya","Curug","Kasemen","Serang","Taktakan","Walantaka"
-        ]
-      },
-      {
-        nama: "Kota Cilegon",
-        kec: [
-          "Cibeber","Cilegon","Citangkil","Ciwandan","Gerogol",
-          "Jombang","Pulomerak","Purwakarta"
-        ]
-      }
-    ]
-  },
-
-  {
-  prov: "Jawa Barat",
-  kota: [
-    {
-      nama: "Kabupaten Bogor",
-      kec: [
-        "Babakan Madang","Bojonggede","Caringin","Cariu","Ciampea","Ciawi",
-        "Cibinong","Cibungbulang","Cigombong","Cigudeg","Cijeruk","Cileungsi",
-        "Ciomas","Cisarua","Ciseeng","Citeureup","Dramaga","Gunung Putri",
-        "Gunung Sindur","Jasinga","Jonggol","Kemang","Klapanunggal",
-        "Leuwiliang","Leuwisadeng","Megamendung","Nanggung","Pamijahan",
-        "Parung","Parung Panjang","Ranca Bungur","Rumpin","Sukajaya",
-        "Sukamakmur","Sukaraja","Tajurhalang","Tamansari","Tanjungsari",
-        "Tenjo","Tenjolaya"
-      ]
-    },
-    {
-      nama: "Kabupaten Sukabumi",
-      kec: [
-        "Bantargadung","Bojonggenteng","Caringin","Ciambar","Cibadak",
-        "Cibitung","Cicantayan","Cicurug","Cidadap","Cidahu","Cidolog",
-        "Ciemas","Cikakak","Cikembar","Cikidang","Cimanggu","Ciracap",
-        "Cireunghas","Cisaat","Cisolok","Curugkembar","Gegerbitung",
-        "Gunungguruh","Jampang Kulon","Jampang Tengah","Kalapanunggal",
-        "Kebonpedes","Lengkong","Nagrak","Nyalindung","Pabuaran",
-        "Parakansalak","Parungkuda","Purabaya","Sagaranten","Simpenan",
-        "Sukabumi","Sukalarang","Sukaraja","Surade","Tegalbuleud",
-        "Waluran","Warungkiara"
-      ]
-    },
-    {
-      nama: "Kabupaten Cianjur",
-      kec: [
-        "Agrabinta","Bojongpicung","Campaka","Campaka Mulya","Cianjur",
-        "Cibeber","Cibinong","Cidaun","Cijati","Cikadu","Cikalongkulon",
-        "Cilaku","Cipanas","Ciranjang","Cugenang","Gekbrong","Haurwangi",
-        "Kadupandak","Karangtengah","Leles","Mande","Naringgul","Pacet",
-        "Pagelaran","Pasirkuda","Sindangbarang","Sukaluyu","Sukanagara",
-        "Takokak","Tanggeung","Warungkondang"
-      ]
-    },
-    {
-      nama: "Kabupaten Bandung",
-      kec: [
-        "Arjasari","Baleendah","Banjaran","Bojongsoang","Cangkuang",
-        "Cicalengka","Cikancung","Cilengkrang","Cileunyi","Cimaung",
-        "Cimenyan","Ciparay","Ciwidey","Dayeuhkolot","Ibun","Katapang",
-        "Kertasari","Kutawaringin","Majalaya","Margaasih","Margahayu",
-        "Nagreg","Pacet","Pameungpeuk","Pangalengan","Paseh","Pasirjambu",
-        "Rancabali","Rancaekek","Solokanjeruk","Soreang"
-      ]
-    },
-    {
-      nama: "Kabupaten Garut",
-      kec: [
-        "Banjarwangi","Banyuresmi","Bayongbong","Blimbing","Bungbulang",
-        "Caringin","Cibalong","Cibatu","Cibiuk","Cigedug","Cihurip",
-        "Cikajang","Cikelet","Cilawu","Cisewu","Cisompet","Cisurupan",
-        "Garut Kota","Kadungora","Karangpawitan","Karangtengah",
-        "Kersamanah","Leles","Leuwigoong","Malangbong","Mekarmukti",
-        "Pakenjeng","Pameungpeuk","Pamulihan","Pangatikan","Pasirwangi",
-        "Peundeuy","Samarang","Selawi","Singajaya","Sucinaraja",
-        "Sukaresmi","Sukawening","Talegong","Tarogong Kaler",
-        "Tarogong Kidul","Wanaraja"
-      ]
-    },
-
-    {
-      nama: "Kabupaten Tasikmalaya",
-      kec: [
-        "Bantarkalong","Bojongasih","Bojonggambir","Ciawi","Cibalong",
-        "Cigalontang","Cikalong","Cikatomas","Cineam","Cipatujah",
-        "Cisayong","Culamega","Gunung Tanjung","Jamanis","Jatiwaras",
-        "Kadipaten","Karangjaya","Leuwisari","Mangunreja","Manonjaya",
-        "Padakembang","Pagerageung","Pancatengah","Parungponteng",
-        "Puspahiang","Rajapolah","Salawu","Salopa","Sariwangi",
-        "Singaparna","Sodonghilir","Sukahening","Sukaraja","Sukarame",
-        "Tanjungjaya","Taraju"
-      ]
-    },
-
-    {
-      nama: "Kabupaten Ciamis",
-      kec: [
-        "Banjarsari","Baregbeg","Ciamis","Cidolog","Cihaurbeuti",
-        "Cijeungjing","Cikoneng","Cimaragas","Cipaku","Cisaga",
-        "Jatinagara","Kawali","Lakbok","Lumbung","Pamarican",
-        "Panawangan","Panumbangan","Purwadadi","Rajadesa","Rancah",
-        "Sadananya","Sindangkasih","Sukadana","Sukamantri","Tambaksari"
-      ]
-    },
-
-    {
-      nama: "Kabupaten Kuningan",
-      kec: [
-        "Ciawigebang","Cibeureum","Cibingbin","Cidahu","Cigandamekar",
-        "Cigugur","Cilebak","Cilimus","Cimahi","Ciniru","Cipicung",
-        "Ciwaru","Darma","Garawangi","Hantara","Jalaksana","Japara",
-        "Kadugede","Kalimanggis","Karangkancana","Kramatmulya",
-        "Kuningan","Lebakwangi","Luragung","Maleber","Mandirancan",
-        "Nusaherang","Pancalang","Pasawahan","Selajambe",
-        "Sindangagung","Subang"
-      ]
-    },
-
-    {
-      nama: "Kabupaten Cirebon",
-      kec: [
-        "Arjawinangun","Astanajapura","Babakan","Beber","Ciledug",
-        "Depok","Dukupuntang","Gebang","Gegesik","Gempol","Greged",
-        "Gunungjati","Jamblang","Kaliwedi","Kapetakan","Karangsembung",
-        "Karangwareng","Kedawung","Klangenan","Lemahabang","Losari",
-        "Mundu","Pabedilan","Pabuaran","Palimanan","Pangenan",
-        "Panguragan","Pasaleman","Plumbon","Sedong","Sumber",
-        "Suranenggala","Susukan","Susukan Lebak","Talun",
-        "Tengah Tani","Waled","Weru"
-      ]
-    },
-
-    {
-      nama: "Kabupaten Majalengka",
-      kec: [
-        "Argapura","Banjaran","Bantarujeg","Cigasong","Cikijing",
-        "Cingambul","Dawuan","Jatitujuh","Jatiwangi","Kadipaten",
-        "Kasokandel","Kertajati","Lemahsugih","Leuwimunding","Ligung",
-        "Maja","Majalengka","Malausma","Palasah","Panyingkiran",
-        "Rajagaluh","Sindang","Sindangwangi","Sukahaji",
-        "Sumberjaya","Talaga"
-      ]
-    },
-
-    {
-      nama: "Kabupaten Sumedang",
-      kec: [
-        "Buahdua","Cibugel","Cimalaka","Cimanggung","Cisarua","Cisitu",
-        "Conggeang","Darmaraja","Ganeas","Jatigede","Jatinangor",
-        "Jatinunggal","Pamulihan","Rancakalong","Situraja","Sukasari",
-        "Sumedang Selatan","Sumedang Utara","Surian","Tanjungkerta",
-        "Tanjungmedar","Tanjungsari","Tomo","Ujungjaya","Wado"
-      ]
-    },
-
-    {
-      nama: "Kabupaten Indramayu",
-      kec: [
-        "Anjatan","Arahan","Balongan","Bangodua","Bongas","Cantigi",
-        "Cikedung","Gabuswetan","Gantar","Haurgeulis","Indramayu",
-        "Jatibarang","Juntinyuat","Kandanghaur","Karangampel",
-        "Kedokan Bunder","Kertasemaya","Krangkeng","Kroya","Lelea",
-        "Lohbener","Losarang","Pasekan","Patrol","Sindang","Sliyeg",
-        "Sukagumiwang","Sukra","Trisi","Tukdana","Widasari"
-      ]
-    },
-
-    {
-      nama: "Kabupaten Subang",
-      kec: [
-        "Binong","Blanakan","Ciasem","Ciater","Cibogo","Cijambe",
-        "Cikaum","Cipeundeuy","Cipunagara","Cisalak","Compreng",
-        "Dawuan","Jalancagak","Kalijati","Kasomalang","Legonkulon",
-        "Pabuaran","Pagaden","Pagaden Barat","Pamanukan","Patokbeusi",
-        "Purwadadi","Pusakanagara","Pusakajaya","Sagalaherang",
-        "Serangpanjang","Subang","Sukasari","Tambakdahan",
-        "Tanjungsiang"
-      ]
-    },
-
-    {
-      nama: "Kabupaten Purwakarta",
-      kec: [
-        "Babakancikao","Bojong","Bungursari","Campaka","Cibatu",
-        "Darangdan","Jatiluhur","Kiarapedes","Maniis","Pasawahan",
-        "Plered","Pondoksalam","Purwakarta","Sukasari","Sukatani",
-        "Tegalwaru","Wanayasa"
-      ]
-    },
-
-    {
-      nama: "Kabupaten Karawang",
-      kec: [
-        "Banyusari","Batujaya","Ciampel","Cibuaya","Cikampek",
-        "Cilamaya Kulon","Cilamaya Wetan","Cilebar","Jatisari",
-        "Jayakerta","Karawang Barat","Karawang Timur","Klari",
-        "Kotabaru","Kutawaluya","Lemahabang","Majalaya","Pakisjaya",
-        "Pangkalan","Pedes","Purwasari","Rawamerta","Rengasdengklok",
-        "Talagasari","Tegalwaru","Telukjambe Barat",
-        "Telukjambe Timur","Tempuran","Tirtajaya","Tirtamulya"
-      ]
-    },
-
-    {
-      nama: "Kabupaten Bekasi",
-      kec: [
-        "Babelan","Bojongmangu","Cabangbungin","Cibarusah","Cibitung",
-        "Cikarang Barat","Cikarang Pusat","Cikarang Selatan",
-        "Cikarang Timur","Cikarang Utara","Karangbahagia",
-        "Kedungwaringin","Muara Gembong","Pebayuran","Serang Baru",
-        "Setu","Sukakarya","Sukatani","Sukawangi","Tambelang",
-        "Tambun Selatan","Tambun Utara","Tarumajaya"
-      ]
-    },
-
-    {
-      nama: "Kota Bogor",
-      kec: [
-        "Bogor Barat","Bogor Selatan","Bogor Tengah",
-        "Bogor Timur","Bogor Utara","Tanah Sareal"
-      ]
-    },
-    {
-      nama: "Kota Sukabumi",
-      kec: [
-        "Baros","Cibeureum","Cikole","Citamiang",
-        "Gunungpuyuh","Lembursitu","Warudoyong"
-      ]
-    },
-    {
-      nama: "Kota Bandung",
-      kec: [
-        "Andir","Antapani","Arcamanik","Astanaanyar",
-        "Babakan Ciparay","Bandung Kidul","Bandung Kulon",
-        "Bandung Wetan","Batununggal","Bojongloa Kaler",
-        "Bojongloa Kidul","Buahbatu","Cibeunying Kaler",
-        "Cibeunying Kidul","Cibiru","Cicendo","Cidadap",
-        "Cinambo","Coblong","Gedebage","Kiaracondong",
-        "Lengkong","Mandalajati","Panyileukan","Rancasari",
-        "Regol","Sukajadi","Sukasari","Sumur Bandung",
-        "Ujungberung"
-      ]
-    },
-    {
-      nama: "Kota Cirebon",
-      kec: [
-        "Harjamukti","Kejaksan","Kesambi",
-        "Lemahwungkuk","Pekalipan"
-      ]
-    },
-    {
-      nama: "Kota Bekasi",
-      kec: [
-        "Bantargebang","Bekasi Barat","Bekasi Selatan",
-        "Bekasi Timur","Bekasi Utara","Jatiasih",
-        "Jatisampurna","Medansatria","Mustikajaya",
-        "Pondokgede","Pondokmelati","Rawalumbu"
-      ]
-    },
-    {
-      nama: "Kota Depok",
-      kec: [
-        "Beji","Bojongsari","Cilodong","Cimanggis",
-        "Cinere","Cipayung","Limo","Pancoran Mas",
-        "Sawangan","Sukmajaya","Tapos"
-      ]
-    },
-    {
-      nama: "Kota Cimahi",
-      kec: [
-        "Cimahi Selatan","Cimahi Tengah","Cimahi Utara"
-      ]
-    },
-    {
-      nama: "Kota Tasikmalaya",
-      kec: [
-        "Bungursari","Cibeureum","Cihideung","Cipedes",
-        "Indihiang","Kawalu","Mangkubumi",
-        "Purbaratu","Tamansari","Tawang"
-      ]
-    },
-    {
-      nama: "Kota Banjar",
-      kec: [
-        "Banjar","Langensari","Pataruman","Purwaharja"
-      ]
-    }
-  ]
-}
-];
-
-const provSelect=document.getElementById('provinsi');
-const kotaSelect=document.getElementById('kota');
-const kecSelect=document.getElementById('kecamatan');
-
-provSelect.innerHTML='<option value="">Pilih Provinsi</option>';
-wilayah.forEach(w=>provSelect.innerHTML+=`<option>${w.prov}</option>`);
-
-provSelect.onchange=()=>{
- kotaSelect.innerHTML='';
- kecSelect.innerHTML='';
- const p=wilayah.find(w=>w.prov===provSelect.value);
- if(!p) return;
- p.kota.forEach(k=>kotaSelect.innerHTML+=`<option>${k.nama}</option>`);
- kotaSelect.onchange();
-};
-
-kotaSelect.onchange=()=>{
- kecSelect.innerHTML='';
- const p=wilayah.find(w=>w.prov===provSelect.value);
- if(!p) return;
- const k=p.kota.find(x=>x.nama===kotaSelect.value);
- if(!k) return;
- k.kec.forEach(c=>kecSelect.innerHTML+=`<option>${c}</option>`);
-};
-</script>
-
 @endsection
