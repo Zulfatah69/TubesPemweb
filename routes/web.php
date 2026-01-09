@@ -2,23 +2,36 @@
 
 use Illuminate\Support\Facades\Route;
 
+// =======================
 // AUTH
+// =======================
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthOtpController;
 
+// =======================
 // CHAT
+// =======================
 use App\Http\Controllers\ChatController;
 
+// =======================
 // OWNER
+// =======================
 use App\Http\Controllers\Owner\OwnerChatController;
 use App\Http\Controllers\Owner\OwnerDashboardController;
 use App\Http\Controllers\Owner\PropertyController;
 use App\Http\Controllers\Owner\OwnerBookingController;
 
+// =======================
 // USER
+// =======================
 use App\Http\Controllers\User\UserPropertyController;
 use App\Http\Controllers\User\UserBookingController;
 use App\Http\Controllers\User\BookingPaymentController;
+
+// =======================
+// MIDTRANS WEBHOOK
+// =======================
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,11 +149,24 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| MIDTRANS CALLBACK (NO AUTH, NO ROLE)
+| MIDTRANS WEBHOOK (PUBLIC, NO AUTH)
 |--------------------------------------------------------------------------
 */
-Route::post('/midtrans/callback', [BookingPaymentController::class, 'callback'])
-    ->name('midtrans.callback');
+Route::post('/midtrans/webhook', [PaymentController::class, 'handle'])
+    ->name('midtrans.webhook');
+
+/*
+|--------------------------------------------------------------------------
+| DEBUG ROUTE (SEMENTARA)
+|--------------------------------------------------------------------------
+| HAPUS SETELAH APP_KEY BERES
+*/
+Route::get('/test-key', function () {
+    return response()->json([
+        'app_key' => config('app.key'),
+        'cipher'  => config('app.cipher'),
+    ]);
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -157,6 +183,3 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::get('/', fn () => redirect()->route('login'));
-use App\Http\Controllers\PaymentController;
-
-Route::post('/midtrans/webhook', [PaymentController::class, 'handle']);
