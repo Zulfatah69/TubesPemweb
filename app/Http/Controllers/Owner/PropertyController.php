@@ -35,7 +35,6 @@ class PropertyController extends Controller
             'district'  => ['required'],
             'address'   => ['nullable'],
 
-            // ✅ KATEGORI KOS
             'gender_type' => ['required', 'in:putra,putri,campuran'],
 
             'facilities' => ['array'],
@@ -56,7 +55,6 @@ class PropertyController extends Controller
             'district' => $request->district,
             'address'  => $request->address,
 
-            // ✅ SIMPAN KATEGORI
             'gender_type' => $request->gender_type,
 
             'facilities' => $request->facilities ?? [],
@@ -71,8 +69,8 @@ class PropertyController extends Controller
 
                 PropertyImage::create([
                     'property_id' => $property->id,
-                    'file_path' => $path,
-                    'is_main' => $index === 0
+                    'file_path'  => $path,
+                    'is_main'    => $index === 0
                 ]);
             }
         }
@@ -94,6 +92,13 @@ class PropertyController extends Controller
     {
         if ($property->owner_id !== Auth::id()) abort(403);
 
+        // FIX FINAL: string kosong ("") dianggap tidak dikirim
+        $request->merge([
+            'province' => $request->filled('province') ? $request->province : $property->province,
+            'city'     => $request->filled('city')     ? $request->city     : $property->city,
+            'district' => $request->filled('district') ? $request->district : $property->district,
+        ]);
+
         $request->validate([
             'name'      => ['required'],
             'location'  => ['required'],
@@ -105,7 +110,6 @@ class PropertyController extends Controller
             'district'  => ['required'],
             'address'   => ['nullable'],
 
-            // ✅ KATEGORI KOS
             'gender_type' => ['required', 'in:putra,putri,campuran'],
 
             'facilities' => ['array'],
@@ -125,7 +129,6 @@ class PropertyController extends Controller
             'district' => $request->district,
             'address'  => $request->address,
 
-            // ✅ UPDATE KATEGORI
             'gender_type' => $request->gender_type,
 
             'facilities' => $request->facilities ?? [],
@@ -140,21 +143,19 @@ class PropertyController extends Controller
 
                 PropertyImage::create([
                     'property_id' => $property->id,
-                    'file_path' => $path
+                    'file_path'  => $path
                 ]);
             }
         }
 
-        return back()->with('success','Properti diperbarui');
+        return back()->withInput()->with('success','Properti diperbarui');
     }
 
     public function deleteImage(PropertyImage $image)
     {
         $property = $image->property;
 
-        if ($property->owner_id !== Auth::id()) {
-            abort(403);
-        }
+        if ($property->owner_id !== Auth::id()) abort(403);
 
         if (Storage::disk('public')->exists($image->file_path)) {
             Storage::disk('public')->delete($image->file_path);
@@ -177,9 +178,7 @@ class PropertyController extends Controller
     {
         $property = $image->property;
 
-        if ($property->owner_id !== Auth::id()) {
-            abort(403);
-        }
+        if ($property->owner_id !== Auth::id()) abort(403);
 
         PropertyImage::where('property_id', $property->id)
             ->update(['is_main' => false]);
@@ -188,4 +187,27 @@ class PropertyController extends Controller
 
         return back()->with('success','Foto utama berhasil diubah');
     }
+    public function destroy(Property $property)
+    {
+        if ($property->owner_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $property->load('images');
+
+        foreach ($property->images as $image) {
+            if (Storage::disk('public')->exists($image->file_path)) {
+                Storage::disk('public')->delete($image->file_path);
+            }
+            $image->delete();
+        }
+
+        $property->delete();
+
+        return redirect()
+            ->route('owner.properties.index')
+            ->with('success', 'Properti berhasil dihapus');
+    }
+
 }
+
