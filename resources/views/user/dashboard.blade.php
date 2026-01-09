@@ -1,14 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<<<<<<< HEAD
-
-<h4>Cari Kos</h4>
-
-@include('user.search-form') {{-- filter yang sudah kamu buat --}}
-
-@include('user.property-list') {{-- daftar kos --}}
-=======
 <div class="row">
     <div class="col-lg-3 mb-4">
         <div class="card border-0 shadow-sm sticky-top" style="top: 90px; z-index: 100;">
@@ -129,6 +121,5 @@
             data-old="{{ request('district') }}">
     </select>
 </div>
->>>>>>> zulfatah
 
 @endsection

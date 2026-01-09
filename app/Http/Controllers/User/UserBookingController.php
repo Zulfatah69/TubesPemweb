@@ -10,41 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UserBookingController extends Controller
 {
-<<<<<<< HEAD
-    public function store(Request $request, Property $property)
-    {
-        $request->validate([
-            'start_date' => ['required','date'],
-            'note' => ['nullable']
-        ]);
-
-        $exists = Booking::where('user_id', Auth::id())
-            ->where('property_id', $property->id)
-            ->whereIn('status',['pending','approved'])
-            ->exists();
-
-        if($exists){
-            return back()->with('error',
-                'Anda sudah memiliki booking aktif pada properti ini');
-        }
-
-        Booking::create([
-            'user_id' => Auth::id(),
-            'property_id' => $property->id,
-            'start_date' => $request->start_date,
-            'months' => $request->lama_sewa,
-            'note' => $request->note,
-            'status' => 'pending'
-        ]);
-
-        return back()->with('success','Booking berhasil dikirim');
-    }
-
-    public function myBookings()
-    {
-        $bookings = Booking::where('user_id', Auth::id())
-            ->with('property')
-=======
     /**
      * SIMPAN BOOKING USER
      */
@@ -106,7 +71,6 @@ class UserBookingController extends Controller
     {
         $bookings = Booking::with('property')
             ->where('user_id', Auth::id())
->>>>>>> zulfatah
             ->latest()
             ->get();
 

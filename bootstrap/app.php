@@ -11,15 +11,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-<<<<<<< HEAD
-        $middleware->alias([
-            'role' => \App\Http\Middleware\RoleMiddleware::class,
-        ]);
-    })
-    ->withExceptions(function (Exceptions $exceptions) {
-        //
-    })->create();
-=======
 
         // ALIAS MIDDLEWARE (ROLE)
         $middleware->alias([
@@ -36,4 +27,3 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->create();
->>>>>>> zulfatah

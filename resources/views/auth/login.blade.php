@@ -2,23 +2,6 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-<<<<<<< HEAD
-    <title>Login</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-</head>
-<body class="bg-light">
-
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-
-            <div class="card shadow-sm">
-                <div class="card-body">
-
-                    <h4 class="text-center mb-4">Masuk</h4>
-=======
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masuk - KosConnect</title>
 
@@ -103,48 +86,11 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     @endif
->>>>>>> zulfatah
 
                     <form method="POST" action="{{ url('/login') }}">
                         @csrf
 
                         <div class="mb-3">
-<<<<<<< HEAD
-                            <label class="form-label">Email / Username</label>
-                            <input type="text" name="login" class="form-control" value="{{ old('login') }}" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" required>
-                        </div>
-
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" name="remember" id="remember">
-                            <label class="form-check-label" for="remember">
-                                Ingat saya
-                            </label>
-                        </div>
-
-                        <button class="btn btn-success w-100">Masuk</button>
-
-                        <p class="text-center mt-3">
-                            Belum punya akun?
-                            <a href="{{ route('register') }}">Daftar</a>
-                        </p>
-
-                    </form>
-
-                    @if($errors->any())
-                        <div class="alert alert-danger mt-3">
-                            {{ $errors->first() }}
-                        </div>
-                    @endif
-
-                </div>
-            </div>
-
-=======
                             <label class="form-label small fw-bold text-muted">Email / Username</label>
                             <div class="input-group">
                                 <span class="input-group-text text-muted border-end-0">
@@ -192,14 +138,9 @@
                 &copy; {{ date('Y') }} KosConnect. All rights reserved.
             </div>
 
->>>>>>> zulfatah
         </div>
     </div>
 </div>
 
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> zulfatah

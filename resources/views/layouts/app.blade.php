@@ -1,19 +1,6 @@
 <!doctype html>
 <html lang="id">
 <head>
-<<<<<<< HEAD
-<meta charset="UTF-8">
-
-<title>{{ $title ?? 'KosConnect' }}</title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<style>
-    body{ background:#f5f6fa }
-    .navbar-brand{ font-weight:bold }
-</style>
-
-=======
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'KosConnect' }}</title>
@@ -82,21 +69,10 @@
 
     {{-- APP CSS --}}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
->>>>>>> zulfatah
 </head>
 
 <body>
 
-<<<<<<< HEAD
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-    <div class="container">
-
-        <a class="navbar-brand" href="#">
-            KosConnect
-        </a>
-
-        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
-=======
 {{-- NAVBAR --}}
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
     <div class="container">
@@ -105,62 +81,10 @@
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
->>>>>>> zulfatah
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="menu">
-<<<<<<< HEAD
-
-            <ul class="navbar-nav me-auto">
-
-                @if(Auth::user()->role=='owner')
-
-                    <li class="nav-item">
-                        <a href="{{ route('owner.dashboard') }}" class="nav-link">
-                            Dashboard
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="{{ route('owner.properties.index') }}" class="nav-link">
-                            Kelola Properti
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="{{ route('owner.booking.index') }}" class="nav-link">
-                            Booking Masuk
-                        </a>
-                    </li>
-
-                @elseif(Auth::user()->role=='user')
-
-                    <li class="nav-item">
-                        <a href="{{ route('user.dashboard') }}" class="nav-link">
-                            Cari Kos
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="{{ route('user.booking.my') }}" class="nav-link">
-                            Booking Saya
-                        </a>
-                    </li>
-
-                @endif
-            </ul>
-
-            <span class="navbar-text me-3">
-                Halo, {{ Auth::user()->name }}
-            </span>
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button class="btn btn-outline-light btn-sm">Logout</button>
-            </form>
-
-=======
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                 @auth
@@ -239,24 +163,10 @@
                     </a>
                 @endauth
             </div>
->>>>>>> zulfatah
         </div>
     </div>
 </nav>
 
-<<<<<<< HEAD
-
-
-<div class="container py-4">
-
-    @yield('content')
-
-</div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-=======
 {{-- CONTENT --}}
 <main class="py-4">
     <div class="container">
@@ -294,6 +204,5 @@
 {{-- STACK SCRIPT LAIN --}}
 @stack('scripts')
 
->>>>>>> zulfatah
 </body>
 </html>

@@ -2,27 +2,11 @@
 
 namespace App\Models;
 
-<<<<<<< HEAD
-=======
 use Illuminate\Database\Eloquent\Factories\HasFactory;
->>>>>>> zulfatah
 use Illuminate\Database\Eloquent\Model;
 
 class Booking extends Model
 {
-<<<<<<< HEAD
-    protected $fillable = [
-        'user_id','property_id','start_date','note','status'
-    ];
-
-    public function user(){
-        return $this->belongsTo(User::class);
-    }
-
-    public function property(){
-        return $this->belongsTo(Property::class);
-    }
-=======
     use HasFactory;
 
     protected $fillable = [
@@ -46,5 +30,4 @@ class Booking extends Model
     {
         return $this->belongsTo(User::class);
     }
->>>>>>> zulfatah
 }

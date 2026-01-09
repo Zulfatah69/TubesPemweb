@@ -22,11 +22,8 @@ return new class extends Migration
             $table->enum('role', ['admin', 'owner', 'user'])->default('user');
 
             $table->string('password');
-<<<<<<< HEAD
-=======
             
             $table->timestamp('email_verified_at')->nullable();
->>>>>>> zulfatah
 
             $table->rememberToken();
             $table->timestamps();

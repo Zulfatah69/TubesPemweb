@@ -1,25 +1,11 @@
 @extends('layouts.app')
 
-<<<<<<< HEAD
-=======
 @section('title', 'Dashboard Pemilik')
 
->>>>>>> zulfatah
 @section('content')
 
 <div class="container py-4">
 
-<<<<<<< HEAD
-    <h3>Dashboard Pemilik</h3>
-
-    <div class="row mt-3">
-
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-                    <h4>{{ $total_properties }}</h4>
-                    <p class="text-muted">Total Properti</p>
-=======
     {{-- HEADER DASHBOARD --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -45,18 +31,10 @@
                         <h4 class="fw-bold mb-0">{{ $total_properties }}</h4>
                         <span class="text-muted small">Total Properti</span>
                     </div>
->>>>>>> zulfatah
                 </div>
             </div>
         </div>
 
-<<<<<<< HEAD
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-                    <h4>{{ $total_bookings }}</h4>
-                    <p class="text-muted">Total Booking Masuk</p>
-=======
         {{-- Booking Masuk (Total) --}}
         <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100">
@@ -68,21 +46,10 @@
                         <h4 class="fw-bold mb-0">{{ $total_bookings }}</h4>
                         <span class="text-muted small">Total Booking</span>
                     </div>
->>>>>>> zulfatah
                 </div>
             </div>
         </div>
 
-<<<<<<< HEAD
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-                    <h4>{{ $pending_bookings }}</h4>
-                    <p class="text-muted">Menunggu Konfirmasi</p>
-                </div>
-            </div>
-        </div>
-=======
         {{-- Menunggu Konfirmasi (Prioritas) --}}
         <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100 {{ $pending_bookings > 0 ? 'border-start border-warning border-4' : '' }}">
@@ -158,15 +125,11 @@
                 </div>
             </a>
         </div>
->>>>>>> zulfatah
 
     </div>
 
 </div>
 
-<<<<<<< HEAD
-@endsection
-=======
 {{-- CSS Tambahan untuk efek hover card --}}
 <style>
     .card-hover {
@@ -179,4 +142,3 @@
 </style>
 
 @endsection
->>>>>>> zulfatah

@@ -19,10 +19,7 @@ class Property extends Model
         'city',
         'district',
         'address',
-<<<<<<< HEAD
-=======
         'gender_type',
->>>>>>> zulfatah
         'facilities',
         'custom_facilities'
     ];
