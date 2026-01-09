@@ -153,9 +153,14 @@
                             <input type="date" name="start_date" class="form-control" required>
                         </div>
 
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small text-uppercase text-muted">Lama Sewa (Bulan)</label>
+                            <input name="months" class="form-control" value="1" required>
+                        </div>
+
                         <div class="mb-4">
                             <label class="form-label fw-bold small text-uppercase text-muted">Catatan (Opsional)</label>
-                            <textarea name="note" class="form-control" rows="2" placeholder="Contoh: Saya akan check-in jam 2 siang"></textarea>
+                            <textarea name="note" class="form-control" rows="2" placeholder="Contoh: 1"></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-success w-100 py-2 fw-bold mb-3 shadow-sm">
