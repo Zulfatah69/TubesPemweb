@@ -111,6 +111,11 @@
             </div>
 
             <div class="mb-3">
+                <label class="form-label">Lama Sewa (Bulan)</label>
+                <input name="lama_sewa" class="form-control" value="1" required>
+            </div>
+
+            <div class="mb-3">
                 <label class="form-label">Catatan (opsional)</label>
                 <textarea name="note" class="form-control" rows="2"></textarea>
             </div>

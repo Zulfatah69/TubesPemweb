@@ -31,6 +31,7 @@ class UserBookingController extends Controller
             'user_id' => Auth::id(),
             'property_id' => $property->id,
             'start_date' => $request->start_date,
+            'months' => $request->lama_sewa,
             'note' => $request->note,
             'status' => 'pending'
         ]);

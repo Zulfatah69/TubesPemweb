@@ -28,7 +28,8 @@
 <tr>
  <th>Pemesan</th>
  <th>Properti</th>
- <th>Tanggal</th>
+ <th>Tanggal - Mulai/th>
+ <th>Jangka Waktu</th>
  <th>Status</th>
  <th>Aksi</th>
 </tr>
@@ -44,6 +45,8 @@
  <td>{{ $b->property->name }}</td>
 
  <td>{{ $b->start_date }}</td>
+
+ <td>{{ $b->months }} Bulan</td>
 
  <td>
     @if($b->status=='pending')
