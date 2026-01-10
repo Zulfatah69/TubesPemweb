@@ -86,17 +86,18 @@
     </style>
     
     @if(file_exists(public_path('css/app.css')))
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href=
     @endif
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">
-                <i class="bi bi-house-heart-fill me-1"></i> KosConnect
-            </a>
+{{-- NAVBAR --}}
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url('/') }}">
+            <i class="bi bi-house-heart-fill me-1"></i> KosConnect
+        </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
                 <span class="navbar-toggler-icon"></span>
