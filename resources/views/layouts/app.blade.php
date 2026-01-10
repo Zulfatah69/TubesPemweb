@@ -76,7 +76,21 @@
 {{-- NAVBAR --}}
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">
+        <a class="navbar-brand" href="
+        @auth
+            @if(Auth::user()->role === 'owner')
+                {{ route('owner.dashboard') }}
+            @elseif(Auth::user()->role === 'user')
+                {{ route('user.dashboard') }}
+            @elseif(Auth::user()->role === 'admin')
+                {{ url('/admin/dashboard') }}
+            @else
+                {{ url('/') }}
+            @endif
+        @else
+            {{ url('/') }}
+        @endauth
+        ">
             <i class="bi bi-house-heart-fill me-1"></i> KosConnect
         </a>
 
