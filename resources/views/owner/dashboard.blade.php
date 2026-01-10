@@ -10,9 +10,9 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h4 class="fw-bold text-dark mb-1">Halo, {{ Auth::user()->name }} 👋</h4>
-            <p class="text-muted small mb-0">Pantau performa bisnis kosanmu hari ini.</p>
+            <p class="text-muted small mb-0">Pantau performa bisnis dan aktivitas kosanmu hari ini.</p>
         </div>
-        <a href="{{ route('owner.properties.create') }}" class="btn btn-primary fw-bold shadow-sm">
+        <a href="{{ route('owner.properties.create') }}" class="btn btn-primary fw-bold shadow-sm px-4">
             <i class="bi bi-plus-lg me-1"></i> Tambah Properti
         </a>
     </div>
@@ -22,44 +22,55 @@
         
         {{-- Total Properti --}}
         <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="card border-0 shadow-sm h-100 border-start border-4 border-primary">
                 <div class="card-body d-flex align-items-center">
-                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
-                        <i class="bi bi-building fs-4"></i>
+                    <div class="flex-shrink-0 me-3">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded p-3">
+                            <i class="bi bi-building fs-4"></i>
+                        </div>
                     </div>
                     <div>
-                        <h4 class="fw-bold mb-0">{{ $total_properties }}</h4>
-                        <span class="text-muted small">Total Properti</span>
+                        <p class="text-muted small mb-1 text-uppercase fw-bold">Total Properti</p>
+                        <h4 class="fw-bold mb-0 text-dark">{{ $total_properties }}</h4>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Booking Masuk (Total) --}}
+        {{-- Total Booking --}}
         <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="card border-0 shadow-sm h-100 border-start border-4 border-success">
                 <div class="card-body d-flex align-items-center">
-                    <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
-                        <i class="bi bi-journal-check fs-4"></i>
+                    <div class="flex-shrink-0 me-3">
+                        <div class="bg-success bg-opacity-10 text-success rounded p-3">
+                            <i class="bi bi-journal-check fs-4"></i>
+                        </div>
                     </div>
                     <div>
-                        <h4 class="fw-bold mb-0">{{ $total_bookings }}</h4>
-                        <span class="text-muted small">Total Booking</span>
+                        <p class="text-muted small mb-1 text-uppercase fw-bold">Total Booking</p>
+                        <h4 class="fw-bold mb-0 text-dark">{{ $total_bookings }}</h4>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Menunggu Konfirmasi (Prioritas) --}}
+        {{-- Menunggu Konfirmasi (Pending) --}}
         <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100 {{ $pending_bookings > 0 ? 'border-start border-warning border-4' : '' }}">
+            <div class="card border-0 shadow-sm h-100 border-start border-4 border-warning">
                 <div class="card-body d-flex align-items-center">
-                    <div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
-                        <i class="bi bi-hourglass-split fs-4"></i>
+                    <div class="flex-shrink-0 me-3">
+                        <div class="bg-warning bg-opacity-10 text-warning rounded p-3 position-relative">
+                            <i class="bi bi-hourglass-split fs-4"></i>
+                            @if($pending_bookings > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                    <span class="visually-hidden">New alerts</span>
+                                </span>
+                            @endif
+                        </div>
                     </div>
                     <div>
-                        <h4 class="fw-bold mb-0 {{ $pending_bookings > 0 ? 'text-warning' : '' }}">{{ $pending_bookings }}</h4>
-                        <span class="text-muted small">Perlu Konfirmasi</span>
+                        <p class="text-muted small mb-1 text-uppercase fw-bold">Perlu Konfirmasi</p>
+                        <h4 class="fw-bold mb-0 {{ $pending_bookings > 0 ? 'text-danger' : 'text-dark' }}">{{ $pending_bookings }}</h4>
                     </div>
                 </div>
             </div>
@@ -84,7 +95,7 @@
                     @if(isset($totalChats) && $totalChats > 0)
                         <span class="badge bg-danger rounded-pill">{{ $totalChats }}</span>
                     @else
-                        <i class="bi bi-chevron-right text-muted"></i>
+                        <i class="bi bi-chevron-right text-muted opacity-50"></i>
                     @endif
                 </div>
             </a>
@@ -98,13 +109,13 @@
                         <i class="bi bi-calendar-check-fill text-success fs-3 me-3"></i>
                         <div>
                             <h6 class="fw-bold text-dark mb-1">Booking Masuk</h6>
-                            <small class="text-muted">Setujui/Tolak sewa</small>
+                            <small class="text-muted">Setujui atau tolak sewa</small>
                         </div>
                     </div>
                     @if($pending_bookings > 0)
                         <span class="badge bg-warning text-dark rounded-pill">{{ $pending_bookings }}</span>
                     @else
-                        <i class="bi bi-chevron-right text-muted"></i>
+                        <i class="bi bi-chevron-right text-muted opacity-50"></i>
                     @endif
                 </div>
             </a>
@@ -121,7 +132,7 @@
                             <small class="text-muted">Edit data kosan kamu</small>
                         </div>
                     </div>
-                    <i class="bi bi-chevron-right text-muted"></i>
+                    <i class="bi bi-chevron-right text-muted opacity-50"></i>
                 </div>
             </a>
         </div>
@@ -136,8 +147,9 @@
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .card-hover:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1) !important;
+        border: 1px solid var(--bs-primary) !important; /* Highlight border saat hover */
     }
 </style>
 

@@ -109,25 +109,25 @@ Route::post('/midtrans/webhook', [PaymentController::class, 'handle'])->name('mi
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
-        Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
-        Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
-        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
-        Route::post('/users/{user}/block', [AdminUserController::class, 'toggleBlock'])->name('users.block');
+    Route::get('/users', [AdminUserController::class,'index'])->name('users.index');
+    Route::get('/users/{user}/edit', [AdminUserController::class,'edit'])->name('users.edit');
+    Route::put('/users/{user}', [AdminUserController::class,'update'])->name('users.update');
+    Route::delete('/users/{user}', [AdminUserController::class,'destroy'])->name('users.destroy');
+    Route::post('/users/{user}/block', [AdminUserController::class,'toggleBlock'])->name('users.block');
 
-        Route::get('/owners', [AdminOwnerController::class, 'index'])->name('owners.index');
-        Route::get('/owners/{user}/properties', [AdminOwnerController::class, 'properties'])->name('owners.properties');
-        Route::delete('/properties/{property}', [AdminOwnerController::class, 'destroyProperty'])->name('properties.destroy');
+    Route::get('/owners/{user}/properties', [AdminDashboardController::class,'properties'])
+        ->name('owners.properties');
 
-        Route::get('/bookings', [AdminUserController::class, 'bookings'])->name('bookings.index');
-    });
+    Route::get('/bookings', [AdminUserController::class,'bookings'])
+        ->name('bookings.index');
+
+    Route::delete('/properties/{property}', [AdminDashboardController::class,'destroyProperty'])
+        ->name('properties.destroy');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -135,4 +135,17 @@ Route::middleware(['auth', 'role:admin'])
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', fn () => redirect()->route('login'));
+Route::get('/', function () {
+
+    if (!auth()->check()) {
+        return redirect()->route('login');
+    }
+
+    return match(auth()->user()->role) {
+        'admin' => redirect()->route('admin.dashboard'),
+        'owner' => redirect()->route('owner.dashboard'),
+        'user'  => redirect()->route('user.dashboard'),
+        default => redirect()->route('login'),
+    };
+
+});
