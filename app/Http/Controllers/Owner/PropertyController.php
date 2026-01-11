@@ -7,7 +7,6 @@ use App\Models\Property;
 use App\Models\PropertyImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Throwable;
 
 class PropertyController extends Controller
@@ -106,43 +105,62 @@ class PropertyController extends Controller
 
         if (!$request->hasFile('photos')) return;
 
+        $cloudinaryUrl = env('CLOUDINARY_URL');
+
+        if (!$cloudinaryUrl) {
+            logger()->error('CLOUDINARY_URL empty');
+            return;
+        }
+
+        // parse URL
+        $parts = parse_url($cloudinaryUrl);
+
+        if (!$parts || !isset($parts['host'], $parts['user'], $parts['pass'])) {
+            logger()->error('Invalid CLOUDINARY_URL format', ['url' => $cloudinaryUrl]);
+            return;
+        }
+
+        // Configure SDK manually
+        \Cloudinary\Configuration\Configuration::instance([
+            'cloud' => [
+                'cloud_name' => $parts['host'],
+                'api_key'    => $parts['user'],
+                'api_secret' => $parts['pass'],
+            ],
+            'url' => ['secure' => true]
+        ]);
+
         $existingCount = $property->images()->count();
 
         foreach ($request->file('photos') as $index => $photo) {
             try {
 
-                $uploaded = Cloudinary::uploadFile(
+                $result = (new \Cloudinary\Api\Upload\UploadApi())->upload(
                     $photo->getRealPath(),
                     ['folder' => 'properties']
                 );
 
-                if (!$uploaded) {
-                    logger()->error('UPLOAD FAILED: cloudinary returned null');
-                    continue;
-                }
-
-                $url = $uploaded->getSecurePath();
-
-                if (!$url) {
-                    logger()->error('UPLOAD FAILED: no secure path');
+                if (!isset($result['secure_url'])) {
+                    logger()->error('UPLOAD FAILED: no secure_url', $result ?? []);
                     continue;
                 }
 
                 PropertyImage::create([
                     'property_id' => $property->id,
-                    'file_path'   => $url,
+                    'file_path'   => $result['secure_url'],
                     'is_main'     => ($existingCount === 0 && $index === 0),
                 ]);
 
-                logger()->info('UPLOAD OK', ['url' => $url]);
+                logger()->info('UPLOAD OK', ['url' => $result['secure_url']]);
 
-            } catch (Throwable $e) {
+            } catch (\Throwable $e) {
                 logger()->error('UPLOAD FAILED', [
                     'error' => $e->getMessage()
                 ]);
             }
         }
     }
+
 
     public function deleteImage(PropertyImage $image)
     {
