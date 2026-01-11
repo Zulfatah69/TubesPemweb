@@ -194,3 +194,18 @@ Route::get('/test-cloudinary', function () {
     ]);
 
 });
+
+Route::get('/test-upload', function () {
+
+    $path = storage_path('app/test.png');
+
+    if (!file_exists($path)) {
+        abort(500, 'Upload file test.png dulu');
+    }
+
+    $uploaded = Cloudinary::upload($path, ['folder' => 'debug']);
+
+    dd([
+        'url' => $uploaded->getSecurePath()
+    ]);
+});
