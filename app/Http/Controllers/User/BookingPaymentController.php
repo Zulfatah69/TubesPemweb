@@ -16,7 +16,7 @@ class BookingPaymentController extends Controller
             ->where('user_id', auth()->id())
             ->firstOrFail();
 
-        if ($booking->status === 'paid') {
+        if ($booking->payment_status === 'paid') {
             return redirect()
                 ->route('user.booking.my')
                 ->with('success', 'Booking ini sudah dibayar.');
@@ -52,7 +52,7 @@ class BookingPaymentController extends Controller
         $booking->update([
             'order_id'   => $orderId,
             'snap_token' => $snapToken,
-            'status'     => 'unpaid',
+            'payment_status'     => 'unpaid',
         ]);
 
         return view('user.bookings.pay', [
