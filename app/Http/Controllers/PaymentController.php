@@ -10,7 +10,10 @@ class PaymentController extends Controller
 {
     public function handle(Request $request)
     {
-        $serverKey = config('midtrans.server_key');
+        // log masuk webhook
+        Log::info('MIDTRANS WEBHOOK MASUK', $request->all());
+
+        $serverKey = config('services.midtrans.server_key');
 
         $signatureKey = hash(
             'sha512',
@@ -28,25 +31,28 @@ class PaymentController extends Controller
         $orderId = $request->order_id;
         $transactionStatus = $request->transaction_status;
 
-        // ⬇️ PAKAI order_id
+        // ⚠️ PENTING: pakai kolom order_id
         $booking = Booking::where('order_id', $orderId)->first();
 
         if (!$booking) {
+            Log::error('Booking not found for order_id: ' . $orderId);
             return response()->json(['message' => 'Booking not found'], 404);
         }
 
         if (in_array($transactionStatus, ['settlement', 'capture'])) {
             $booking->update([
                 'payment_status' => 'paid',
-                'status' => 'approved'
             ]);
+
+            Log::info('Booking marked as PAID: ' . $booking->id);
         }
 
         if (in_array($transactionStatus, ['cancel', 'expire', 'deny'])) {
             $booking->update([
                 'payment_status' => 'failed',
-                'status' => 'rejected'
             ]);
+
+            Log::info('Booking marked as FAILED: ' . $booking->id);
         }
 
         return response()->json(['message' => 'OK']);

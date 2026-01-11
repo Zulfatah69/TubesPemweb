@@ -17,15 +17,33 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminOwnerController;
 
+/*
+|--------------------------------------------------------------------------
+| Auth
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+/*
+|--------------------------------------------------------------------------
+| Register OTP
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/register', fn () => redirect()->route('register.email'))->name('register');
 Route::get('/register/email', [AuthOtpController::class, 'showEmailForm'])->name('register.email');
 Route::post('/register/email', [AuthOtpController::class, 'sendCode'])->name('register.send');
 Route::get('/register/verify', [AuthOtpController::class, 'showVerifyForm'])->name('register.verify');
 Route::post('/register/verify', [AuthOtpController::class, 'completeRegister'])->name('register.complete');
+
+/*
+|--------------------------------------------------------------------------
+| OWNER
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware(['auth', 'role:owner', 'blocked'])
     ->prefix('owner')
@@ -35,7 +53,6 @@ Route::middleware(['auth', 'role:owner', 'blocked'])
         Route::get('/dashboard', [OwnerDashboardController::class, 'index'])->name('dashboard');
 
         Route::prefix('properties')->name('properties.')->group(function () {
-
             Route::get('/', [PropertyController::class, 'index'])->name('index');
             Route::get('/create', [PropertyController::class, 'create'])->name('create');
             Route::post('/', [PropertyController::class, 'store'])->name('store');
@@ -43,11 +60,8 @@ Route::middleware(['auth', 'role:owner', 'blocked'])
             Route::put('/{property}', [PropertyController::class, 'update'])->name('update');
             Route::delete('/{property}', [PropertyController::class, 'destroy'])->name('destroy');
 
-            Route::patch('/images/{image}/main', [PropertyController::class, 'setMain'])
-                ->name('images.main');
-
-            Route::delete('/images/{image}', [PropertyController::class, 'deleteImage'])
-                ->name('images.delete');
+            Route::post('/image/{image}/set-main', [PropertyController::class, 'setMain'])->name('image.setMain');
+            Route::delete('/image/{image}', [PropertyController::class, 'deleteImage'])->name('image.delete');
         });
 
         Route::get('/bookings', [OwnerBookingController::class, 'index'])->name('booking.index');
@@ -57,6 +71,12 @@ Route::middleware(['auth', 'role:owner', 'blocked'])
         Route::get('/chat/{chat}', [OwnerChatController::class, 'show'])->name('chat.show');
         Route::post('/chat/{chat}/send', [OwnerChatController::class, 'send'])->name('chat.send');
     });
+
+/*
+|--------------------------------------------------------------------------
+| USER
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware(['auth', 'role:user', 'blocked'])->group(function () {
 
@@ -75,7 +95,19 @@ Route::middleware(['auth', 'role:user', 'blocked'])->group(function () {
     Route::get('/user/chats', [ChatController::class, 'index'])->name('user.chats');
 });
 
+/*
+|--------------------------------------------------------------------------
+| PAYMENT
+|--------------------------------------------------------------------------
+*/
+
 Route::post('/midtrans/webhook', [PaymentController::class, 'handle'])->name('midtrans.webhook');
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
@@ -87,10 +119,21 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::delete('/users/{user}', [AdminUserController::class,'destroy'])->name('users.destroy');
     Route::post('/users/{user}/block', [AdminUserController::class,'toggleBlock'])->name('users.block');
 
-    Route::get('/owners/{user}/properties', [AdminDashboardController::class,'properties'])->name('owners.properties');
-    Route::get('/bookings', [AdminUserController::class,'bookings'])->name('bookings.index');
-    Route::delete('/properties/{property}', [AdminDashboardController::class,'destroyProperty'])->name('properties.destroy');
+    Route::get('/owners/{user}/properties', [AdminDashboardController::class,'properties'])
+        ->name('owners.properties');
+
+    Route::get('/bookings', [AdminUserController::class,'bookings'])
+        ->name('bookings.index');
+
+    Route::delete('/properties/{property}', [AdminDashboardController::class,'destroyProperty'])
+        ->name('properties.destroy');
 });
+
+/*
+|--------------------------------------------------------------------------
+| HOME
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
 
@@ -104,9 +147,11 @@ Route::get('/', function () {
         'user'  => redirect()->route('user.dashboard'),
         default => redirect()->route('login'),
     };
+
 });
 
+// --- TOMBOL DARURAT CLEAN CACHE ---
 Route::get('/bersih-bersih', function() {
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
-    return '<h1>Cache Berhasil Dibersihkan!</h1>';
+    return '<h1>Cache Berhasil Dibersihkan! (Config, Route, View)</h1>';
 });
