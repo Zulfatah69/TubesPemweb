@@ -89,6 +89,19 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-6">
+                            <input type="radio" class="btn-check" name="role" id="roleAdmin" value="admin">
+                            <label class="btn btn-outline-danger w-100 p-3 text-start h-100" for="roleAdmin">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-shield-lock fs-4 me-2"></i>
+                                    <span class="fw-bold">Administrator</span>
+                                </div>
+                                <small class="d-block text-muted lh-sm" style="font-size: 0.75rem;">
+                                    Akses penuh ke sistem (khusus setup).
+                                </small>
+                            </label>
+                        </div>
+
 
                         {{-- SEKSI 4: KEAMANAN --}}
                         <h6 class="fw-bold mb-3 border-bottom pb-2">Keamanan</h6>
