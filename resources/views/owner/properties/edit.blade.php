@@ -180,7 +180,7 @@
                                 @foreach($property->images as $image)
                                     <div class="col-6">
                                         <div class="card border h-100 position-relative overflow-hidden">
-                                            <img src="{{ asset('storage/'.$image->file_path) }}" class="card-img-top h-100 object-fit-cover" style="height: 100px;">
+                                            <img src="{{ $image->file_path }}" class="card-img-top h-100 object-fit-cover" style="height: 100px;">
                                             {{-- Badge jika foto utama --}}
                                             @if($image->is_main)
                                                 <span class="position-absolute top-0 start-0 badge bg-success m-1 shadow-sm" style="font-size: 0.65rem;">Utama</span>

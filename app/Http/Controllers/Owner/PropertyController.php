@@ -7,7 +7,7 @@ use App\Models\Property;
 use App\Models\PropertyImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class PropertyController extends Controller
 {
@@ -65,11 +65,15 @@ class PropertyController extends Controller
 
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $index => $photo) {
-                $path = $photo->store('properties', 'public');
+
+                $uploaded = Cloudinary::upload(
+                    $photo->getRealPath(),
+                    ['folder' => 'properties']
+                );
 
                 PropertyImage::create([
                     'property_id' => $property->id,
-                    'file_path'  => $path,
+                    'file_path'  => $uploaded->getSecurePath(),
                     'is_main'    => $index === 0
                 ]);
             }
@@ -92,7 +96,6 @@ class PropertyController extends Controller
     {
         if ($property->owner_id !== Auth::id()) abort(403);
 
-        // FIX FINAL: string kosong ("") dianggap tidak dikirim
         $request->merge([
             'province' => $request->filled('province') ? $request->province : $property->province,
             'city'     => $request->filled('city')     ? $request->city     : $property->city,
@@ -139,11 +142,15 @@ class PropertyController extends Controller
 
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
-                $path = $photo->store('properties', 'public');
+
+                $uploaded = Cloudinary::upload(
+                    $photo->getRealPath(),
+                    ['folder' => 'properties']
+                );
 
                 PropertyImage::create([
                     'property_id' => $property->id,
-                    'file_path'  => $path
+                    'file_path'  => $uploaded->getSecurePath()
                 ]);
             }
         }
@@ -154,11 +161,12 @@ class PropertyController extends Controller
     public function deleteImage(PropertyImage $image)
     {
         $property = $image->property;
-
         if ($property->owner_id !== Auth::id()) abort(403);
 
-        if (Storage::disk('public')->exists($image->file_path)) {
-            Storage::disk('public')->delete($image->file_path);
+        // Hapus dari Cloudinary
+        $publicId = $this->extractPublicId($image->file_path);
+        if ($publicId) {
+            Cloudinary::destroy($publicId);
         }
 
         $wasMain = $image->is_main;
@@ -177,7 +185,6 @@ class PropertyController extends Controller
     public function setMain(PropertyImage $image)
     {
         $property = $image->property;
-
         if ($property->owner_id !== Auth::id()) abort(403);
 
         PropertyImage::where('property_id', $property->id)
@@ -187,18 +194,20 @@ class PropertyController extends Controller
 
         return back()->with('success','Foto utama berhasil diubah');
     }
+
     public function destroy(Property $property)
     {
-        if ($property->owner_id !== Auth::id()) {
-            abort(403);
-        }
+        if ($property->owner_id !== Auth::id()) abort(403);
 
         $property->load('images');
 
         foreach ($property->images as $image) {
-            if (Storage::disk('public')->exists($image->file_path)) {
-                Storage::disk('public')->delete($image->file_path);
+
+            $publicId = $this->extractPublicId($image->file_path);
+            if ($publicId) {
+                Cloudinary::destroy($publicId);
             }
+
             $image->delete();
         }
 
@@ -209,5 +218,14 @@ class PropertyController extends Controller
             ->with('success', 'Properti berhasil dihapus');
     }
 
-}
+    private function extractPublicId($url)
+    {
+        if (!$url) return null;
 
+        $path = parse_url($url, PHP_URL_PATH);
+        $filename = pathinfo($path, PATHINFO_FILENAME);
+
+        // folder/properties/filename
+        return 'properties/' . $filename;
+    }
+}
