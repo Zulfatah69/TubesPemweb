@@ -64,7 +64,7 @@ class AuthOtpController extends Controller
                 'name' => 'required',
                 'username' => 'required|unique:users,username',
                 'phone' => 'required|unique:users,phone',
-                'role' => 'required|in:user,owner,admin',
+                'role' => 'required|in:user,owner',
                 'password' => 'required|confirmed|min:6',
             ]);
         } catch (ValidationException $e) {
