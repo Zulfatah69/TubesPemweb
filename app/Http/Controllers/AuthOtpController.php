@@ -46,9 +46,12 @@ class AuthOtpController extends Controller
             'updated_at' => now(),
         ]);
 
-        Mail::raw(
-            "Kode verifikasi kamu: {$code}\n\nBerlaku selama 10 menit.",
-            fn ($m) => $m->to($request->email)->subject('Kode Verifikasi Pendaftaran')
+        Mail::mailer('smtp')->raw(
+            "Kode verifikasi kamu: $code\n\nBerlaku selama 10 menit.",
+            function ($m) use ($request) {
+                $m->to($request->email)
+                ->subject('Kode Verifikasi Pendaftaran');
+            }
         );
 
         session(['email' => $request->email]);
