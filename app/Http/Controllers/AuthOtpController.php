@@ -46,35 +46,37 @@ class AuthOtpController extends Controller
             'updated_at' => now(),
         ]);
 
-        Mail::mailer('smtp')->raw(
+        // Kirim email OTP
+        Mail::raw(
             "Kode verifikasi kamu: $code\n\nBerlaku selama 10 menit.",
             function ($m) use ($request) {
                 $m->to($request->email)
-                ->subject('Kode Verifikasi Pendaftaran');
+                  ->subject('Kode Verifikasi Pendaftaran');
             }
         );
 
+        // simpan email ke session
         session(['email' => $request->email]);
 
-        return redirect()->route('register.verify')
-            ->with('success', 'Kode OTP telah dikirim ke email');
+        // ⬇⬇⬇ INI YANG PENTING (redirect ke halaman OTP)
+        return redirect()->route('register.verify')->with([
+            'success' => 'Kode OTP telah dikirim ke email',
+        ]);
     }
 
     public function showVerifyForm()
     {
-        if (!session('email')) {
+        $email = session('email');
+
+        if (!$email) {
             return redirect()->route('register.email');
         }
 
-        return view('auth.register-verify', [
-            'email' => session('email'),
-        ]);
+        return view('auth.register-verify', compact('email'));
     }
 
     public function completeRegister(Request $request)
     {
-        session(['email' => $request->email]);
-
         try {
             $request->validate(
                 [
@@ -87,12 +89,12 @@ class AuthOtpController extends Controller
                     'password' => 'required|confirmed|min:6',
                 ],
                 [
-                    'code.required'     => 'Kode OTP wajib diisi',
-                    'code.digits'       => 'Kode OTP harus 6 digit',
-                    'username.unique'   => 'Username sudah digunakan',
-                    'phone.unique'      => 'Nomor HP sudah digunakan',
-                    'password.confirmed'=> 'Konfirmasi password tidak cocok',
-                    'password.min'      => 'Password minimal 6 karakter',
+                    'code.required'      => 'Kode OTP wajib diisi',
+                    'code.digits'        => 'Kode OTP harus 6 digit',
+                    'username.unique'    => 'Username sudah digunakan',
+                    'phone.unique'       => 'Nomor HP sudah digunakan',
+                    'password.confirmed' => 'Konfirmasi password tidak cocok',
+                    'password.min'       => 'Password minimal 6 karakter',
                 ]
             );
         } catch (ValidationException $e) {
@@ -124,6 +126,7 @@ class AuthOtpController extends Controller
         ]);
 
         DB::table('email_verifications')->where('email', $request->email)->delete();
+        session()->forget('email');
 
         Auth::login($user);
 

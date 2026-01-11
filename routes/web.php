@@ -15,7 +15,6 @@ use App\Http\Controllers\User\BookingPaymentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\AdminOwnerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,12 +28,24 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
 |--------------------------------------------------------------------------
-| Register OTP
+| Register OTP (EMAIL)
 |--------------------------------------------------------------------------
 */
 
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.store');
+// redirect /register ke form email OTP
+Route::get('/register', fn () => redirect()->route('register.email'))->name('register');
+
+// form email
+Route::get('/register/email', [AuthOtpController::class, 'showEmailForm'])->name('register.email');
+
+// kirim OTP
+Route::post('/register/email', [AuthOtpController::class, 'sendCode'])->name('register.send');
+
+// form input OTP
+Route::get('/register/verify', [AuthOtpController::class, 'showVerifyForm'])->name('register.verify');
+
+// submit OTP + buat akun
+Route::post('/register/verify', [AuthOtpController::class, 'completeRegister'])->name('register.complete');
 
 /*
 |--------------------------------------------------------------------------
@@ -57,10 +68,8 @@ Route::middleware(['auth', 'role:owner', 'blocked'])
             Route::put('/{property}', [PropertyController::class, 'update'])->name('update');
             Route::delete('/{property}', [PropertyController::class, 'destroy'])->name('destroy');
 
-            Route::post('/image/{image}/set-main', [PropertyController::class, 'setMain'])
-                ->name('image.main');
-            Route::delete('/image/{image}', [PropertyController::class, 'deleteImage'])
-                ->name('image.delete');
+            Route::post('/image/{image}/set-main', [PropertyController::class, 'setMain'])->name('image.main');
+            Route::delete('/image/{image}', [PropertyController::class, 'deleteImage'])->name('image.delete');
         });
 
         Route::get('/bookings', [OwnerBookingController::class, 'index'])->name('booking.index');
@@ -118,14 +127,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::delete('/users/{user}', [AdminUserController::class,'destroy'])->name('users.destroy');
     Route::post('/users/{user}/block', [AdminUserController::class,'toggleBlock'])->name('users.block');
 
-    Route::get('/owners/{user}/properties', [AdminDashboardController::class,'properties'])
-        ->name('owners.properties');
+    Route::get('/owners/{user}/properties', [AdminDashboardController::class,'properties'])->name('owners.properties');
 
-    Route::get('/bookings', [AdminUserController::class,'bookings'])
-        ->name('bookings.index');
+    Route::get('/bookings', [AdminUserController::class,'bookings'])->name('bookings.index');
 
-    Route::delete('/properties/{property}', [AdminDashboardController::class,'destroyProperty'])
-        ->name('properties.destroy');
+    Route::delete('/properties/{property}', [AdminDashboardController::class,'destroyProperty'])->name('properties.destroy');
 });
 
 /*
@@ -149,15 +155,13 @@ Route::get('/', function () {
 
 });
 
-// --- TOMBOL DARURAT CLEAN CACHE ---
+/*
+|--------------------------------------------------------------------------
+| CLEAN CACHE
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/bersih-bersih', function() {
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
-    return '<h1>Cache Berhasil Dibersihkan! (Config, Route, View)</h1>';
-});
-
-use App\Services\FirebaseService;
-
-Route::get('/test-firebase', function () {
-    $firebase = new FirebaseService();
-    return 'Firebase connected OK';
+    return '<h1>Cache Berhasil Dibersihkan!</h1>';
 });
