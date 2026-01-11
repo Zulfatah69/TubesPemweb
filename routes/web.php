@@ -157,3 +157,10 @@ Route::get('/bersih-bersih', function() {
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
     return '<h1>Cache Berhasil Dibersihkan! (Config, Route, View)</h1>';
 });
+
+use App\Services\FirebaseService;
+
+Route::get('/test-firebase', function () {
+    $firebase = new FirebaseService();
+    return 'Firebase connected OK';
+});
