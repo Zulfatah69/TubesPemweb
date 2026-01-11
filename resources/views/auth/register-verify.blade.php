@@ -11,6 +11,13 @@
                 <p class="text-muted">Kode verifikasi telah dikirim ke <span class="fw-bold text-primary">{{ $email }}</span></p>
             </div>
 
+                @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                @endif
+
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-4">
 
