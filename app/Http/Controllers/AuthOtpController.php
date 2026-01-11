@@ -46,9 +46,12 @@ class AuthOtpController extends Controller
             'updated_at' => now(),
         ]);
 
-        // Kirim email OTP
+        // =========================
+        // KIRIM OTP VIA MAIL LOG
+        // (akan masuk ke Railway Logs)
+        // =========================
         Mail::raw(
-            "Kode verifikasi kamu: $code\n\nBerlaku selama 10 menit.",
+            "Kode verifikasi kamu: {$code}\n\nBerlaku selama 10 menit.\nEmail: {$request->email}",
             function ($m) use ($request) {
                 $m->to($request->email)
                   ->subject('Kode Verifikasi Pendaftaran');
@@ -58,9 +61,8 @@ class AuthOtpController extends Controller
         // simpan email ke session
         session(['email' => $request->email]);
 
-        // ⬇⬇⬇ INI YANG PENTING (redirect ke halaman OTP)
         return redirect()->route('register.verify')->with([
-            'success' => 'Kode OTP telah dikirim ke email',
+            'success' => 'Kode OTP telah dikirim (cek logs Railway)',
         ]);
     }
 
