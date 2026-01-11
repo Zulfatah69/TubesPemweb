@@ -33,11 +33,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 |--------------------------------------------------------------------------
 */
 
-Route::get('/register', fn () => redirect()->route('register.email'))->name('register');
-Route::get('/register/email', [AuthOtpController::class, 'showEmailForm'])->name('register.email');
-Route::post('/register/email', [AuthOtpController::class, 'sendCode'])->name('register.send');
-Route::get('/register/verify', [AuthOtpController::class, 'showVerifyForm'])->name('register.verify');
-Route::post('/register/verify', [AuthOtpController::class, 'completeRegister'])->name('register.complete');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.store');
 
 /*
 |--------------------------------------------------------------------------
