@@ -7,7 +7,8 @@ use App\Models\Property;
 use App\Models\PropertyImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Upload\UploadApi;
 use Throwable;
 
 class PropertyController extends Controller
@@ -101,19 +102,43 @@ class PropertyController extends Controller
     {
         logger()->info('UPLOAD START', [
             'has_file' => $request->hasFile('photos'),
-            'cloudinary' => config('cloudinary.cloud_url'),
+            'cloudinary_url' => env('CLOUDINARY_URL'),
         ]);
 
         if (!$request->hasFile('photos')) return;
 
+        $cloudinaryUrl = env('CLOUDINARY_URL');
+        if (!$cloudinaryUrl) {
+            logger()->error('CLOUDINARY_URL is empty');
+            return;
+        }
+
+        // parse cloudinary url
+        $parts = parse_url($cloudinaryUrl);
+
+        Configuration::instance([
+            'cloud' => [
+                'cloud_name' => $parts['host'],
+                'api_key'    => $parts['user'],
+                'api_secret' => $parts['pass'],
+            ],
+            'url' => ['secure' => true]
+        ]);
+
         foreach ($request->file('photos') as $index => $photo) {
             try {
-                $uploaded = Cloudinary::uploadFile(
+
+                $result = (new UploadApi())->upload(
                     $photo->getRealPath(),
                     ['folder' => 'properties']
                 );
 
-                $url = $uploaded->getSecurePath();
+                $url = $result['secure_url'] ?? null;
+
+                if (!$url) {
+                    logger()->error('UPLOAD FAILED: no secure_url returned');
+                    continue;
+                }
 
                 PropertyImage::create([
                     'property_id' => $property->id,
@@ -123,13 +148,14 @@ class PropertyController extends Controller
 
                 logger()->info('UPLOAD OK', ['url' => $url]);
 
-            } catch (Throwable $e) {
+            } catch (\Throwable $e) {
                 logger()->error('UPLOAD FAILED', [
                     'msg' => $e->getMessage()
                 ]);
             }
         }
     }
+
 
     public function deleteImage(PropertyImage $image)
     {
@@ -140,7 +166,7 @@ class PropertyController extends Controller
 
         if ($publicId) {
             try {
-                Cloudinary::destroy($publicId);
+                (new \Cloudinary\Api\Upload\UploadApi())->destroy($publicId);
             } catch (Throwable $e) {}
         }
 
