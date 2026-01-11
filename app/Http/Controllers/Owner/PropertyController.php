@@ -106,6 +106,8 @@ class PropertyController extends Controller
 
         if (!$request->hasFile('photos')) return;
 
+        $existingCount = $property->images()->count();
+
         foreach ($request->file('photos') as $index => $photo) {
             try {
 
@@ -114,12 +116,22 @@ class PropertyController extends Controller
                     ['folder' => 'properties']
                 );
 
+                if (!$uploaded) {
+                    logger()->error('UPLOAD FAILED: cloudinary returned null');
+                    continue;
+                }
+
                 $url = $uploaded->getSecurePath();
+
+                if (!$url) {
+                    logger()->error('UPLOAD FAILED: no secure path');
+                    continue;
+                }
 
                 PropertyImage::create([
                     'property_id' => $property->id,
-                    'file_path' => $url,
-                    'is_main' => $property->images()->count() === 0 && $index === 0,
+                    'file_path'   => $url,
+                    'is_main'     => ($existingCount === 0 && $index === 0),
                 ]);
 
                 logger()->info('UPLOAD OK', ['url' => $url]);
