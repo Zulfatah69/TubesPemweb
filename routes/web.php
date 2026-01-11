@@ -60,8 +60,10 @@ Route::middleware(['auth', 'role:owner', 'blocked'])
             Route::put('/{property}', [PropertyController::class, 'update'])->name('update');
             Route::delete('/{property}', [PropertyController::class, 'destroy'])->name('destroy');
 
-            Route::post('/image/{image}/set-main', [PropertyController::class, 'setMain'])->name('image.setMain');
-            Route::delete('/image/{image}', [PropertyController::class, 'deleteImage'])->name('image.delete');
+            Route::post('/image/{image}/set-main', [PropertyController::class, 'setMain'])
+                ->name('image.setMain');
+            Route::delete('/image/{image}', [PropertyController::class, 'deleteImage'])
+                ->name('image.delete');
         });
 
         Route::get('/bookings', [OwnerBookingController::class, 'index'])->name('booking.index');

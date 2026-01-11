@@ -22,8 +22,8 @@ class BookingPaymentController extends Controller
                 ->with('success', 'Booking ini sudah dibayar.');
         }
 
-        // Jika snap token sudah ada (belum dibayar)
-        if ($booking->snap_token && $booking->order_id) {
+        // ✅ PERBAIKAN: pakai midtrans_order_id
+        if ($booking->snap_token && $booking->midtrans_order_id) {
             return view('user.bookings.pay', [
                 'booking'   => $booking,
                 'snapToken' => $booking->snap_token,
@@ -31,8 +31,8 @@ class BookingPaymentController extends Controller
         }
 
         // Konfigurasi Midtrans
-        Config::$serverKey    = config('midtrans.server_key');
-        Config::$isProduction = config('midtrans.is_production');
+        Config::$serverKey    = config('services.midtrans.server_key');
+        Config::$isProduction = config('services.midtrans.is_production');
         Config::$isSanitized  = true;
         Config::$is3ds        = true;
 
@@ -53,11 +53,11 @@ class BookingPaymentController extends Controller
         // Request Snap Token
         $snapToken = Snap::getSnapToken($params);
 
-        // Simpan ke database (PAKAI payment_status, BUKAN status)
+        // Simpan ke database
         $booking->update([
-            'order_id'        => $orderId,
-            'snap_token'      => $snapToken,
-            'payment_status' => 'unpaid',
+            'midtrans_order_id' => $orderId,
+            'snap_token'        => $snapToken,
+            'payment_status'    => 'unpaid',
         ]);
 
         return view('user.bookings.pay', [
