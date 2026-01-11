@@ -57,6 +57,11 @@ class AuthOtpController extends Controller
                   ->subject('Kode Verifikasi Pendaftaran');
             }
         );
+        
+        Log::channel('stderr')->info('OTP GENERATED', [
+            'email' => $request->email,
+            'code' => $code,
+        ]);
 
         // simpan email ke session
         session(['email' => $request->email]);
