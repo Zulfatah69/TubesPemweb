@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;   // ⬅️ TAMBAHKAN INI
 use App\Services\FirebaseService;
 use App\Models\User;
 
