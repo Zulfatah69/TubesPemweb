@@ -183,3 +183,7 @@ Route::get('/reset-pass', function() {
 
     return 'password reset to 12345678';
 });
+
+Route::get('/test-cloudinary', function () {
+    dd(config('cloudinary'));
+});
