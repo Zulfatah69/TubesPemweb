@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class AuthOtpController extends Controller
@@ -57,7 +58,7 @@ class AuthOtpController extends Controller
                   ->subject('Kode Verifikasi Pendaftaran');
             }
         );
-        
+
         Log::channel('stderr')->info('OTP GENERATED', [
             'email' => $request->email,
             'code' => $code,
