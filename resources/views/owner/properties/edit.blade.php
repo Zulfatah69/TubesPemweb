@@ -225,11 +225,11 @@
     {{-- HIDDEN FORMS UNTUK AKSI FOTO --}}
     @foreach($property->images as $image)
         @if(!$image->is_main)
-            <form id="form-main-{{ $image->id }}" action="{{ route('owner.properties.images.main', $image->id) }}" method="POST" class="d-none">
+            <form id="form-main-{{ $image->id }}" action="{{ route('owner.properties.image.main', $image->id) }}" method="POST" class="d-none">
                 @csrf @method('PATCH')
             </form>
         @endif
-        <form id="form-del-{{ $image->id }}" action="{{ route('owner.properties.images.delete', $image->id) }}" method="POST" class="d-none">
+        <form id="form-del-{{ $image->id }}" action="{{ route('owner.properties.image.delete', $image->id) }}" method="POST" class="d-none">
             @csrf @method('DELETE')
         </form>
     @endforeach

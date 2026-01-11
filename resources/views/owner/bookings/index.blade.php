@@ -13,7 +13,6 @@
             <p class="text-muted small mb-0">Kelola permintaan sewa dari calon penyewa.</p>
         </div>
         
-        {{-- Tombol Kembali (Opsional, jika ingin navigasi cepat) --}}
         <a href="{{ route('owner.dashboard') }}" class="btn btn-outline-secondary btn-sm">
             <i class="bi bi-arrow-left me-1"></i> Kembali ke Dashboard
         </a>
@@ -27,7 +26,6 @@
         </div>
     @endif
 
-    {{-- CARD TABEL --}}
     <div class="card border-0 shadow-sm">
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -38,7 +36,8 @@
                             <th class="py-3">Properti</th>
                             <th class="py-3">Tanggal Mulai</th>
                             <th class="py-3">Lama Sewa</th>
-                            <th class="py-3">Status</th>
+                            <th class="py-3">Status Booking</th>
+                            <th class="py-3">Pembayaran</th>
                             <th class="py-3 text-end pe-4">Aksi</th>
                         </tr>
                     </thead>
@@ -49,54 +48,62 @@
                             {{-- PENYEWA --}}
                             <td class="ps-4">
                                 <div class="d-flex align-items-center">
-                                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; color: #6c757d;">
-                                        <i class="bi bi-person-fill fs-5"></i>
+                                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                        <i class="bi bi-person-fill text-secondary"></i>
                                     </div>
                                     <div>
-                                        <div class="fw-bold text-dark">{{ $b->user->name }}</div>
-                                        <div class="small text-muted" style="font-size: 0.8rem;">
-                                            {{-- Jika ada no hp atau email, bisa ditampilkan disini --}}
-                                            Pemohon
-                                        </div>
+                                        <div class="fw-bold">{{ $b->user->name }}</div>
+                                        <small class="text-muted">Pemohon</small>
                                     </div>
                                 </div>
                             </td>
 
                             {{-- PROPERTI --}}
-                            <td>
-                                <a href="#" class="text-decoration-none fw-medium text-primary">
-                                    {{ $b->property->name }}
-                                </a>
+                            <td class="fw-medium text-primary">
+                                {{ $b->property->name }}
                             </td>
 
-                            {{-- Lama Sewa --}}
+                            {{-- TANGGAL MULAI --}}
                             <td>
-                                <a href="#" class="text-decoration-none fw-medium text-primary">
-                                    {{ $b->property->months }}
-                                </a>
+                                <i class="bi bi-calendar-event me-1"></i>
+                                {{ $b->start_date ? \Carbon\Carbon::parse($b->start_date)->format('d M Y') : '-' }}
                             </td>
 
-                            {{-- TANGGAL --}}
+                            {{-- LAMA SEWA --}}
                             <td>
-                                <div class="d-flex align-items-center text-muted">
-                                    <i class="bi bi-calendar-event me-2"></i>
-                                    {{ date('d M Y', strtotime($b->start_date)) }}
-                                </div>
+                                {{ $b->months }} bulan
                             </td>
 
-                            {{-- STATUS --}}
+                            {{-- STATUS BOOKING --}}
                             <td>
                                 @if($b->status == 'pending')
-                                    <span class="badge bg-warning text-dark border border-warning bg-opacity-25">
-                                        <i class="bi bi-hourglass-split me-1"></i> Menunggu
+                                    <span class="badge bg-warning text-dark">
+                                        Menunggu
                                     </span>
                                 @elseif($b->status == 'approved')
-                                    <span class="badge bg-success bg-opacity-75">
-                                        <i class="bi bi-check-circle me-1"></i> Diterima
+                                    <span class="badge bg-success">
+                                        Disetujui
                                     </span>
-                                @elseif($b->status == 'rejected')
-                                    <span class="badge bg-danger bg-opacity-75">
-                                        <i class="bi bi-x-circle me-1"></i> Ditolak
+                                @else
+                                    <span class="badge bg-danger">
+                                        Ditolak
+                                    </span>
+                                @endif
+                            </td>
+
+                            {{-- STATUS PEMBAYARAN --}}
+                            <td>
+                                @if($b->payment_status === 'paid')
+                                    <span class="badge bg-success">
+                                        Sudah Bayar
+                                    </span>
+                                @elseif($b->payment_status === 'unpaid')
+                                    <span class="badge bg-secondary">
+                                        Belum Bayar
+                                    </span>
+                                @else
+                                    <span class="badge bg-light text-dark">
+                                        -
                                     </span>
                                 @endif
                             </td>
@@ -105,16 +112,24 @@
                             <td class="text-end pe-4">
                                 @if($b->status == 'pending')
                                     <div class="d-flex gap-2 justify-content-end">
-                                        <form method="POST" action="{{ route('owner.booking.update', [$b->id, 'approved']) }}">
-                                            @csrf
-                                            <button class="btn btn-sm btn-success fw-bold" title="Terima Pengajuan">
-                                                <i class="bi bi-check-lg"></i> Terima
-                                            </button>
-                                        </form>
 
-                                        <form method="POST" action="{{ route('owner.booking.update', [$b->id, 'rejected']) }}" onsubmit="return confirm('Yakin ingin menolak pengajuan ini?');">
+                                        {{-- Optional: kunci approve kalau belum bayar --}}
+                                        @if($b->payment_status === 'paid')
+                                            <form method="POST" action="{{ route('owner.booking.update', [$b->id, 'approved']) }}">
+                                                @csrf
+                                                <button class="btn btn-sm btn-success">
+                                                    <i class="bi bi-check-lg"></i> Terima
+                                                </button>
+                                            </form>
+                                        @else
+                                            <button class="btn btn-sm btn-success" disabled title="Menunggu pembayaran">
+                                                <i class="bi bi-lock"></i> Terima
+                                            </button>
+                                        @endif
+
+                                        <form method="POST" action="{{ route('owner.booking.update', [$b->id, 'rejected']) }}" onsubmit="return confirm('Yakin ingin menolak booking ini?');">
                                             @csrf
-                                            <button class="btn btn-sm btn-outline-danger" title="Tolak Pengajuan">
+                                            <button class="btn btn-sm btn-outline-danger">
                                                 <i class="bi bi-x-lg"></i> Tolak
                                             </button>
                                         </form>
@@ -126,12 +141,10 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center py-5">
-                                <div class="text-muted">
-                                    <i class="bi bi-inbox fs-1 d-block mb-3 opacity-25"></i>
-                                    <h6>Belum ada permintaan booking</h6>
-                                    <p class="small mb-0">Permintaan sewa baru akan muncul di sini.</p>
-                                </div>
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <i class="bi bi-inbox fs-1 d-block mb-3 opacity-25"></i>
+                                <h6>Belum ada permintaan booking</h6>
+                                <p class="small mb-0">Permintaan sewa baru akan muncul di sini.</p>
                             </td>
                         </tr>
                     @endforelse
