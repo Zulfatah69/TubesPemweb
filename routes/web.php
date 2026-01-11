@@ -75,7 +75,7 @@ Route::middleware(['auth', 'role:user', 'blocked'])->group(function () {
     Route::get('/user/chats', [ChatController::class, 'index'])->name('user.chats');
 });
 
-Route::post('/midtrans/webhook', [PaymentController::class, 'handle']);
+Route::post('/midtrans/webhook', [PaymentController::class, 'handle'])->name('midtrans.webhook');
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
 

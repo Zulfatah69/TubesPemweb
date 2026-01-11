@@ -10,7 +10,7 @@ class PaymentController extends Controller
 {
     public function handle(Request $request)
     {
-        $serverKey = config('services.midtrans.server_key');
+        $serverKey = config('midtrans.server_key');
 
         $signatureKey = hash(
             'sha512',
@@ -28,7 +28,8 @@ class PaymentController extends Controller
         $orderId = $request->order_id;
         $transactionStatus = $request->transaction_status;
 
-        $booking = Booking::where('midtrans_order_id', $orderId)->first();
+        // ⬇️ PAKAI order_id
+        $booking = Booking::where('order_id', $orderId)->first();
 
         if (!$booking) {
             return response()->json(['message' => 'Booking not found'], 404);
@@ -37,12 +38,14 @@ class PaymentController extends Controller
         if (in_array($transactionStatus, ['settlement', 'capture'])) {
             $booking->update([
                 'payment_status' => 'paid',
+                'status' => 'approved'
             ]);
         }
 
         if (in_array($transactionStatus, ['cancel', 'expire', 'deny'])) {
             $booking->update([
                 'payment_status' => 'failed',
+                'status' => 'rejected'
             ]);
         }
 
