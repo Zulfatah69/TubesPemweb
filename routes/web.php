@@ -61,7 +61,7 @@ Route::middleware(['auth', 'role:owner', 'blocked'])
             Route::delete('/{property}', [PropertyController::class, 'destroy'])->name('destroy');
 
             Route::post('/image/{image}/set-main', [PropertyController::class, 'setMain'])
-                ->name('image.setMain');
+                ->name('image.main');
             Route::delete('/image/{image}', [PropertyController::class, 'deleteImage'])
                 ->name('image.delete');
         });
