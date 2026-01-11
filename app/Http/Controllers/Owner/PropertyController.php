@@ -66,14 +66,10 @@ class PropertyController extends Controller
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $index => $photo) {
 
-                $uploaded = Cloudinary::uploadFile(
+                $uploaded = Cloudinary::upload(
                     $photo->getRealPath(),
-                    [
-                        'folder' => 'properties'
-                    ]
+                    ['folder' => 'properties']
                 );
-
-$imageUrl = $uploaded->getSecurePath();
 
                 PropertyImage::create([
                     'property_id' => $property->id,
@@ -147,11 +143,14 @@ $imageUrl = $uploaded->getSecurePath();
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
 
-                $uploaded = Cloudinary::upload(
+                $uploaded = Cloudinary::uploadFile(
                     $photo->getRealPath(),
-                    ['folder' => 'properties']
+                    [
+                        'folder' => 'properties'
+                    ]
                 );
 
+                $imageUrl = $uploaded->getSecurePath();
                 PropertyImage::create([
                     'property_id' => $property->id,
                     'file_path'  => $uploaded->getSecurePath()
