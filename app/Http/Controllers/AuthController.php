@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;   // ⬅️ TAMBAHKAN INI
+use Illuminate\Support\Facades\Hash;  
 use App\Services\FirebaseService;
 use App\Models\User;
 
@@ -111,7 +111,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'role' => $request->role,
-            'password' => Hash::make($request->password),
+            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
         ]);
 
         // Kirim email verifikasi via Firebase
