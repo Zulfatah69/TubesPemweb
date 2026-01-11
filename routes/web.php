@@ -149,3 +149,9 @@ Route::get('/', function () {
     };
 
 });
+
+// --- TOMBOL DARURAT CLEAN CACHE ---
+Route::get('/bersih-bersih', function() {
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+    return '<h1>Cache Berhasil Dibersihkan! (Config, Route, View)</h1>';
+});
