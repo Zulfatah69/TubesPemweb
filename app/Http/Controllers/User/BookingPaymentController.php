@@ -16,31 +16,25 @@ class BookingPaymentController extends Controller
             ->where('user_id', auth()->id())
             ->firstOrFail();
 
-        // 🔒 Kalau sudah dibayar
-        if ($booking->payment_status === 'paid') {
+        if ($booking->status === 'paid') {
             return redirect()
-                ->route('user.bookings')
+                ->route('user.booking.my')
                 ->with('success', 'Booking ini sudah dibayar.');
         }
 
-        // ✅ JIKA SUDAH PERNAH BUAT SNAP TOKEN (BELUM DIBAYAR)
-        if ($booking->snap_token && $booking->midtrans_order_id) {
+        if ($booking->snap_token && $booking->order_id) {
             return view('user.bookings.pay', [
                 'booking'   => $booking,
                 'snapToken' => $booking->snap_token,
             ]);
         }
 
-        /* ==============================
-           KONFIGURASI MIDTRANS
-        ============================== */
         Config::$serverKey    = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
         Config::$isSanitized  = true;
         Config::$is3ds        = true;
 
-        // 🔑 ORDER ID HARUS UNIK
-        $orderId = 'BOOK-' . $booking->id . '-' . time();
+        $orderId = 'BOOKING-' . $booking->id . '-' . time();
 
         $params = [
             'transaction_details' => [
@@ -53,13 +47,12 @@ class BookingPaymentController extends Controller
             ],
         ];
 
-        // 🚀 REQUEST KE MIDTRANS (HANYA SEKALI)
         $snapToken = Snap::getSnapToken($params);
 
-        // 💾 SIMPAN KE DATABASE
         $booking->update([
-            'midtrans_order_id' => $orderId,
-            'snap_token'        => $snapToken,
+            'order_id'   => $orderId,
+            'snap_token' => $snapToken,
+            'status'     => 'unpaid',
         ]);
 
         return view('user.bookings.pay', [
