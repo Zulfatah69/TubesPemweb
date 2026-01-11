@@ -16,7 +16,7 @@ class AuthController extends Controller
 
     public function showRegister()
     {
-        return redirect()->route('register.email');
+        return view('auth.register');
     }
 
     public function login(Request $request)
