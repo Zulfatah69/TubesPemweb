@@ -120,14 +120,17 @@ class PropertyController extends Controller
 
             try {
 
-                // jika config cloudinary null → skip
-                if (!config('cloudinary') || !config('cloudinary.cloud_url')) {
+                if (!env('CLOUDINARY_URL')) {
+                    logger()->error('Cloudinary URL not set');
                     continue;
                 }
 
-                $uploaded = Cloudinary::uploadFile(
+                $uploaded = Cloudinary::upload(
                     $photo->getRealPath(),
-                    ['folder' => 'properties']
+                    [
+                        'folder' => 'properties',
+                        'resource_type' => 'image'
+                    ]
                 );
 
                 $url = $uploaded->getSecurePath();
@@ -140,9 +143,8 @@ class PropertyController extends Controller
 
             } catch (Throwable $e) {
 
-                // log tapi jangan crash app
                 logger()->error('Cloudinary upload failed', [
-                    'error' => $e->getMessage()
+                    'message' => $e->getMessage()
                 ]);
             }
         }
@@ -155,10 +157,10 @@ class PropertyController extends Controller
 
         $publicId = $this->extractPublicId($image->file_path);
 
-        if ($publicId && config('cloudinary.cloud_url')) {
+        if ($publicId && env('CLOUDINARY_URL')) {
             try {
                 Cloudinary::destroy($publicId);
-            } catch (\Throwable $e) {}
+            } catch (Throwable $e) {}
         }
 
         $wasMain = $image->is_main;
@@ -193,10 +195,10 @@ class PropertyController extends Controller
 
             $publicId = $this->extractPublicId($image->file_path);
 
-            if ($publicId && config('cloudinary.cloud_url')) {
+            if ($publicId && env('CLOUDINARY_URL')) {
                 try {
                     Cloudinary::destroy($publicId);
-                } catch (\Throwable $e) {}
+                } catch (Throwable $e) {}
             }
 
             $image->delete();
