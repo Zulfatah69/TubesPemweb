@@ -185,5 +185,12 @@ Route::get('/reset-pass', function() {
 });
 
 Route::get('/test-cloudinary', function () {
-    dd(config('cloudinary'));
+
+    dd([
+        'cloudinary_config' => config('cloudinary'),
+        'cloudinary_url' => config('cloudinary.cloud_url'),
+        'env' => env('CLOUDINARY_URL'),
+        'class_exists' => class_exists(Cloudinary::class)
+    ]);
+
 });
