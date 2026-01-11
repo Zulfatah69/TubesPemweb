@@ -11,8 +11,14 @@ class FirebaseService
 
     public function __construct()
     {
+        $credentials = env('FIREBASE_CREDENTIALS');
+
+        if (!$credentials) {
+            throw new \Exception('FIREBASE_CREDENTIALS is not set in environment.');
+        }
+
         $factory = (new Factory)
-            ->withServiceAccount(storage_path('firebase.json'));
+            ->withServiceAccount(json_decode($credentials, true));
 
         $this->auth = $factory->createAuth();
     }
@@ -27,7 +33,7 @@ class FirebaseService
 
     public function sendEmailVerification($email)
     {
-        return $this->auth->sendEmailVerificationLink($email);
+        return $this->auth->getEmailVerificationLink($email);
     }
 
     public function getUserByEmail($email)
