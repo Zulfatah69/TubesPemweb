@@ -165,3 +165,21 @@ Route::get('/bersih-bersih', function() {
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
     return '<h1>Cache Berhasil Dibersihkan!</h1>';
 });
+
+Route::get('/clear', function () {
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    return 'cleared';
+});
+
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+
+Route::get('/reset-pass', function() {
+    $user = User::first();
+    $user->password = Hash::make('12345678');
+    $user->save();
+
+    return 'password reset to 12345678';
+});
