@@ -26,7 +26,9 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL)
+            ? 'email'
+            : 'username';
 
         if (Auth::attempt([
             $loginType => $request->login,
@@ -35,21 +37,11 @@ class AuthController extends Controller
 
             $user = Auth::user();
 
-            try {
-                $firebase = app(FirebaseService::class);
-                $firebaseUser = $firebase->getUserByEmail($user->email);
-
-                if (!$firebaseUser->emailVerified) {
-                    Auth::logout();
-                    return back()->withErrors(['login' => 'Akun belum diverifikasi.']);
-                }
-
-                $user->is_verified = true;
-                $user->save();
-
-            } catch (\Exception $e) {
+            if (is_null($user->email_verified_at)) {
                 Auth::logout();
-                return back()->withErrors(['login' => 'Gagal memverifikasi akun.']);
+                return back()->withErrors([
+                    'login' => 'Akun belum diverifikasi.'
+                ]);
             }
 
             $request->session()->regenerate();
@@ -61,8 +53,11 @@ class AuthController extends Controller
             });
         }
 
-        return back()->withErrors(['login' => 'Email/Username atau password salah'])->withInput();
+        return back()->withErrors([
+            'login' => 'Email/Username atau password salah'
+        ]);
     }
+
 
     public function logout(Request $request)
     {
