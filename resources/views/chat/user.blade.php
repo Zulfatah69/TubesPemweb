@@ -85,90 +85,89 @@
 </div>
 
 <script>
-    const chatBox = document.getElementById('chat-box');
-    const authId = {{ auth()->id() }};
-    
-    // Auto scroll ke bawah saat load
-    function scrollToBottom() {
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-    scrollToBottom();
+const chatBox = document.getElementById('chat-box');
+const chatId = {{ $chat->id }};
+const authId = {{ auth()->id() }};
 
-    // Fetch pesan real-time (Polling)
-    function loadMessages() {
-        fetch("{{ route('chat.messages', $chat->id) }}")
-            .then(res => res.json())
-            .then(data => {
-                const currentScroll = chatBox.scrollTop;
-                const maxScroll = chatBox.scrollHeight - chatBox.clientHeight;
-                const isAtBottom = maxScroll - currentScroll < 50;
+function scrollToBottom() {
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
 
-                chatBox.innerHTML = ''; 
-
-                if(data.length === 0) {
-                    chatBox.innerHTML = '<p class="text-muted text-center mt-5">Belum ada pesan</p>';
-                    return;
-                }
-
-                data.forEach(msg => {
-                    const isMe = msg.sender_id == authId;
-                    
-                    const bubbleHtml = `
-                        <div class="d-flex mb-3 ${isMe ? 'justify-content-end' : 'justify-content-start'}">
-                            <div class="p-3 shadow-sm ${isMe ? 'bg-primary text-white rounded-end-top-0' : 'bg-white text-dark rounded-start-top-0'}" 
-                                 style="max-width: 75%; border-radius: 15px;">
-                                <div class="mb-1">${escapeHtml(msg.message)}</div>
-                                <div class="text-end" style="font-size: 0.65rem; opacity: 0.7;">
-                                    ${new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    chatBox.insertAdjacentHTML('beforeend', bubbleHtml);
-                });
-
-                if (isAtBottom) {
-                    scrollToBottom();
-                }
-            });
-    }
-
-    function escapeHtml(text) {
-        return text
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-
-    // Update setiap 3 detik
-    setInterval(loadMessages, 3000);
-
-    // Kirim pesan tanpa reload (AJAX)
-    document.getElementById('chat-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const input = document.getElementById('message-input');
-        const message = input.value;
-        if(!message.trim()) return;
-
-        input.value = ''; // Kosongkan input segera agar responsif
-
-        fetch(this.action, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ message: message })
-        })
-        .then(() => {
-            loadMessages();
-            setTimeout(scrollToBottom, 300); // Pastikan scroll setelah pesan muncul
-        });
+function escapeHtml(text) {
+    return text.replace(/[&<>"']/g, function(m) {
+        return ({
+            '&':'&amp;',
+            '<':'&lt;',
+            '>':'&gt;',
+            '"':'&quot;',
+            "'":'&#039;'
+        })[m];
     });
+}
+
+function renderMessage(msg) {
+    const isMe = msg.sender_id == authId;
+
+    return `
+        <div class="d-flex mb-3 ${isMe ? 'justify-content-end' : 'justify-content-start'}">
+            <div class="p-3 shadow-sm ${isMe ? 'bg-primary text-white' : 'bg-white text-dark'}"
+                 style="max-width:75%; border-radius:15px;">
+                <div class="mb-1">${escapeHtml(msg.message)}</div>
+                <div class="text-end" style="font-size:0.65rem;opacity:.7;">
+                    ${new Date(msg.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function loadMessages() {
+    fetch("{{ route('chat.messages', $chat->id) }}", {
+        cache: "no-store"
+    })
+        .then(r => r.json())
+        .then(data => {
+            chatBox.innerHTML = '';
+
+            data.forEach(msg => {
+                chatBox.insertAdjacentHTML('beforeend', renderMessage(msg));
+            });
+
+            scrollToBottom();
+        });
+}
+
+// kirim pesan
+document.getElementById('chat-form').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const input = document.getElementById('message-input');
+    const message = input.value.trim();
+    if(!message) return;
+
+    input.value = '';
+
+    fetch(this.action, {
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json',
+            'X-CSRF-TOKEN':'{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ message })
+    })
+    .then(() => {
+        loadMessages(); // langsung refresh setelah kirim
+    });
+});
+
+// load awal
+loadMessages();
+
+// polling tiap 2 detik
+setInterval(loadMessages, 2000);
 </script>
+
+
 
 <style>
     /* Custom Scrollbar */

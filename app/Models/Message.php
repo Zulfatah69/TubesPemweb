@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Chat;
 
 class Message extends Model
 {
@@ -10,6 +12,10 @@ class Message extends Model
         'chat_id',
         'sender_id',
         'message',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
     ];
 
     public function chat()
