@@ -117,20 +117,11 @@ class PropertyController extends Controller
         if (!$request->hasFile('photos')) return;
 
         foreach ($request->file('photos') as $index => $photo) {
-
             try {
-
-                if (!env('CLOUDINARY_URL')) {
-                    logger()->error('Cloudinary URL not set');
-                    continue;
-                }
 
                 $uploaded = Cloudinary::upload(
                     $photo->getRealPath(),
-                    [
-                        'folder' => 'properties',
-                        'resource_type' => 'image'
-                    ]
+                    ['folder' => 'properties']
                 );
 
                 $url = $uploaded->getSecurePath();
@@ -141,14 +132,15 @@ class PropertyController extends Controller
                     'is_main' => $property->images()->count() === 0 && $index === 0
                 ]);
 
-            } catch (Throwable $e) {
+            } catch (\Throwable $e) {
 
                 logger()->error('Cloudinary upload failed', [
-                    'message' => $e->getMessage()
+                    'error' => $e->getMessage()
                 ]);
             }
         }
     }
+
 
     public function deleteImage(PropertyImage $image)
     {
