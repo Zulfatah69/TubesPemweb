@@ -92,4 +92,38 @@ class AuthController extends Controller
 
         return redirect('/login');
     }
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|string|max:20',
+            'password' => 'required|min:8|confirmed',
+            'role' => 'required|in:user,owner'
+        ]);
+
+        // Simpan user ke database
+        $user = User::create([
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'role' => $request->role,
+            'password' => Hash::make($request->password),
+        ]);
+
+        // Kirim email verifikasi via Firebase
+        try {
+            $firebase = new FirebaseService();
+            $firebase->sendEmailVerification($request->email, $request->password);
+        } catch (\Exception $e) {
+            return back()->withErrors([
+                'email' => 'Gagal mengirim email verifikasi: ' . $e->getMessage()
+            ]);
+        }
+
+        return redirect('/login')->with('success', 'Akun berhasil dibuat. Silakan cek email untuk verifikasi.');
+    }
+
 }
