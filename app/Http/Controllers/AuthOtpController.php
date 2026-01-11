@@ -123,25 +123,48 @@ class AuthOtpController extends Controller
                 ->withInput();
         }
 
-        $user = User::create([
-            'name'              => $request->name,
-            'username'          => $request->username,
-            'phone'             => $request->phone,
-            'email'             => $request->email,
-            'role'              => $request->role,
-            'password'          => Hash::make($request->password),
-            'email_verified_at' => now(),
-        ]);
+        DB::beginTransaction();
 
-        DB::table('email_verifications')->where('email', $request->email)->delete();
-        session()->forget('email');
+        try {
+            $user = User::create([
+                'name'              => $request->name,
+                'username'          => $request->username,
+                'phone'             => $request->phone,
+                'email'             => $request->email,
+                'role'              => $request->role,
+                'password'          => Hash::make($request->password),
+                'email_verified_at' => now(),
+            ]);
 
-        Auth::login($user);
+            DB::table('email_verifications')
+                ->where('email', $request->email)
+                ->delete();
 
-        return redirect(
-            $user->role === 'owner'
-                ? route('owner.dashboard')
-                : route('user.dashboard')
-        )->with('success', 'Registrasi berhasil, selamat datang!');
+            session()->forget('email');
+
+            Auth::login($user); // ✅ auto login
+
+            DB::commit();
+
+            return redirect(
+                $user->role === 'owner'
+                    ? route('owner.dashboard')
+                    : route('user.dashboard')
+            )->with('success', 'Registrasi berhasil, selamat datang!');
+
+        } catch (\Throwable $e) {
+
+            DB::rollBack();
+
+            Log::channel('stderr')->error('REGISTER FAILED', [
+                'email' => $request->email,
+                'error' => $e->getMessage(),
+            ]);
+
+            return back()->withErrors([
+                'register' => 'Registrasi gagal, silakan coba lagi.'
+            ]);
+        }
     }
+
 }
