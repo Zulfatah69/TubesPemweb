@@ -31,24 +31,4 @@ class User extends Authenticatable
         'password' => 'hashed',
         'is_blocked' => 'boolean',
     ];
-
-    public function properties()
-    {
-        return $this->hasMany(Property::class, 'owner_id');
-    }
-
-    public function bookings()
-    {
-        return $this->hasMany(Booking::class, 'user_id');
-    }
-
-    public function chatsAsUser()
-    {
-        return $this->hasMany(Chat::class, 'user_id');
-    }
-
-    public function chatsAsOwner()
-    {
-        return $this->hasMany(Chat::class, 'owner_id');
-    }
 }

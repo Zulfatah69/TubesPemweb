@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;  
 use App\Services\FirebaseService;
 use App\Models\User;
 
@@ -22,20 +21,12 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate(
-            [
-                'login'    => 'required',
-                'password' => 'required',
-            ],
-            [
-                'login.required'    => 'Email atau Username wajib diisi',
-                'password.required' => 'Password wajib diisi',
-            ]
-        );
+        $request->validate([
+            'login' => 'required',
+            'password' => 'required',
+        ]);
 
-        $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL)
-            ? 'email'
-            : 'username';
+        $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
         if (Auth::attempt([
             $loginType => $request->login,
@@ -44,29 +35,21 @@ class AuthController extends Controller
 
             $user = Auth::user();
 
-            // === CEK VERIFIKASI EMAIL KE FIREBASE ===
             try {
                 $firebase = app(FirebaseService::class);
                 $firebaseUser = $firebase->getUserByEmail($user->email);
 
                 if (!$firebaseUser->emailVerified) {
                     Auth::logout();
-
-                    return back()->withErrors([
-                        'login' => 'Akun belum diverifikasi. Silakan cek email Anda.'
-                    ]);
+                    return back()->withErrors(['login' => 'Akun belum diverifikasi.']);
                 }
 
-                // Update status lokal
                 $user->is_verified = true;
                 $user->save();
 
             } catch (\Exception $e) {
                 Auth::logout();
-
-                return back()->withErrors([
-                    'login' => 'Gagal memverifikasi akun. Silakan coba lagi.'
-                ]);
+                return back()->withErrors(['login' => 'Gagal memverifikasi akun.']);
             }
 
             $request->session()->regenerate();
@@ -78,11 +61,7 @@ class AuthController extends Controller
             });
         }
 
-        return back()
-            ->withErrors([
-                'login' => 'Email/Username atau password salah',
-            ])
-            ->withInput();
+        return back()->withErrors(['login' => 'Email/Username atau password salah'])->withInput();
     }
 
     public function logout(Request $request)
@@ -90,9 +69,9 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect('/login');
     }
+
     public function register(Request $request)
     {
         $request->validate([
@@ -104,27 +83,22 @@ class AuthController extends Controller
             'role' => 'required|in:user,owner'
         ]);
 
-        // Simpan user ke database
         $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
             'email' => $request->email,
             'phone' => $request->phone,
             'role' => $request->role,
-            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+            'password' => $request->password,
         ]);
 
-        // Kirim email verifikasi via Firebase
         try {
             $firebase = new FirebaseService();
             $firebase->sendEmailVerification($request->email, $request->password);
         } catch (\Exception $e) {
-            return back()->withErrors([
-                'email' => 'Gagal mengirim email verifikasi: ' . $e->getMessage()
-            ]);
+            return back()->withErrors(['email' => 'Gagal mengirim email verifikasi']);
         }
 
-        return redirect('/login')->with('success', 'Akun berhasil dibuat. Silakan cek email untuk verifikasi.');
+        return redirect('/login')->with('success', 'Akun berhasil dibuat.');
     }
-
 }
