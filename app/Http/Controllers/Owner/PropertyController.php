@@ -26,18 +26,14 @@ class PropertyController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required'],
-            'location' => ['required'],
-            'price' => ['required','numeric'],
-            'description' => ['nullable'],
-            'province' => ['required'],
-            'city' => ['required'],
-            'district' => ['required'],
-            'address' => ['nullable'],
-            'gender_type' => ['required', 'in:putra,putri,campuran'],
-            'facilities' => ['array'],
-            'custom_facilities' => ['nullable'],
-            'photos.*' => ['image','max:2048']
+            'name' => 'required',
+            'location' => 'required',
+            'price' => 'required|numeric',
+            'province' => 'required',
+            'city' => 'required',
+            'district' => 'required',
+            'gender_type' => 'required|in:putra,putri,campuran',
+            'photos.*' => 'image|max:2048',
         ]);
 
         $property = Property::create([
@@ -55,42 +51,31 @@ class PropertyController extends Controller
             'custom_facilities' => $request->custom_facilities ? explode(',', $request->custom_facilities) : [],
         ]);
 
-        $this->handleUploadPhotos($request, $property);
+        $this->uploadPhotos($request, $property);
 
-        return redirect()->route('owner.properties.index')
-            ->with('success','Properti ditambahkan');
+        return redirect()->route('owner.properties.index')->with('success', 'Properti ditambahkan');
     }
 
     public function edit(Property $property)
     {
-        if ($property->owner_id !== Auth::id()) abort(403);
+        abort_if($property->owner_id !== Auth::id(), 403);
         $property->load('images');
         return view('owner.properties.edit', compact('property'));
     }
 
     public function update(Request $request, Property $property)
     {
-        if ($property->owner_id !== Auth::id()) abort(403);
-
-        $request->merge([
-            'province' => $request->filled('province') ? $request->province : $property->province,
-            'city' => $request->filled('city') ? $request->city : $property->city,
-            'district' => $request->filled('district') ? $request->district : $property->district,
-        ]);
+        abort_if($property->owner_id !== Auth::id(), 403);
 
         $request->validate([
-            'name' => ['required'],
-            'location' => ['required'],
-            'price' => ['required','numeric'],
-            'description' => ['nullable'],
-            'province' => ['required'],
-            'city' => ['required'],
-            'district' => ['required'],
-            'address' => ['nullable'],
-            'gender_type' => ['required', 'in:putra,putri,campuran'],
-            'facilities' => ['array'],
-            'custom_facilities' => ['nullable'],
-            'photos.*' => ['image','max:2048']
+            'name' => 'required',
+            'location' => 'required',
+            'price' => 'required|numeric',
+            'province' => 'required',
+            'city' => 'required',
+            'district' => 'required',
+            'gender_type' => 'required|in:putra,putri,campuran',
+            'photos.*' => 'image|max:2048',
         ]);
 
         $property->update([
@@ -107,19 +92,23 @@ class PropertyController extends Controller
             'custom_facilities' => $request->custom_facilities ? explode(',', $request->custom_facilities) : [],
         ]);
 
-        $this->handleUploadPhotos($request, $property);
+        $this->uploadPhotos($request, $property);
 
-        return back()->with('success','Properti diperbarui');
+        return back()->with('success', 'Properti diperbarui');
     }
 
-    private function handleUploadPhotos(Request $request, Property $property)
+    private function uploadPhotos(Request $request, Property $property)
     {
+        logger()->info('UPLOAD START', [
+            'has_file' => $request->hasFile('photos'),
+            'cloudinary' => config('cloudinary.cloud_url'),
+        ]);
+
         if (!$request->hasFile('photos')) return;
 
         foreach ($request->file('photos') as $index => $photo) {
             try {
-
-                $uploaded = Cloudinary::upload(
+                $uploaded = Cloudinary::uploadFile(
                     $photo->getRealPath(),
                     ['folder' => 'properties']
                 );
@@ -129,27 +118,27 @@ class PropertyController extends Controller
                 PropertyImage::create([
                     'property_id' => $property->id,
                     'file_path' => $url,
-                    'is_main' => $property->images()->count() === 0 && $index === 0
+                    'is_main' => $property->images()->count() === 0 && $index === 0,
                 ]);
 
-            } catch (\Throwable $e) {
+                logger()->info('UPLOAD OK', ['url' => $url]);
 
-                logger()->error('Cloudinary upload failed', [
-                    'error' => $e->getMessage()
+            } catch (Throwable $e) {
+                logger()->error('UPLOAD FAILED', [
+                    'msg' => $e->getMessage()
                 ]);
             }
         }
     }
 
-
     public function deleteImage(PropertyImage $image)
     {
         $property = $image->property;
-        if ($property->owner_id !== Auth::id()) abort(403);
+        abort_if($property->owner_id !== Auth::id(), 403);
 
         $publicId = $this->extractPublicId($image->file_path);
 
-        if ($publicId && env('CLOUDINARY_URL')) {
+        if ($publicId) {
             try {
                 Cloudinary::destroy($publicId);
             } catch (Throwable $e) {}
@@ -159,56 +148,46 @@ class PropertyController extends Controller
         $image->delete();
 
         if ($wasMain) {
-            $newMain = PropertyImage::where('property_id', $property->id)->first();
-            if ($newMain) {
-                $newMain->update(['is_main' => true]);
-            }
+            PropertyImage::where('property_id', $property->id)
+                ->first()?->update(['is_main' => true]);
         }
 
-        return back()->with('success','Foto berhasil dihapus');
+        return back()->with('success', 'Foto berhasil dihapus');
     }
 
     public function setMain(PropertyImage $image)
     {
         $property = $image->property;
-        if ($property->owner_id !== Auth::id()) abort(403);
+        abort_if($property->owner_id !== Auth::id(), 403);
 
         PropertyImage::where('property_id', $property->id)->update(['is_main' => false]);
         $image->update(['is_main' => true]);
 
-        return back()->with('success','Foto utama berhasil diubah');
+        return back()->with('success', 'Foto utama diubah');
     }
 
     public function destroy(Property $property)
     {
-        if ($property->owner_id !== Auth::id()) abort(403);
+        abort_if($property->owner_id !== Auth::id(), 403);
 
         foreach ($property->images as $image) {
-
             $publicId = $this->extractPublicId($image->file_path);
-
-            if ($publicId && env('CLOUDINARY_URL')) {
-                try {
-                    Cloudinary::destroy($publicId);
-                } catch (Throwable $e) {}
+            if ($publicId) {
+                try { Cloudinary::destroy($publicId); } catch (Throwable $e) {}
             }
-
             $image->delete();
         }
 
         $property->delete();
 
-        return redirect()->route('owner.properties.index')
-            ->with('success', 'Properti berhasil dihapus');
+        return redirect()->route('owner.properties.index')->with('success', 'Properti dihapus');
     }
 
     private function extractPublicId($url)
     {
         if (!$url) return null;
-
         $path = parse_url($url, PHP_URL_PATH);
         $filename = pathinfo($path, PATHINFO_FILENAME);
-
         return 'properties/' . $filename;
     }
 }
