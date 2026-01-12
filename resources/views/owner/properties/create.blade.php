@@ -174,12 +174,10 @@
 
 @push('scripts')
 <script>
-    // Script Sederhana untuk Load Wilayah (Tanpa 'old' value karena ini Create Baru)
     const provSelect = document.getElementById('provinsi');
     const kotaSelect = document.getElementById('kota');
     const kecSelect = document.getElementById('kecamatan');
 
-    // Pastikan wilayah.js sudah ada
     if(typeof wilayah !== 'undefined') {
         loadProvinsi();
     }

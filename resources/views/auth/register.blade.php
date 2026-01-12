@@ -55,8 +55,7 @@
         .form-control-icon {
             border-left: none;
         }
-
-        /* Styling khusus Radio Button Role */
+        
         .btn-check:checked + .btn-outline-primary {
             background-color: rgba(13, 110, 253, 0.1);
             color: var(--bs-primary);

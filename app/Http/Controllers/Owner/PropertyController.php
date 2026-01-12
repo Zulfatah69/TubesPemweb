@@ -104,7 +104,7 @@ class PropertyController extends Controller
 
         foreach ($request->file('photos') as $index => $photo) {
 
-            $path = $photo->store('properties', 'public'); // storage/app/public/properties
+            $path = $photo->store('properties', 'public');
 
             PropertyImage::create([
                 'property_id' => $property->id,

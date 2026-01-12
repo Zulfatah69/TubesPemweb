@@ -149,7 +149,7 @@
     .card-hover:hover {
         transform: translateY(-5px);
         box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1) !important;
-        border: 1px solid var(--bs-primary) !important; /* Highlight border saat hover */
+        border: 1px solid var(--bs-primary) !important;
     }
 </style>
 

@@ -14,15 +14,13 @@
 
     <style>
         :root {
-            /* Palet Warna */
             --bs-primary: #0D6EFD;
             --bs-primary-rgb: 13, 110, 253;
             --bs-secondary: #6C757D;
             --bs-success: #198754;
             --bs-warning: #FFC107;
             --bs-danger: #DC3545;
-            
-            /* Warna Kustom Aplikasi */
+
             --kosan-bg-section: #F8F9FA;
             --kosan-text-main: #212529;
             --kosan-border: #DEE2E6;
@@ -34,10 +32,9 @@
             color: var(--kosan-text-main);
             display: flex;
             flex-direction: column;
-            min-height: 100vh; /* Agar footer selalu di bawah */
+            min-height: 100vh; 
         }
-
-        /* Navbar Custom */
+        
         .navbar {
             background-color: var(--bs-primary) !important;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -52,8 +49,7 @@
             font-weight: 500;
             transition: all 0.2s;
         }
-        
-        /* Efek Hover Menu */
+
         .nav-link:hover {
             color: #fff !important;
             transform: translateY(-1px);
@@ -64,12 +60,10 @@
             color: #fff !important;
         }
 
-        /* Wrapper Konten Utama */
         main {
-            flex: 1; /* Mengisi ruang kosong agar footer terdorong ke bawah */
+            flex: 1; 
         }
 
-        /* Card Global */
         .card {
             border: 1px solid var(--kosan-border);
             border-radius: 12px;
@@ -77,7 +71,6 @@
             background-color: #FFFFFF;
         }
 
-        /* Footer */
         footer {
             background-color: #FFFFFF;
             border-top: 1px solid var(--kosan-border);

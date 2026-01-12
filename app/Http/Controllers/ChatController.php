@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
-    /**
-     * LIST SEMUA CHAT USER
-     * /user/chats
-     */
     public function index()
     {
         $user = Auth::user();

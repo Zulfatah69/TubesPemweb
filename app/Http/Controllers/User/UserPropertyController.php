@@ -49,7 +49,6 @@ class UserPropertyController extends Controller
 
     public function show(Property $property)
     {
-        // ambil semua foto
         $property->load('images');
 
         return view('user.properties.show', compact('property'));

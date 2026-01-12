@@ -12,18 +12,16 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
 
-        // ✅ Alias middleware
         $middleware->alias([
             'role'    => \App\Http\Middleware\RoleMiddleware::class,
             'blocked' => \App\Http\Middleware\BlockMiddleware::class,
         ]);
 
-        // ✅ CSRF exception untuk webhook Midtrans
+    
         $middleware->validateCsrfTokens(except: [
             'midtrans/webhook',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
     })
     ->create();

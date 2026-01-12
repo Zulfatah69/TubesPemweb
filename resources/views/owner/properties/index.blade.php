@@ -126,7 +126,6 @@
 </div>
 
 <style>
-    /* Agar gambar thumbnail tidak gepeng */
     .object-fit-cover {
         object-fit: cover;
     }

@@ -16,42 +16,15 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 
-/*
-|--------------------------------------------------------------------------
-| Auth
-|--------------------------------------------------------------------------
-*/
-
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-/*
-|--------------------------------------------------------------------------
-| Register OTP (EMAIL)
-|--------------------------------------------------------------------------
-*/
-
-// redirect /register ke form email OTP
 Route::get('/register', fn () => redirect()->route('register.email'))->name('register');
-
-// form email
 Route::get('/register/email', [AuthOtpController::class, 'showEmailForm'])->name('register.email');
-
-// kirim OTP
 Route::post('/register/email', [AuthOtpController::class, 'sendCode'])->name('register.send');
-
-// form input OTP
 Route::get('/register/verify', [AuthOtpController::class, 'showVerifyForm'])->name('register.verify');
-
-// submit OTP + buat akun
 Route::post('/register/verify', [AuthOtpController::class, 'completeRegister'])->name('register.complete');
-
-/*
-|--------------------------------------------------------------------------
-| OWNER
-|--------------------------------------------------------------------------
-*/
 
 Route::middleware(['auth', 'role:owner', 'blocked'])
     ->prefix('owner')
@@ -80,12 +53,6 @@ Route::middleware(['auth', 'role:owner', 'blocked'])
         Route::post('/chat/{chat}/send', [OwnerChatController::class, 'send'])->name('chat.send');
     });
 
-/*
-|--------------------------------------------------------------------------
-| USER
-|--------------------------------------------------------------------------
-*/
-
 Route::middleware(['auth', 'role:user', 'blocked'])->group(function () {
 
     Route::get('/user/dashboard', [UserPropertyController::class, 'index'])->name('user.dashboard');
@@ -103,42 +70,27 @@ Route::middleware(['auth', 'role:user', 'blocked'])->group(function () {
     Route::get('/user/chats', [ChatController::class, 'index'])->name('user.chats');
 });
 
-/*
-|--------------------------------------------------------------------------
-| PAYMENT
-|--------------------------------------------------------------------------
-*/
-
 Route::post('/midtrans/webhook', [PaymentController::class, 'handle'])->name('midtrans.webhook');
 
-/*
-|--------------------------------------------------------------------------
-| ADMIN
-|--------------------------------------------------------------------------
-*/
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+        Route::post('/users/{user}/block', [AdminUserController::class, 'toggleBlock'])->name('users.block');
 
-    Route::get('/users', [AdminUserController::class,'index'])->name('users.index');
-    Route::get('/users/{user}/edit', [AdminUserController::class,'edit'])->name('users.edit');
-    Route::put('/users/{user}', [AdminUserController::class,'update'])->name('users.update');
-    Route::delete('/users/{user}', [AdminUserController::class,'destroy'])->name('users.destroy');
-    Route::post('/users/{user}/block', [AdminUserController::class,'toggleBlock'])->name('users.block');
+        Route::get('/owners/{user}/properties', [AdminDashboardController::class, 'properties'])->name('owners.properties');
 
-    Route::get('/owners/{user}/properties', [AdminDashboardController::class,'properties'])->name('owners.properties');
+        Route::get('/bookings', [AdminUserController::class, 'bookings'])->name('bookings.index');
 
-    Route::get('/bookings', [AdminUserController::class,'bookings'])->name('bookings.index');
-
-    Route::delete('/properties/{property}', [AdminDashboardController::class,'destroyProperty'])->name('properties.destroy');
-});
-
-/*
-|--------------------------------------------------------------------------
-| HOME
-|--------------------------------------------------------------------------
-*/
+        Route::delete('/properties/{property}', [AdminDashboardController::class, 'destroyProperty'])->name('properties.destroy');
+    });
 
 Route::get('/', function () {
 
@@ -146,66 +98,19 @@ Route::get('/', function () {
         return redirect()->route('login');
     }
 
-    return match(auth()->user()->role) {
+    return match (auth()->user()->role) {
         'admin' => redirect()->route('admin.dashboard'),
         'owner' => redirect()->route('owner.dashboard'),
         'user'  => redirect()->route('user.dashboard'),
         default => redirect()->route('login'),
     };
-
-});
-
-/*
-|--------------------------------------------------------------------------
-| CLEAN CACHE
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/bersih-bersih', function() {
-    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
-    return '<h1>Cache Berhasil Dibersihkan!</h1>';
 });
 
 Route::get('/clear', function () {
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
     Artisan::call('config:clear');
     Artisan::call('cache:clear');
     Artisan::call('route:clear');
+
     return 'cleared';
-});
-
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-
-Route::get('/reset-pass', function() {
-    $user = User::first();
-    $user->password = Hash::make('12345678');
-    $user->save();
-
-    return 'password reset to 12345678';
-});
-
-Route::get('/test-cloudinary', function () {
-
-    dd([
-        'cloudinary_config' => config('cloudinary'),
-        'cloudinary_url' => config('cloudinary.cloud_url'),
-        'env' => env('CLOUDINARY_URL'),
-        'class_exists' => class_exists(Cloudinary::class)
-    ]);
-
-});
-
-Route::get('/test-upload', function () {
-
-    $path = storage_path('app/test.png');
-
-    if (!file_exists($path)) {
-        abort(500, 'Upload file test.png dulu');
-    }
-
-    $uploaded = Cloudinary::upload($path, ['folder' => 'debug']);
-
-    dd([
-        'url' => $uploaded->getSecurePath()
-    ]);
 });

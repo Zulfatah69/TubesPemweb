@@ -268,8 +268,7 @@
         wilayah.forEach(w => {
             provSelect.innerHTML += `<option value="${w.prov}">${w.prov}</option>`;
         });
-
-        // 🔑 INI KUNCI UTAMA (WAJIB ADA)
+        
         if (currentProv) {
             provSelect.value = currentProv;
         }

@@ -137,7 +137,6 @@ function loadMessages() {
         });
 }
 
-// kirim pesan
 document.getElementById('chat-form').addEventListener('submit', function(e){
     e.preventDefault();
 
@@ -156,21 +155,18 @@ document.getElementById('chat-form').addEventListener('submit', function(e){
         body: JSON.stringify({ message })
     })
     .then(() => {
-        loadMessages(); // langsung refresh setelah kirim
+        loadMessages();
     });
 });
 
-// load awal
 loadMessages();
 
-// polling tiap 2 detik
 setInterval(loadMessages, 2000);
 </script>
 
 
 
 <style>
-    /* Styling Scrollbar agar tipis & rapi */
     #chat-box::-webkit-scrollbar {
         width: 6px;
     }

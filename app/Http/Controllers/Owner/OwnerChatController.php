@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class OwnerChatController extends Controller
 {
-    /**
-     * List semua chat owner
-     */
     public function index()
     {
         $owner = Auth::user();
@@ -25,9 +22,6 @@ class OwnerChatController extends Controller
         return view('chat.owner_list', compact('chats'));
     }
 
-    /**
-     * Tampilkan chat owner
-     */
     public function show(Chat $chat)
     {
         $owner = Auth::user();
@@ -41,9 +35,6 @@ class OwnerChatController extends Controller
         return view('chat.owner', compact('chat'));
     }
 
-    /**
-     * Kirim pesan owner
-     */
     public function send(Request $request, Chat $chat)
     {
         $owner = Auth::user();

@@ -87,7 +87,6 @@
     const payButton = document.getElementById('pay-button');
     
     payButton.onclick = function () {
-        // Trigger snap popup. @TODO: Ganti dengan token dari controller kamu
         snap.pay('{{ $snapToken }}', {
             // Callback jika sukses
             onSuccess: function(result){

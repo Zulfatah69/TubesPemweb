@@ -129,7 +129,6 @@
     document.addEventListener("DOMContentLoaded", function() {
         const ctx = document.getElementById('bookingChart');
 
-        // Data dari Controller
         const labels = @json($chartLabels ?? []);
         const data = @json($chartData ?? []);
 
@@ -140,10 +139,10 @@
                 datasets: [{
                     label: 'Jumlah Booking Masuk',
                     data: data,
-                    backgroundColor: 'rgba(13, 110, 253, 0.7)', // Warna Primary Bootstrap
+                    backgroundColor: 'rgba(13, 110, 253, 0.7)',
                     borderColor: 'rgba(13, 110, 253, 1)',
                     borderWidth: 1,
-                    borderRadius: 4, // Bar rounded
+                    borderRadius: 4,
                     barPercentage: 0.6
                 }]
             },
@@ -152,7 +151,7 @@
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        display: false // Sembunyikan legenda jika hanya 1 dataset
+                        display: false
                     },
                     tooltip: {
                         backgroundColor: '#333',
@@ -164,15 +163,15 @@
                     y: {
                         beginAtZero: true,
                         grid: {
-                            color: '#f0f0f0' // Garis grid tipis
+                            color: '#f0f0f0' 
                         },
                         ticks: {
-                            stepSize: 1 // Pastikan angka bulat (tidak ada 0.5 booking)
+                            stepSize: 1 
                         }
                     },
                     x: {
                         grid: {
-                            display: false // Hilangkan grid vertikal
+                            display: false 
                         }
                     }
                 }

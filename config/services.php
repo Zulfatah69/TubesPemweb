@@ -2,16 +2,6 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Third Party Services
-    |--------------------------------------------------------------------------
-    |
-    | This file is for storing the credentials for third party services such
-    | as Mailgun, Postmark, AWS and more.
-    |
-    */
-
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],
@@ -33,11 +23,6 @@ return [
         ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Midtrans
-    |--------------------------------------------------------------------------
-    */
     'midtrans' => [
         'server_key'    => env('MIDTRANS_SERVER_KEY'),
         'client_key'    => env('MIDTRANS_CLIENT_KEY'),

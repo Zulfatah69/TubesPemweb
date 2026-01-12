@@ -29,21 +29,18 @@ class Property extends Model
         'custom_facilities' => 'array'
     ];
 
-    // ===== RELASI OWNER =====
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    // ===== RELASI FOTO =====
     public function images()
     {
         return $this->hasMany(PropertyImage::class)
-            ->orderByDesc('is_main')   // foto utama dulu
-            ->orderBy('id');           // lalu urut biasa
+            ->orderByDesc('is_main')   
+            ->orderBy('id');          
     }
 
-    // ===== RELASI BOOKING =====
     public function bookings()
     {
         return $this->hasMany(Booking::class);

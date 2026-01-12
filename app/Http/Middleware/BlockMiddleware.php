@@ -14,7 +14,6 @@ class BlockMiddleware
 
             Auth::logout();
 
-            // Hancurkan session lama
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 

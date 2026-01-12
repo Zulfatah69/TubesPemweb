@@ -92,13 +92,12 @@
 </div>
 
 <style>
-    /* Styling agar baris chat interaktif */
     .chat-item {
         transition: background-color 0.2s ease, padding-left 0.2s ease;
     }
     .chat-item:hover {
         background-color: #f8f9fa;
-        padding-left: 1.2rem !important; /* Efek geser dikit saat hover */
+        padding-left: 1.2rem !important;
     }
     .avatar-circle {
         font-size: 1.2rem;

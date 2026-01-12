@@ -137,7 +137,6 @@ function loadMessages() {
         });
 }
 
-// kirim pesan
 document.getElementById('chat-form').addEventListener('submit', function(e){
     e.preventDefault();
 

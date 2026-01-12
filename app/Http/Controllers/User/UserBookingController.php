@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UserBookingController extends Controller
 {
-    /**
-     * SIMPAN BOOKING USER
-     */
     public function store(Request $request, Property $property)
     {
         $request->validate(
@@ -28,10 +25,8 @@ class UserBookingController extends Controller
             ]
         );
 
-        // default sewa 1 bulan
         $months = $request->months ?? 1;
 
-        // ❌ Cegah booking ganda
         $exists = Booking::where('user_id', Auth::id())
             ->where('property_id', $property->id)
             ->whereIn('status', ['pending', 'approved'])
@@ -44,10 +39,8 @@ class UserBookingController extends Controller
             );
         }
 
-        // 💰 HITUNG TOTAL HARGA
         $totalPrice = $property->price * $months;
 
-        // ✅ SIMPAN BOOKING
         Booking::create([
             'user_id'        => Auth::id(),
             'property_id'    => $property->id,
@@ -64,9 +57,7 @@ class UserBookingController extends Controller
             ->with('success', 'Booking berhasil dibuat. Silakan lanjutkan pembayaran.');
     }
 
-    /**
-     * LIST BOOKING USER
-     */
+
     public function myBookings()
     {
         $bookings = Booking::with('property')

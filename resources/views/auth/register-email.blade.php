@@ -79,16 +79,14 @@
 </div>
 
 <style>
-    /* Sedikit styling tambahan khusus halaman ini agar input group rapi */
     .input-group-text {
         border-color: #dee2e6;
     }
     .form-control:focus {
         border-color: #dee2e6;
-        box-shadow: none; /* Kita handle focus di input-group parent jika perlu, atau biarkan default */
+        box-shadow: none;
         border-left: none;
     }
-    /* Trik agar border input group terlihat menyatu saat fokus */
     .input-group:focus-within .form-control, 
     .input-group:focus-within .input-group-text {
         border-color: var(--bs-primary);

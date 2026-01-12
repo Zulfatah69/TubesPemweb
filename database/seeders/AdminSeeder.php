@@ -16,7 +16,7 @@ class AdminSeeder extends Seeder
                 'name' => 'Admin',
                 'username' => 'admin',
                 'phone' => '08123456789',
-                'password' => Hash::make('admin123'), // WAJIB bcrypt
+                'password' => Hash::make('admin123'),
                 'role' => 'admin',
             ]
         );

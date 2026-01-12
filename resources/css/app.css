@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* --- GLOBAL SETTINGS --- */
 :root {
-    --primary-color: #0D6EFD;
+    --primary-color: #0d61fd;
     --secondary-color: #6C757D;
     --bg-color: #F8F9FA;
     --text-color: #212529;
@@ -13,7 +12,7 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    -webkit-font-smoothing: antialiased; /* Agar font lebih tajam */
+    -webkit-font-smoothing: antialiased; 
 }
 
 a {
@@ -21,9 +20,6 @@ a {
     transition: all 0.2s ease;
 }
 
-/* --- NAVBAR --- */
-/* Kita biarkan warna dihandle oleh class 'bg-primary' di HTML, 
-   tapi kita atur spacing dan font-nya disini */
 .navbar {
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -36,21 +32,18 @@ a {
     font-size: 1.35rem;
 }
 
-/* --- CARDS --- */
 .card {
-    border: 1px solid var(--border-color); /* Sesuai request ada border abu */
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     background-color: #FFFFFF;
-    /* Hilangkan shadow default bootstrap, ganti yang lebih halus */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02); 
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Class tambahan jika ingin card bisa di-hover (seperti di daftar kos) */
 .card-hover:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
-    border-color: #cfe2ff; /* Sedikit biru saat hover */
+    border-color: #cfe2ff; 
 }
 
 .card-header {
@@ -59,14 +52,13 @@ a {
     font-weight: 600;
 }
 
-/* --- TABLE (Untuk Dashboard Owner nanti) --- */
 .table {
     margin-bottom: 0;
 }
 
 .table thead th {
-    background-color: #F8F9FA; /* Abu muda */
-    color: #6C757D; /* Text abu gelap */
+    background-color: #F8F9FA; 
+    color: #6C757D;
     font-weight: 600;
     font-size: 0.85rem;
     text-transform: uppercase;
@@ -82,15 +74,13 @@ a {
     color: var(--text-color);
 }
 
-/* --- BADGE STATUS --- */
 .badge {
     padding: 0.5em 0.8em;
     font-weight: 500;
     letter-spacing: 0.3px;
-    border-radius: 6px; /* Pill shape tapi agak kotak dikit biar modern */
+    border-radius: 6px;
 }
 
-/* --- BUTTONS --- */
 .btn {
     border-radius: 8px;
     padding: 0.5rem 1rem;
@@ -98,14 +88,13 @@ a {
     transition: all 0.2s;
 }
 
-/* Override warna primary bootstrap agar benar-benar sesuai hex request */
 .btn-primary {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
 }
 
 .btn-primary:hover {
-    background-color: #0b5ed7; /* Versi sedikit lebih gelap dari #0D6EFD */
+    background-color: #0b5ed7;
     border-color: #0a58ca;
 }
 
