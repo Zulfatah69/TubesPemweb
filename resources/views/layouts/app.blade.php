@@ -6,81 +6,20 @@
     
     <title>{{ $title ?? 'KosConnect' }}</title>
 
+    {{-- Bootstrap --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    {{-- Font --}}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    {{-- Icons --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <style>
-        :root {
-            --bs-primary: #0D6EFD;
-            --bs-primary-rgb: 13, 110, 253;
-            --bs-secondary: #6C757D;
-            --bs-success: #198754;
-            --bs-warning: #FFC107;
-            --bs-danger: #DC3545;
+    {{-- CSS Global --}}
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
-            --kosan-bg-section: #F8F9FA;
-            --kosan-text-main: #212529;
-            --kosan-border: #DEE2E6;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--kosan-bg-section);
-            color: var(--kosan-text-main);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh; 
-        }
-        
-        .navbar {
-            background-color: var(--bs-primary) !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        
-        .navbar-brand {
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .nav-link {
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .nav-link:hover {
-            color: #fff !important;
-            transform: translateY(-1px);
-        }
-
-        .nav-link.active {
-            font-weight: 700;
-            color: #fff !important;
-        }
-
-        main {
-            flex: 1; 
-        }
-
-        .card {
-            border: 1px solid var(--kosan-border);
-            border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-            background-color: #FFFFFF;
-        }
-
-        footer {
-            background-color: #FFFFFF;
-            border-top: 1px solid var(--kosan-border);
-            margin-top: auto;
-        }
-    </style>
-    
-    @if(file_exists(public_path('css/app.css')))
-        <link rel="stylesheet" href=
-    @endif
+    {{-- CSS per halaman --}}
+    @stack('styles')
 </head>
 
 <body>
