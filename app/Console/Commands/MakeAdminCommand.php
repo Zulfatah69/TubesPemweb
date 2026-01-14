@@ -4,11 +4,11 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash; // <-- tambahkan ini
 
 class MakeAdminCommand extends Command
 {
     protected $signature = 'make:admin {email} {--password=}';
-
     protected $description = 'Create or promote a user to admin role';
 
     public function handle()
@@ -35,7 +35,7 @@ class MakeAdminCommand extends Command
             'email' => $email,
             'phone' => '0000000000',
             'role' => 'admin',
-            'password' => $password,
+            'password' => Hash::make($password), // <-- hash password
             'email_verified_at' => now(),
         ]);
 
