@@ -1,0 +1,105 @@
+/* =====================================================
+   REGISTER EMAIL – COLOR OVERRIDE ONLY
+   Palette:
+   #9AA6B2 | #BCCCDC | #D9EAFD | #F8FAFC
+   ===================================================== */
+
+:root {
+    --bg-soft: #F8FAFC;
+    --card-soft: #BCCCDC;
+    --btn-soft: #9AA6B2;
+    --text-main: #5f666e;
+    --text-muted: #7a828a;
+}
+
+/* ================= HEADER ================= */
+h4 {
+    color: var(--text-main) !important;
+}
+
+p.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* ================= CARD ================= */
+.card {
+    background-color: var(--card-soft) !important;
+    border: none;
+}
+
+/* ================= ICON CIRCLE ================= */
+.bg-primary {
+    background-color: var(--card-soft) !important;
+}
+
+/* icon tetap putih */
+.bg-primary i {
+    color: #ffffff;
+}
+
+/* ================= INPUT ================= */
+.form-control {
+    background-color: var(--bg-soft);
+    color: var(--text-main);
+    border: none;
+}
+
+.form-control::placeholder {
+    color: #8a9199;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.15rem rgba(154,166,178,.45);
+}
+
+/* input icon */
+.input-group-text {
+    background-color: var(--bg-soft);
+    border: none;
+    color: var(--card-soft);
+}
+
+/* ================= BUTTON ================= */
+.btn-primary {
+    background-color: var(--btn-soft);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #8c96a0;
+}
+
+/* ================= LINK ================= */
+a.text-primary,
+.text-center a {
+    color: var(--text-main) !important;
+}
+
+/* ================= ALERT ================= */
+.alert-danger,
+.alert-success {
+    background-color: rgba(217,234,253,.7);
+    color: var(--text-main);
+    border: none;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+    background-color: #BCCCDC !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,.06);
+}
+
+.navbar-brand,
+.navbar-nav .nav-link {
+    color: #5f666e !important;
+    font-weight: 600;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #3f454b !important;
+}
+
+/* tombol / link aktif */
+.navbar-nav .nav-link.active {
+    color: #3f454b !important;
+}

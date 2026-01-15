@@ -9,59 +9,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/register.css') }}">
 
-    <style>
-        :root {
-            --bs-primary: #0D6EFD;
-            --bs-primary-rgb: 13, 110, 253;
-            --kosan-bg: #F8F9FA;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--kosan-bg);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 0;
-        }
-
-        .card-register {
-            border: none;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-
-        .form-control {
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: 1px solid #DEE2E6;
-        }
-
-        .form-control:focus {
-            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
-            border-color: var(--bs-primary);
-        }
-
-        .input-group-text {
-            background: #fff;
-            border-right: none;
-            border-top-left-radius: 8px;
-            border-bottom-left-radius: 8px;
-            color: #6c757d;
-        }
-        
-        .form-control-icon {
-            border-left: none;
-        }
-        
-        .btn-check:checked + .btn-outline-primary {
-            background-color: rgba(13, 110, 253, 0.1);
-            color: var(--bs-primary);
-            border-color: var(--bs-primary);
-        }
-    </style>
 </head>
 
 <body>
