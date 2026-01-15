@@ -1,0 +1,146 @@
+/* =====================================================
+   AUTH - LOGIN PAGE (REFINED)
+   Palette:
+   #9AA6B2 | #BCCCDC | #D9EAFD | #F8FAFC
+   ===================================================== */
+
+/* ================= ROOT ================= */
+:root {
+    --bg-main: #F8FAFC;
+    --card-bg: #BCCCDC;
+    --button-main: #9AA6B2;
+
+    /* 🔼 dinaikin dikit dari sebelumnya */
+    --text-main: #5f666e;
+    --text-muted: #7a828a;
+}
+
+/* ================= BASE ================= */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ================= HEADER ================= */
+h4 {
+    color: var(--text-main) !important;
+    font-weight: 700;
+}
+
+p.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* ================= CARD ================= */
+.card-login {
+    background-color: var(--card-bg) !important;
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 16px 34px rgba(0,0,0,0.08);
+}
+
+/* ================= LABEL ================= */
+.form-label {
+    color: var(--text-main) !important;
+    font-weight: 600;
+}
+
+/* ================= INPUT ================= */
+.form-control {
+    background-color: #F8FAFC;
+    color: var(--text-main);
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,.05);
+}
+
+.form-control::placeholder {
+    color: #8f979f;
+}
+
+.form-control:focus {
+    outline: none;
+    box-shadow:
+        0 0 0 2px rgba(154,166,178,.4),
+        0 6px 16px rgba(0,0,0,.08);
+}
+
+/* ================= INPUT ICON ================= */
+.input-group-text {
+    background-color: #F8FAFC;
+    border: none;
+    color: #8f979f;          /* 🔧 balik ke abu netral */
+    border-radius: 10px 0 0 10px;
+}
+
+.input-group .form-control {
+    border-radius: 0 10px 10px 0;
+}
+
+/* ================= BUTTON ================= */
+.btn-primary {
+    background-color: var(--button-main);
+    border: none;
+    color: #ffffff;
+    padding: 13px;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 0 10px 20px rgba(154,166,178,.4);
+}
+
+.btn-primary:hover {
+    background-color: #88919a;
+}
+
+/* ================= AVATAR ICON ================= */
+.bg-primary {
+    background-color: var(--card-bg) !important;
+    box-shadow: none;
+}
+
+/* icon di avatar TETAP PUTIH */
+.bg-primary i {
+    color: #ffffff;
+}
+
+/* ================= CHECKBOX ================= */
+.form-check-label {
+    color: var(--text-main) !important;
+}
+
+.form-check-input {
+    border: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,.07);
+}
+
+.form-check-input:checked {
+    background-color: var(--button-main);
+}
+
+/* ================= ALERT ================= */
+.alert-danger {
+    background-color: rgba(217,234,253,.7);
+    border: none;
+    color: var(--text-main);
+}
+
+/* ================= REGISTER TEXT ================= */
+.text-center p,
+.text-center a {
+    color: var(--text-muted) !important;
+    text-decoration: none;
+}
+
+.text-center a {
+    font-weight: 600;
+}
+
+/* ================= FOOTER ================= */
+.opacity-50 {
+    color: var(--text-muted) !important;
+}

@@ -9,58 +9,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 
-    <style>
-        :root {
-            --bs-primary: #0D6EFD;
-            --bs-primary-rgb: 13, 110, 253;
-            --kosan-bg: #F8F9FA;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--kosan-bg);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .card-login {
-            border: none;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-
-        .form-control {
-            padding: 12px 15px;
-            border-radius: 8px;
-            border: 1px solid #DEE2E6;
-        }
-
-        .form-control:focus {
-            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
-        }
-
-        .btn-primary {
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-
-        .input-group-text {
-            background: transparent;
-            border-right: none;
-            border-top-left-radius: 8px;
-            border-bottom-left-radius: 8px;
-        }
-        
-        .form-control-icon {
-            border-left: none;
-            border-top-right-radius: 8px;
-            border-bottom-right-radius: 8px;
-        }
-    </style>
 </head>
 
 <body>
