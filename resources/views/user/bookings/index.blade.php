@@ -9,11 +9,13 @@
     {{-- HEADER --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="fw-bold text-dark mb-1">Riwayat Booking</h4>
+            <h4 class="fw-bold">Riwayat Booking</h4>
             <p class="text-muted small mb-0">Daftar kos yang pernah atau sedang kamu sewa.</p>
         </div>
-        <a href="{{ route('user.dashboard') }}" class="btn btn-outline-primary btn-sm">
-            <i class="bi bi-search me-1"></i> Cari Kos Lagi
+        <a href="{{ route('user.dashboard') }}" class="btn btn-sm" style="color: #5f666e;; border: 1px solid #5f666e;;">
+    <i class="bi bi-search me-1" style="color: #5f666e;;"></i> Cari Kos Lagi
+</a>
+
         </a>
     </div>
 
@@ -116,7 +118,7 @@
                     <i class="bi bi-journal-x fs-1 text-muted opacity-50"></i>
                 </div>
             </div>
-            <h5 class="fw-bold text-dark">Belum ada riwayat booking</h5>
+            <h5 class="fw-bold">Belum ada riwayat booking</h5>
             <p class="text-muted mb-4">Kamu belum pernah mengajukan sewa kosan.</p>
             <a href="{{ route('user.dashboard') }}" class="btn btn-primary px-4 fw-bold">
                 Mulai Cari Kos

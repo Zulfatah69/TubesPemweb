@@ -12,9 +12,9 @@
             <p class="text-muted small mb-0">Ringkasan statistik aplikasi KosConnect.</p>
         </div>
         <div class="d-flex gap-2">
-            <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary btn-sm">
-                <i class="bi bi-people me-1"></i> Users & Owners
-            </a>
+            <a href="{{ route('admin.users.index') }}" class="btn btn-users-owner btn-sm">
+    <i class="bi bi-people me-1"></i> Users & Owners
+</a>
             <a href="{{ route('admin.bookings.index') }}" class="btn btn-primary btn-sm">
                 <i class="bi bi-journal-bookmark me-1"></i> Monitoring Booking
             </a>
@@ -36,7 +36,7 @@
                         </div>
                         <div>
                             <p class="text-muted small mb-1 text-uppercase fw-bold">Total Users</p>
-                            <h4 class="fw-bold mb-0 text-dark">{{ $totalUsers ?? 0 }}</h4>
+                            <h4 class="fw-bold mb-0 stat-number">{{ $totalUsers ?? 0 }}</h4>
                         </div>
                     </div>
                 </div>
@@ -106,8 +106,8 @@
         <div class="col-lg-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-bold text-dark">
-                        <i class="bi bi-bar-chart-line me-2 text-primary"></i>Statistik Booking Bulanan
+                    <h6 class="mb-0 fw-bold statistik-title">
+                        <i class="bi bi-bar-chart-line me-2 statistik-icon"></i>Statistik Booking Bulanan
                     </h6>
                     <span class="badge bg-light text-muted border">Tahun Ini</span>
                 </div>
@@ -122,6 +122,40 @@
 @endsection
 
 @push('scripts')
+
+<style>
+.btn-users-owner {
+    background-color: #9AA6B2;
+    color: #fff;
+    border: none;
+}
+
+.btn-users-owner i {
+    color: #ffffff;   /* WARNA ICON */
+}
+
+.btn-users-owner:hover {
+    background-color: #9AA6B2;
+    color: #fff;
+}
+
+.btn-users-owner:hover i {
+    color: #fff;      /* icon ikut berubah pas hover */
+}
+
+.card .card-body h4 {
+    color: #9AA6B2 !important;
+}
+
+.statistik-title {
+    color: #5F666E;
+}
+
+.statistik-icon {
+    color: #5F666E;
+}
+
+</style>
 {{-- Load Chart JS --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 

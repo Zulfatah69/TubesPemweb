@@ -10,7 +10,7 @@
             {{-- HEADER --}}
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 class="fw-bold text-dark mb-1">Pesan Masuk</h4>
+                    <h4 class="fw-bold">Pesan Masuk</h4>
                     <p class="text-muted small mb-0">Riwayat percakapan dengan pemilik kos.</p>
                 </div>
                 <a href="{{ route('user.dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
