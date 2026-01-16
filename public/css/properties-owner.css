@@ -1,0 +1,284 @@
+/* =====================================================
+   PROPERTIES-OWNER STYLES
+   ===================================================== */
+
+/* ================= CONTAINER & SPACING ================= */
+.container.py-4 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+}
+
+/* ================= HEADER SECTION ================= */
+.d-flex.justify-content-between.align-items-center.mb-4 {
+    background: linear-gradient(135deg, var(--kosan-card-bg) 0%, #fafcff 100%);
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--kosan-border);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    margin-bottom: 2rem !important;
+}
+
+.d-flex.justify-content-between.align-items-center.mb-4 h4 {
+    color: var(--kosan-text-main) !important;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.d-flex.justify-content-between.align-items-center.mb-4 p {
+    color: var(--kosan-text-muted) !important;
+    font-size: 0.875rem;
+    margin-bottom: 0;
+}
+
+/* ================= BACK BUTTON ================= */
+.btn-outline-secondary {
+    background-color: transparent !important;
+    border: 1px solid var(--kosan-border) !important;
+    color: var(--kosan-text-main) !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 10px !important;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--kosan-primary) !important;
+    border-color: var(--kosan-primary) !important;
+    color: var(--kosan-text-main) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(188, 204, 220, 0.2);
+}
+
+.btn-outline-secondary i {
+    font-size: 0.875rem;
+}
+
+/* ================= ALERT ================= */
+.alert-success {
+    background-color: rgba(188, 204, 220, 0.15) !important;
+    border: none !important;
+    color: var(--kosan-text-main) !important;
+    border-radius: 12px !important;
+    padding: 1rem 1.25rem !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-bottom: 2rem !important;
+}
+
+.alert-success i {
+    color: var(--kosan-secondary) !important;
+}
+
+.alert-success .btn-close {
+    padding: 0.75rem !important;
+    filter: brightness(0.8);
+}
+
+/* ================= CARD & TABLE ================= */
+.card.border-0.shadow-sm {
+    background-color: var(--kosan-card-bg) !important;
+    border: 1px solid var(--kosan-border) !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06) !important;
+    transition: transform 0.3s ease;
+}
+
+.card.border-0.shadow-sm:hover {
+    transform: translateY(-2px);
+}
+
+.table-responsive {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* ================= TABLE HEADER ================= */
+.bg-light {
+    background-color: var(--kosan-primary) !important;
+    backdrop-filter: blur(10px);
+}
+
+.bg-light tr th {
+    color: var(--kosan-text-main) !important;
+    font-weight: 600 !important;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1rem 1.5rem !important;
+    border-bottom: 2px solid var(--kosan-border) !important;
+}
+
+.bg-light tr th:first-child {
+    padding-left: 1.5rem !important;
+}
+
+.bg-light tr th:last-child {
+    padding-right: 1.5rem !important;
+}
+
+/* ================= TABLE BODY ================= */
+.table-hover tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(188, 204, 220, 0.3);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(188, 204, 220, 0.1) !important;
+    transform: translateX(4px);
+}
+
+.table-hover tbody td {
+    padding: 1.25rem 1.5rem !important;
+    vertical-align: middle;
+}
+
+/* ================= TABLE CELLS ================= */
+/* ID Column */
+.ps-4.fw-bold.text-muted {
+    color: var(--kosan-text-muted) !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem;
+}
+
+/* Name Column */
+.fw-bold.text-dark {
+    color: var(--kosan-text-main) !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem;
+}
+
+/* Location Column */
+.small.text-dark {
+    color: var(--kosan-text-main) !important;
+    font-weight: 500;
+}
+
+.small.text-muted {
+    color: var(--kosan-text-muted) !important;
+    font-size: 0.8125rem;
+}
+
+/* Price Column */
+.fw-bold.text-primary {
+    color: var(--kosan-secondary) !important;
+    font-weight: 700 !important;
+    font-size: 1rem;
+}
+
+/* Photo Count Badge */
+.badge.bg-light.text-dark.border {
+    background-color: var(--kosan-primary) !important;
+    border: 1px solid var(--kosan-border) !important;
+    color: var(--kosan-text-main) !important;
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 50px !important;
+}
+
+.badge.bg-light.text-dark.border i {
+    color: var(--kosan-text-muted) !important;
+}
+
+/* ================= DELETE BUTTON ================= */
+.btn-outline-danger {
+    background-color: transparent !important;
+    border: 1px solid #ff6b6b !important;
+    color: #ff6b6b !important;
+    padding: 0.4rem 0.8rem !important;
+    border-radius: 8px !important;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-danger:hover {
+    background-color: #ff6b6b !important;
+    border-color: #ff6b6b !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
+}
+
+.btn-outline-danger i {
+    font-size: 0.75rem;
+}
+
+/* ================= EMPTY STATE ================= */
+.text-center.py-5 {
+    padding: 3rem 1rem !important;
+}
+
+.bg-light.rounded-circle.p-3 {
+    background-color: var(--kosan-primary) !important;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
+.bg-light.rounded-circle.p-3 i {
+    color: var(--kosan-text-muted) !important;
+    font-size: 2rem;
+}
+
+.text-center.py-5 h6 {
+    color: var(--kosan-text-muted) !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* ================= RESPONSIVE ADJUSTMENTS ================= */
+@media (max-width: 768px) {
+    .container.py-4 {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }
+    
+    .d-flex.justify-content-between.align-items-center.mb-4 {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 1rem;
+    }
+    
+    .btn-outline-secondary {
+        align-self: flex-start;
+    }
+    
+    .table-hover tbody td {
+        padding: 1rem !important;
+    }
+    
+    .btn-outline-danger {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.table-hover tbody tr {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.table-hover tbody tr:nth-child(odd) {
+    animation-delay: 0.05s;
+}
+
+.table-hover tbody tr:nth-child(even) {
+    animation-delay: 0.1s;
+}

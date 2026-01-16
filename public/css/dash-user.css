@@ -1,0 +1,447 @@
+/* =====================================================
+   USER DASHBOARD STYLES
+   ===================================================== */
+
+/* ================= RESET & BASE ================= */
+.user-dashboard {
+    min-height: calc(100vh - 80px);
+    background-color: var(--kosan-bg-main);
+    padding: 1.5rem 0;
+}
+
+.user-dashboard .row {
+    margin: 0;
+    gap: 0;
+    align-items: flex-start;
+}
+
+/* ================= FILTER CARD ================= */
+.card.border-0.shadow-sm {
+    background: var(--kosan-card-bg) !important;
+    border: 1px solid var(--kosan-border) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: sticky !important;
+    top: 90px !important;
+    z-index: 100 !important;
+}
+
+.card.border-0.shadow-sm:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Card Header */
+.card-header.bg-white {
+    background: var(--kosan-primary) !important;
+    border-bottom: 1px solid var(--kosan-border) !important;
+    padding: 1.25rem 1.5rem !important;
+}
+
+.card-title {
+    color: var(--kosan-text-main) !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-title i {
+    color: var(--kosan-secondary) !important;
+    font-size: 1.2rem;
+}
+
+/* Card Body */
+.card-body {
+    padding: 1.5rem !important;
+    background: var(--kosan-card-bg);
+}
+
+/* ================= FILTER SECTIONS ================= */
+.form-label {
+    color: var(--kosan-text-muted) !important;
+    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.75rem !important;
+    display: block;
+}
+
+/* Select Dropdowns */
+.form-select-sm {
+    background-color: var(--kosan-bg-main) !important;
+    border: 1px solid var(--kosan-border) !important;
+    color: var(--kosan-text-main) !important;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 10px !important;
+    font-size: 0.85rem !important;
+    margin-bottom: 0.5rem !important;
+    transition: all 0.2s ease;
+}
+
+.form-select-sm:focus {
+    border-color: var(--kosan-secondary) !important;
+    box-shadow: 0 0 0 3px rgba(154, 166, 178, 0.15) !important;
+    transform: translateY(-1px);
+}
+
+.form-select-sm option {
+    background-color: var(--kosan-card-bg);
+    color: var(--kosan-text-main);
+    padding: 0.5rem;
+}
+
+/* HR Separator */
+hr.text-muted.opacity-25 {
+    border-color: var(--kosan-border) !important;
+    opacity: 0.3 !important;
+    margin: 1.5rem 0 !important;
+}
+
+/* ================= FACILITIES CHECKBOXES ================= */
+.form-check {
+    margin-bottom: 0.5rem;
+    padding-left: 1.75rem;
+    display: flex;
+    align-items: center;
+    min-height: 1.5rem;
+}
+
+.form-check-input {
+    width: 1.1em;
+    height: 1.1em;
+    margin-left: -1.75rem;
+    margin-top: 0;
+    margin-right: 0.5rem;
+    background-color: var(--kosan-bg-main);
+    border: 1px solid var(--kosan-border);
+    border-radius: 4px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.form-check-input:checked {
+    background-color: var(--kosan-secondary) !important;
+    border-color: var(--kosan-secondary) !important;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(154, 166, 178, 0.2) !important;
+}
+
+.form-check-label {
+    color: var(--kosan-text-main) !important;
+    font-size: 0.875rem !important;
+    cursor: pointer;
+    user-select: none;
+    line-height: 1.3;
+    flex-grow: 1;
+}
+
+/* ================= FILTER BUTTONS ================= */
+.d-grid.gap-2 {
+    gap: 0.75rem !important;
+    margin-top: 1.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--kosan-secondary) 0%, #88919a 100%) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.625rem !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(154, 166, 178, 0.25) !important;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(154, 166, 178, 0.35) !important;
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-outline-secondary {
+    background-color: transparent !important;
+    border: 1px solid var(--kosan-border) !important;
+    color: var(--kosan-text-main) !important;
+    padding: 0.625rem !important;
+    border-radius: 12px !important;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--kosan-primary) !important;
+    border-color: var(--kosan-primary) !important;
+    color: var(--kosan-text-main) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(188, 204, 220, 0.2);
+}
+
+/* ================= LIST KOS SECTION ================= */
+.col-lg-9 {
+    padding-left: 2rem !important;
+}
+
+h4.fw-bold.mb-3 {
+    color: var(--kosan-text-main) !important;
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 1.5rem !important;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--kosan-primary);
+    display: inline-block;
+}
+
+/* ================= PROPERTY CARDS ================= */
+.card.h-100.shadow-sm {
+    background: var(--kosan-card-bg) !important;
+    border: 1px solid var(--kosan-border) !important;
+    border-radius: 18px !important;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100% !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.card.h-100.shadow-sm:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+    border-color: var(--kosan-secondary) !important;
+}
+
+/* Property Image */
+.card-img-top {
+    height: 200px !important;
+    object-fit: cover !important;
+    width: 100% !important;
+    border-bottom: 1px solid var(--kosan-border);
+    transition: transform 0.5s ease;
+}
+
+.card.h-100.shadow-sm:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+/* Property Card Body */
+.card-body {
+    padding: 1.25rem !important;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+small.text-muted {
+    color: var(--kosan-text-muted) !important;
+    font-size: 0.8rem !important;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-bottom: 0.5rem;
+}
+
+small.text-muted i {
+    color: var(--kosan-secondary) !important;
+    font-size: 0.9rem;
+}
+
+h6.fw-bold {
+    color: var(--kosan-text-main) !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    margin: 0.5rem 0 !important;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+.text-primary.fw-bold {
+    color: var(--kosan-secondary) !important;
+    font-weight: 700 !important;
+    font-size: 1.1rem !important;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(188, 204, 220, 0.3);
+}
+
+/* ================= EMPTY STATE ================= */
+.text-center.text-muted.py-5 {
+    color: var(--kosan-text-muted) !important;
+    font-size: 1.1rem;
+    padding: 4rem 1rem !important;
+    background: var(--kosan-card-bg);
+    border-radius: 18px;
+    border: 2px dashed var(--kosan-border);
+    margin: 2rem 0;
+}
+
+/* ================= GRID LAYOUT ================= */
+.row.g-4 {
+    margin: 0 -0.75rem !important;
+    row-gap: 1.5rem !important;
+}
+
+.col-md-6.col-xl-4 {
+    padding: 0 0.75rem !important;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card.h-100.shadow-sm {
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+.card.h-100.shadow-sm:nth-child(1) { animation-delay: 0.1s; }
+.card.h-100.shadow-sm:nth-child(2) { animation-delay: 0.2s; }
+.card.h-100.shadow-sm:nth-child(3) { animation-delay: 0.3s; }
+.card.h-100.shadow-sm:nth-child(4) { animation-delay: 0.4s; }
+.card.h-100.shadow-sm:nth-child(5) { animation-delay: 0.5s; }
+.card.h-100.shadow-sm:nth-child(6) { animation-delay: 0.6s; }
+
+/* ================= RESPONSIVE DESIGN ================= */
+@media (max-width: 992px) {
+    .user-dashboard .row {
+        flex-direction: column;
+    }
+    
+    .col-lg-3.mb-4 {
+        width: 100% !important;
+        margin-bottom: 2rem !important;
+    }
+    
+    .col-lg-9 {
+        width: 100% !important;
+        padding-left: 0 !important;
+    }
+    
+    .card.border-0.shadow-sm {
+        position: relative !important;
+        top: 0 !important;
+    }
+    
+    h4.fw-bold.mb-3 {
+        text-align: center;
+        display: block;
+        width: 100%;
+        font-size: 1.5rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .user-dashboard {
+        padding: 1rem 0;
+    }
+    
+    .row.g-4 {
+        margin: 0 -0.5rem !important;
+        row-gap: 1rem !important;
+    }
+    
+    .col-md-6.col-xl-4 {
+        padding: 0 0.5rem !important;
+        width: 50% !important;
+    }
+    
+    .card-body {
+        padding: 1rem !important;
+    }
+    
+    h6.fw-bold {
+        font-size: 1rem !important;
+    }
+    
+    .text-primary.fw-bold {
+        font-size: 1rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .col-md-6.col-xl-4 {
+        width: 100% !important;
+    }
+    
+    .card.h-100.shadow-sm {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    .card-header.bg-white {
+        padding: 1rem !important;
+    }
+    
+    .card-body {
+        padding: 1.25rem 1rem !important;
+    }
+    
+    .btn-primary,
+    .btn-outline-secondary {
+        padding: 0.75rem !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+/* ================= CUSTOM SCROLLBAR ================= */
+.card-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.card-body::-webkit-scrollbar-track {
+    background: var(--kosan-bg-main);
+    border-radius: 3px;
+}
+
+.card-body::-webkit-scrollbar-thumb {
+    background: var(--kosan-border);
+    border-radius: 3px;
+}
+
+.card-body::-webkit-scrollbar-thumb:hover {
+    background: var(--kosan-secondary);
+}
+
+/* ================= LOADING STATE ================= */
+.card.h-100.shadow-sm.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.card.h-100.shadow-sm.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.2) 50%, 
+        transparent 100%);
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}

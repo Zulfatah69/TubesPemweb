@@ -2,6 +2,10 @@
 
 @section('title', 'Tambah Properti')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/add-property.css') }}">
+@endpush
+
 @section('content')
 <div class="container py-4">
 

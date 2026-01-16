@@ -1,0 +1,85 @@
+/* dash-owner.css */
+
+/* Font & general body */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa; /* mirip login page */
+    color: #343a40;
+}
+
+/* Container dashboard */
+.user-dashboard, .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Cards utama */
+.card {
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.08);
+}
+
+/* Hover effect sama kayak login card */
+.card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+}
+
+/* Card header */
+.card-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 600;
+}
+
+/* Stat cards */
+.card.border-start.border-primary { border-left: 4px solid #0d6efd !important; }
+.card.border-start.border-success { border-left: 4px solid #198754 !important; }
+.card.border-start.border-warning { border-left: 4px solid #ffc107 !important; }
+
+/* Badge / notification bubble */
+.badge {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Tombol tambah */
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    transition: all 0.2s ease;
+}
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+/* Quick action cards */
+.card-hover .card-body {
+    padding: 1.25rem;
+}
+.card-hover i {
+    transition: all 0.2s ease;
+}
+.card-hover:hover i {
+    transform: scale(1.1);
+}
+
+/* Text styling */
+h4, h5, h6 {
+    font-weight: 600;
+}
+.text-muted {
+    font-size: 0.85rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem;
+    }
+}

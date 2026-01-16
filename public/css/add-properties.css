@@ -1,0 +1,474 @@
+/* =====================================================
+   ADD-PROPERTY FORM STYLES
+   ===================================================== */
+
+/* ================= CONTAINER & SPACING ================= */
+.container.py-4 {
+    padding-top: 2rem !important;
+    padding-bottom: 3rem !important;
+    max-width: 1200px;
+}
+
+/* ================= HEADER SECTION ================= */
+.d-flex.justify-content-between.align-items-center.mb-4 {
+    background: linear-gradient(135deg, var(--kosan-card-bg) 0%, rgba(188, 204, 220, 0.05) 100%);
+    padding: 1.75rem 2rem;
+    border-radius: 16px;
+    border: 1px solid var(--kosan-border);
+    margin-bottom: 2.5rem !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+.d-flex.justify-content-between.align-items-center.mb-4 h4 {
+    color: var(--kosan-text-main) !important;
+    font-weight: 700;
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, var(--kosan-text-main) 0%, var(--kosan-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.d-flex.justify-content-between.align-items-center.mb-4 p {
+    color: var(--kosan-text-muted) !important;
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+/* ================= BACK BUTTON ================= */
+.btn-outline-secondary {
+    background-color: transparent !important;
+    border: 1px solid var(--kosan-border) !important;
+    color: var(--kosan-text-main) !important;
+    padding: 0.6rem 1.25rem !important;
+    border-radius: 12px !important;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--kosan-primary) !important;
+    border-color: var(--kosan-primary) !important;
+    color: var(--kosan-text-main) !important;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(154, 166, 178, 0.2);
+}
+
+.btn-outline-secondary i {
+    font-size: 0.875rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-outline-secondary:hover i {
+    transform: translateX(-3px);
+}
+
+/* ================= FORM LAYOUT ================= */
+.row.g-4 {
+    gap: 1.5rem !important;
+}
+
+/* ================= CARD STYLES ================= */
+.card.border-0.shadow-sm {
+    background-color: var(--kosan-card-bg) !important;
+    border: 1px solid var(--kosan-border) !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06) !important;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem !important;
+}
+
+.card.border-0.shadow-sm:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.1) !important;
+}
+
+/* ================= CARD HEADER ================= */
+.card-header.bg-white.py-3 {
+    background-color: var(--kosan-primary) !important;
+    border-bottom: 1px solid var(--kosan-border) !important;
+    padding: 1.25rem 1.5rem !important;
+}
+
+.card-header h6 {
+    color: var(--kosan-text-main) !important;
+    font-weight: 700 !important;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+}
+
+.card-header h6 i {
+    color: var(--kosan-secondary) !important;
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+/* ================= CARD BODY ================= */
+.card-body.p-4 {
+    padding: 2rem !important;
+}
+
+/* ================= FORM CONTROLS ================= */
+.form-label {
+    color: var(--kosan-text-main) !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.form-label.fw-bold.small.text-muted {
+    color: var(--kosan-text-muted) !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    font-size: 0.8rem;
+}
+
+/* ================= INPUT FIELDS ================= */
+.form-control {
+    background-color: var(--kosan-bg-main) !important;
+    border: 1px solid var(--kosan-border) !important;
+    color: var(--kosan-text-main) !important;
+    padding: 0.875rem 1rem !important;
+    border-radius: 12px !important;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+
+.form-control:focus {
+    background-color: var(--kosan-bg-main) !important;
+    border-color: var(--kosan-secondary) !important;
+    color: var(--kosan-text-main) !important;
+    box-shadow: 0 0 0 3px rgba(154, 166, 178, 0.15) !important;
+    transform: translateY(-1px);
+}
+
+.form-control::placeholder {
+    color: #a8b0b9 !important;
+    font-size: 0.9rem;
+}
+
+/* ================= RADIO BUTTON GROUP ================= */
+.btn-group.w-100 {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--kosan-border);
+    background-color: var(--kosan-bg-main);
+}
+
+.btn-group.w-100 .btn-check {
+    display: none;
+}
+
+.btn-group.w-100 .btn {
+    background-color: transparent !important;
+    border: none !important;
+    color: var(--kosan-text-muted) !important;
+    padding: 0.875rem 1rem !important;
+    font-weight: 500;
+    font-size: 0.9rem;
+    flex: 1;
+    transition: all 0.2s ease;
+}
+
+.btn-group.w-100 .btn-check:checked + .btn {
+    background-color: var(--kosan-secondary) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(154, 166, 178, 0.3);
+}
+
+.btn-group.w-100 .btn:hover {
+    background-color: rgba(154, 166, 178, 0.1) !important;
+    color: var(--kosan-text-main) !important;
+}
+
+/* ================= INPUT GROUP ================= */
+.input-group {
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+
+.input-group-text {
+    background-color: var(--kosan-primary) !important;
+    border: 1px solid var(--kosan-border) !important;
+    color: var(--kosan-text-main) !important;
+    font-weight: 500;
+    padding: 0.875rem 1rem !important;
+}
+
+.input-group-text.bg-light {
+    background-color: var(--kosan-primary) !important;
+}
+
+.input-group-text.bg-light.fw-bold.text-secondary {
+    color: var(--kosan-secondary) !important;
+}
+
+/* ================= TEXTAREA ================= */
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* ================= SELECT DROPDOWNS ================= */
+.form-select {
+    background-color: var(--kosan-bg-main) !important;
+    border: 1px solid var(--kosan-border) !important;
+    color: var(--kosan-text-main) !important;
+    padding: 0.875rem 1rem !important;
+    border-radius: 12px !important;
+    font-size: 0.95rem;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='%239AA6B2' fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    background-position: right 1rem center;
+    background-size: 16px 12px;
+    transition: all 0.2s ease;
+}
+
+.form-select:focus {
+    border-color: var(--kosan-secondary) !important;
+    box-shadow: 0 0 0 3px rgba(154, 166, 178, 0.15) !important;
+}
+
+/* ================= CHECKBOXES ================= */
+.form-check {
+    margin-bottom: 0.5rem;
+    padding-left: 2.25rem;
+}
+
+.form-check-input {
+    width: 1.2em;
+    height: 1.2em;
+    margin-left: -2.25rem;
+    margin-top: 0.2em;
+    background-color: var(--kosan-bg-main);
+    border: 1px solid var(--kosan-border);
+    border-radius: 6px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: var(--kosan-secondary) !important;
+    border-color: var(--kosan-secondary) !important;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(154, 166, 178, 0.25) !important;
+}
+
+.form-check-label {
+    color: var(--kosan-text-main) !important;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* ================= FACILITIES CHECKBOXES ================= */
+.row.g-3.mb-3 {
+    margin-bottom: 1.5rem !important;
+}
+
+/* ================= SUBMIT BUTTON CARD ================= */
+.card.sticky-top {
+    background-color: var(--kosan-card-bg) !important;
+    border: 1px solid var(--kosan-border) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.card.sticky-top .card-body {
+    padding: 1.5rem !important;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--kosan-secondary) 0%, #88919a 100%) !important;
+    border: none !important;
+    color: white !important;
+    padding: 1rem !important;
+    border-radius: 14px !important;
+    font-weight: 700 !important;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 6px 20px rgba(154, 166, 178, 0.3) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-success:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(154, 166, 178, 0.4) !important;
+}
+
+.btn-success:active {
+    transform: translateY(-1px) scale(0.99);
+}
+
+.btn-success i {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-success:hover i {
+    transform: rotate(90deg);
+}
+
+/* ================= UPLOAD PHOTO CARD ================= */
+.card.text-center {
+    background-color: var(--kosan-card-bg) !important;
+    border: 2px dashed var(--kosan-border) !important;
+    border-radius: 18px !important;
+    transition: all 0.3s ease;
+}
+
+.card.text-center:hover {
+    border-color: var(--kosan-secondary) !important;
+    background-color: rgba(154, 166, 178, 0.03) !important;
+    transform: translateY(-2px);
+}
+
+.card.text-center .card-body {
+    padding: 2.5rem 2rem !important;
+}
+
+.card.text-center .display-4 {
+    font-size: 4rem;
+    color: var(--kosan-primary) !important;
+    margin-bottom: 1.5rem;
+}
+
+/* ================= FILE INPUT ================= */
+input[type="file"] {
+    background-color: var(--kosan-bg-main) !important;
+    border: 1px solid var(--kosan-border) !important;
+    border-radius: 12px !important;
+    padding: 0.75rem !important;
+    color: var(--kosan-text-main) !important;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+input[type="file"]:focus {
+    border-color: var(--kosan-secondary) !important;
+    box-shadow: 0 0 0 3px rgba(154, 166, 178, 0.15) !important;
+}
+
+input[type="file"]::file-selector-button {
+    background-color: var(--kosan-primary) !important;
+    border: 1px solid var(--kosan-border) !important;
+    color: var(--kosan-text-main) !important;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    margin-right: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: var(--kosan-secondary) !important;
+    color: white !important;
+}
+
+/* ================= TEXT MUTED ================= */
+small.text-muted {
+    color: var(--kosan-text-muted) !important;
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+/* ================= RESPONSIVE DESIGN ================= */
+@media (max-width: 992px) {
+    .col-lg-4 {
+        margin-top: 1rem;
+    }
+    
+    .card.sticky-top {
+        position: static !important;
+        margin-bottom: 2rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .container.py-4 {
+        padding: 1rem !important;
+    }
+    
+    .d-flex.justify-content-between.align-items-center.mb-4 {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 1rem;
+        padding: 1.5rem !important;
+    }
+    
+    .btn-outline-secondary {
+        align-self: flex-start;
+    }
+    
+    .card-body.p-4 {
+        padding: 1.5rem !important;
+    }
+    
+    .btn-group.w-100 {
+        flex-direction: column;
+    }
+    
+    .btn-group.w-100 .btn {
+        border-radius: 0 !important;
+        border-bottom: 1px solid var(--kosan-border) !important;
+    }
+    
+    .btn-group.w-100 .btn:first-child {
+        border-radius: 12px 12px 0 0 !important;
+    }
+    
+    .btn-group.w-100 .btn:last-child {
+        border-bottom: none !important;
+        border-radius: 0 0 12px 12px !important;
+    }
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card.border-0.shadow-sm {
+    animation: slideInUp 0.4s ease forwards;
+}
+
+.card.border-0.shadow-sm:nth-child(1) { animation-delay: 0.1s; }
+.card.border-0.shadow-sm:nth-child(2) { animation-delay: 0.2s; }
+.card.border-0.shadow-sm:nth-child(3) { animation-delay: 0.3s; }
+.card.border-0.shadow-sm:nth-child(4) { animation-delay: 0.4s; }
+
+/* ================= CUSTOM FOCUS STYLES ================= */
+.form-control:focus,
+.form-select:focus,
+input[type="file"]:focus {
+    outline: none;
+}
+
+/* ================= VALIDATION STATES ================= */
+.form-control:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: #ff6b6b !important;
+    background-color: rgba(255, 107, 107, 0.05) !important;
+}
+
+.form-control:valid:not(:focus):not(:placeholder-shown) {
+    border-color: var(--kosan-secondary) !important;
+    background-color: rgba(154, 166, 178, 0.05) !important;
+}

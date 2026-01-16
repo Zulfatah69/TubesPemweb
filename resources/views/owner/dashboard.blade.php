@@ -2,6 +2,10 @@
 
 @section('title', 'Dashboard Pemilik')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/dash-owner.css') }}">
+@endpush
+
 @section('content')
 
 <div class="container py-4">
@@ -141,16 +145,5 @@
 
 </div>
 
-{{-- CSS Tambahan untuk efek hover card --}}
-<style>
-    .card-hover {
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .card-hover:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1) !important;
-        border: 1px solid var(--bs-primary) !important;
-    }
-</style>
 
 @endsection

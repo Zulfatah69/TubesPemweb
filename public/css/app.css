@@ -1,63 +1,144 @@
+/* =====================================================
+   APP CSS – COLOR OVERRIDE ONLY (like login page)
+   ===================================================== */
+
 :root {
-    --bs-primary: #0D6EFD;
-    --bs-primary-rgb: 13, 110, 253;
+    --bs-primary: #BCCCDC;           /* warna utama navbar / highlight */
+    --bs-primary-rgb: 188, 204, 220;
     --bs-secondary: #6C757D;
     --bs-success: #198754;
     --bs-warning: #FFC107;
     --bs-danger: #DC3545;
 
-    --kosan-bg-section: #F8F9FA;
-    --kosan-text-main: #212529;
-    --kosan-border: #DEE2E6;
+    --kosan-bg-section: #F8FAFC;    /* background body */
+    --kosan-text-main: #5F666E;     /* teks utama */
+    --kosan-text-muted: #7A828A;    /* teks muted */
+    --kosan-border: #BCCCDC;        /* border card, input */
+    --kosan-card-bg: #FFFFFF;       /* card bg */
+    --kosan-btn-primary: #9AA6B2;   /* tombol primary */
+    --kosan-btn-primary-hover: #8C96A0;
 }
 
+/* ===========================
+   Body & Main Layout
+   =========================== */
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--kosan-bg-section);
     color: var(--kosan-text-main);
     display: flex;
     flex-direction: column;
-    min-height: 100vh; 
+    min-height: 100vh;
 }
 
+main {
+    flex: 1;
+}
+
+/* ===========================
+   Navbar
+   =========================== */
 .navbar {
     background-color: var(--bs-primary) !important;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,.06);
 }
 
 .navbar-brand {
     font-weight: 700;
     letter-spacing: -0.5px;
+    color: var(--kosan-text-main) !important;
 }
 
 .nav-link {
     font-weight: 500;
+    color: var(--kosan-text-main) !important;
     transition: all 0.2s;
 }
 
 .nav-link:hover {
-    color: #fff !important;
+    color: #3f454b !important;
     transform: translateY(-1px);
 }
 
 .nav-link.active {
     font-weight: 700;
-    color: #fff !important;
+    color: #3f454b !important;
 }
 
-main {
-    flex: 1; 
-}
-
+/* ===========================
+   Cards
+   =========================== */
 .card {
+    background-color: var(--kosan-card-bg);
     border: 1px solid var(--kosan-border);
     border-radius: 12px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-    background-color: #FFFFFF;
+    transition: all 0.2s ease;
 }
 
+.card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1) !important;
+}
+
+/* ===========================
+   Buttons
+   =========================== */
+.btn-primary {
+    background-color: var(--kosan-btn-primary) !important;
+    border-color: var(--kosan-btn-primary) !important;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--kosan-btn-primary-hover) !important;
+    border-color: var(--kosan-btn-primary-hover) !important;
+}
+
+/* ===========================
+   Text
+   =========================== */
+h4, h5, h6 {
+    font-weight: 600;
+}
+
+.text-muted {
+    color: var(--kosan-text-muted) !important;
+}
+
+/* ===========================
+   Footer
+   =========================== */
 footer {
-    background-color: #FFFFFF;
+    background-color: var(--kosan-card-bg);
     border-top: 1px solid var(--kosan-border);
     margin-top: auto;
+}
+
+/* ===========================
+   Inputs
+   =========================== */
+.form-control {
+    background-color: var(--kosan-bg-section);
+    color: var(--kosan-text-main);
+    border: 1px solid var(--kosan-border);
+}
+
+.form-control::placeholder {
+    color: #8a9199;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.15rem rgba(154,166,178,.45);
+}
+
+/* input group icon */
+.input-group-text {
+    background-color: var(--kosan-bg-section);
+    border: 1px solid var(--kosan-border);
+    color: var(--kosan-card-bg);
 }

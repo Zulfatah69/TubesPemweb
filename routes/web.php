@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthOtpController;
@@ -16,22 +17,69 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 
+/*
+|--------------------------------------------------------------------------
+| AUTH BASIC
+|--------------------------------------------------------------------------
+*/
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+/*
+|--------------------------------------------------------------------------
+| REGISTER + OTP
+|--------------------------------------------------------------------------
+*/
 Route::get('/register', fn () => redirect()->route('register.email'))->name('register');
-Route::get('/register/email', [AuthOtpController::class, 'showEmailForm'])->name('register.email');
-Route::post('/register/email', [AuthOtpController::class, 'sendCode'])->name('register.send');
-Route::get('/register/verify', [AuthOtpController::class, 'showVerifyForm'])->name('register.verify');
-Route::post('/register/verify', [AuthOtpController::class, 'completeRegister'])->name('register.complete');
 
+Route::get('/register/email', [AuthOtpController::class, 'showEmailForm'])
+    ->name('register.email');
+
+Route::post('/register/email', [AuthOtpController::class, 'sendCode'])
+    ->name('register.send');
+
+Route::get('/register/verify', [AuthOtpController::class, 'showVerifyForm'])
+    ->name('register.verify');
+
+Route::post('/register/verify', [AuthOtpController::class, 'completeRegister'])
+    ->name('register.complete');
+
+/*
+|--------------------------------------------------------------------------
+| 🔥 DEV LOGIN (LOCAL ONLY)
+|--------------------------------------------------------------------------
+| GUNAKAN UNTUK BUKA SEMUA HALAMAN TANPA LOGIN FORM
+*/
+Route::get('/dev-login/{role}', function ($role) {
+
+    if (!in_array($role, ['admin', 'owner', 'user'])) {
+        return 'Role tidak valid';
+    }
+
+    $user = \App\Models\User::where('role', $role)->first();
+
+    if (!$user) {
+        return "User dengan role {$role} belum ada";
+    }
+
+    Auth::login($user);
+
+    return redirect('/');
+});
+
+/*
+|--------------------------------------------------------------------------
+| OWNER
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth', 'role:owner', 'blocked'])
     ->prefix('owner')
     ->name('owner.')
     ->group(function () {
 
-        Route::get('/dashboard', [OwnerDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [OwnerDashboardController::class, 'index'])
+            ->name('dashboard');
 
         Route::prefix('properties')->name('properties.')->group(function () {
             Route::get('/', [PropertyController::class, 'index'])->name('index');
@@ -40,58 +88,48 @@ Route::middleware(['auth', 'role:owner', 'blocked'])
             Route::get('/{property}/edit', [PropertyController::class, 'edit'])->name('edit');
             Route::put('/{property}', [PropertyController::class, 'update'])->name('update');
             Route::delete('/{property}', [PropertyController::class, 'destroy'])->name('destroy');
-
-            Route::post('/image/{image}/set-main', [PropertyController::class, 'setMain'])->name('image.main');
-            Route::delete('/image/{image}', [PropertyController::class, 'deleteImage'])->name('image.delete');
         });
 
-        Route::get('/bookings', [OwnerBookingController::class, 'index'])->name('booking.index');
-        Route::post('/bookings/{booking}/{status}', [OwnerBookingController::class, 'updateStatus'])->name('booking.update');
+        Route::get('/bookings', [OwnerBookingController::class, 'index'])
+            ->name('booking.index');
 
-        Route::get('/chats', [OwnerChatController::class, 'index'])->name('chats');
-        Route::get('/chat/{chat}', [OwnerChatController::class, 'show'])->name('chat.show');
-        Route::post('/chat/{chat}/send', [OwnerChatController::class, 'send'])->name('chat.send');
+        Route::get('/chats', [OwnerChatController::class, 'index'])
+            ->name('chats');
     });
 
+/*
+|--------------------------------------------------------------------------
+| USER
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth', 'role:user', 'blocked'])->group(function () {
 
-    Route::get('/user/dashboard', [UserPropertyController::class, 'index'])->name('user.dashboard');
-    Route::get('/user/property/{property}', [UserPropertyController::class, 'show'])->name('user.property.show');
+    Route::get('/user/dashboard', [UserPropertyController::class, 'index'])
+        ->name('user.dashboard');
 
-    Route::post('/user/property/{property}/booking', [UserBookingController::class, 'store'])->name('user.booking.store');
-    Route::get('/user/bookings', [UserBookingController::class, 'myBookings'])->name('user.booking.my');
-
-    Route::get('/booking/{booking}/pay', [BookingPaymentController::class, 'pay'])->name('booking.pay');
-
-    Route::post('/chat/start/{property}', [ChatController::class, 'start'])->name('chat.start');
-    Route::get('/chat/{chat}', [ChatController::class, 'show'])->name('chat.show');
-    Route::post('/chat/{chat}/send', [ChatController::class, 'send'])->name('chat.send');
-    Route::get('/chat/{chat}/messages', [ChatController::class, 'messages'])->name('chat.messages');
-    Route::get('/user/chats', [ChatController::class, 'index'])->name('user.chats');
+    Route::get('/user/bookings', [UserBookingController::class, 'myBookings'])
+        ->name('user.booking.my');
 });
 
-Route::post('/midtrans/webhook', [PaymentController::class, 'handle'])->name('midtrans.webhook');
-
+/*
+|--------------------------------------------------------------------------
+| ADMIN
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-
-        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
-        Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
-        Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
-        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
-        Route::post('/users/{user}/block', [AdminUserController::class, 'toggleBlock'])->name('users.block');
-
-        Route::get('/owners/{user}/properties', [AdminDashboardController::class, 'properties'])->name('owners.properties');
-
-        Route::get('/bookings', [AdminUserController::class, 'bookings'])->name('bookings.index');
-
-        Route::delete('/properties/{property}', [AdminDashboardController::class, 'destroyProperty'])->name('properties.destroy');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+            ->name('dashboard');
     });
 
+/*
+|--------------------------------------------------------------------------
+| ROOT
+|--------------------------------------------------------------------------
+*/
 Route::get('/', function () {
 
     if (!auth()->check()) {
@@ -106,11 +144,12 @@ Route::get('/', function () {
     };
 });
 
+/*
+|--------------------------------------------------------------------------
+| CLEAR CACHE (DEV)
+|--------------------------------------------------------------------------
+*/
 Route::get('/clear', function () {
-    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
-    Artisan::call('config:clear');
-    Artisan::call('cache:clear');
-    Artisan::call('route:clear');
-
+    Artisan::call('optimize:clear');
     return 'cleared';
 });

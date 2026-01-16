@@ -125,10 +125,5 @@
     </div>
 </div>
 
-<style>
-    .object-fit-cover {
-        object-fit: cover;
-    }
-</style>
 
 @endsection

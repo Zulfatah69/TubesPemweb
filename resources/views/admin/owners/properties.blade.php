@@ -2,7 +2,12 @@
 
 @section('title', 'Detail Properti Owner')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/properties-owner.css') }}">
+@endpush
+
 @section('content')
+
 <div class="container py-4">
 
     {{-- HEADER --}}
