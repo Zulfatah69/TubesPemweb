@@ -11,28 +11,45 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminDashboardController extends Controller
 {
+    /**
+     * Dashboard utama admin
+     */
     public function index()
     {
+        // Hitung total user berdasarkan role
         $totalUsers  = User::where('role', 'user')->count();
         $totalOwners = User::where('role', 'owner')->count();
         $totalAdmins = User::where('role', 'admin')->count();
 
+        // Hitung total properti & booking
         $totalProperties = Property::count();
         $totalBookings   = Booking::count();
 
-        $bookingStats = Booking::select(
-                DB::raw('MONTH(created_at) as month'),
-                DB::raw('COUNT(*) as total')
-            )
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
+        // ===== Chart Booking per Bulan =====
+        $driver = DB::getDriverName();
+
+        if ($driver === 'sqlite') {
+            // SQLite: gunakan strftime
+            $bookingStats = DB::table('bookings')
+                ->selectRaw("strftime('%m', created_at) as month, COUNT(*) as total")
+                ->groupBy('month')
+                ->orderBy('month')
+                ->get();
+        } else {
+            // MySQL / lainnya
+            $bookingStats = DB::table('bookings')
+                ->selectRaw("MONTH(created_at) as month, COUNT(*) as total")
+                ->groupBy('month')
+                ->orderBy('month')
+                ->get();
+        }
 
         $chartLabels = [];
         $chartData   = [];
 
         foreach ($bookingStats as $row) {
-            $chartLabels[] = date('M', mktime(0,0,0,$row->month,1));
+            $month = (int)$row->month; // SQLite strftime ngasih string
+            $chartLabels[] = date('M', mktime(0,0,0,$month,1));
             $chartData[]   = $row->total;
         }
 
@@ -47,6 +64,9 @@ class AdminDashboardController extends Controller
         ));
     }
 
+    /**
+     * Tampilkan properti milik user (owner)
+     */
     public function properties(User $user)
     {
         if ($user->role !== 'owner') {
@@ -62,6 +82,9 @@ class AdminDashboardController extends Controller
         return view('admin.users.properties', compact('user', 'properties'));
     }
 
+    /**
+     * List semua booking
+     */
     public function bookings()
     {
         $bookings = Booking::with(['user', 'property'])
@@ -71,6 +94,9 @@ class AdminDashboardController extends Controller
         return view('admin.bookings.index', compact('bookings'));
     }
 
+    /**
+     * Hapus properti + semua gambar terkait
+     */
     public function destroyProperty(Property $property)
     {
         $property->load('images');

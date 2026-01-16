@@ -31,4 +31,20 @@ class User extends Authenticatable
         'password' => 'hashed',
         'is_blocked' => 'boolean',
     ];
+
+    /**
+     * Relasi chat sebagai user
+     */
+    public function chatsAsUser()
+    {
+        return $this->hasMany(Chat::class, 'user_id');
+    }
+
+    /**
+     * Relasi chat sebagai owner
+     */
+    public function chatsAsOwner()
+    {
+        return $this->hasMany(Chat::class, 'owner_id');
+    }
 }

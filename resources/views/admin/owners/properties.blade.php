@@ -13,7 +13,7 @@
     {{-- HEADER --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="fw-bold text-dark mb-1">Properti: {{ $user->name }}</h4>
+            <h4 class="fw-bold">Properti: {{ $user->name }}</h4>
             <p class="text-muted small mb-0">Daftar semua kosan yang dimiliki oleh owner ini.</p>
         </div>
         <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary btn-sm px-3">

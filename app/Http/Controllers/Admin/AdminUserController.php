@@ -59,6 +59,21 @@ class AdminUserController extends Controller
             ->route('admin.users.index')
             ->with('success', 'User berhasil diperbarui');
     }
+    
+    public function block(User $user)
+    {
+    // Admin tidak bisa diblokir (opsional)
+        if ($user->role === 'admin') {
+            return back()->with('error', 'Admin tidak bisa diblokir.');
+    }
+
+    // Toggle blocked: 0 → 1 atau 1 → 0
+    $user->blocked = !$user->blocked;
+    $user->save();
+
+    return back()->with('success', 'Status blokir berhasil diubah.');
+    }
+
 
     public function destroy(User $user)
     {
@@ -141,4 +156,5 @@ class AdminUserController extends Controller
 
         return view('admin.bookings.index', compact('bookings'));
     }
+    
 }

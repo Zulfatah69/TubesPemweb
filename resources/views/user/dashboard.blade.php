@@ -1,11 +1,14 @@
 @extends('layouts.app')
 
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/dash-user.css') }}">
+@section('title', 'Dashboard Owner')
+
+@push('page-css')
+<link rel="stylesheet" href="{{ asset('css/dash-owner.css') }}">
 @endpush
 
 @section('content')
 <div class="user-dashboard">
+    
     <div class="row">
 
     {{-- FILTER --}}

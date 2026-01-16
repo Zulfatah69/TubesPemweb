@@ -24,7 +24,7 @@
                 <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle mb-3" style="width: 60px; height: 60px;">
                     <i class="bi bi-house-heart-fill fs-3"></i>
                 </div>
-                <h4 class="fw-bold text-dark">Selamat Datang</h4>
+                <h4 class="fw-bold">Selamat Datang</h4>
                 <p class="text-muted small">Silakan masuk untuk melanjutkan</p>
             </div>
 

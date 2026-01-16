@@ -8,7 +8,7 @@
     {{-- HEADER --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="fw-bold text-dark mb-1">Dashboard Admin</h4>
+            <h4 class="fw-bold">Dashboard Admin</h4>
             <p class="text-muted small mb-0">Ringkasan statistik aplikasi KosConnect.</p>
         </div>
         <div class="d-flex gap-2">

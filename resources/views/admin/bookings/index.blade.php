@@ -12,7 +12,7 @@
     {{-- HEADER --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="fw-bold text-dark mb-1">Monitoring Booking</h4>
+            <h4 class="fw-bold">Monitoring Booking</h4>
             <p class="text-muted small mb-0">Pantau seluruh aktivitas penyewaan antar User dan Owner.</p>
         </div>
         <div>

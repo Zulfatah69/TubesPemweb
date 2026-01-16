@@ -32,57 +32,38 @@
             <div class="card border-0 shadow-sm overflow-hidden">
                 <div class="list-group list-group-flush">
                     
-                    @forelse($chats as $chat)
-                        <a href="{{ route('chat.show', $chat->id) }}" class="list-group-item list-group-item-action p-3 chat-item border-bottom">
-                            <div class="d-flex align-items-center">
-                                
-                                {{-- AVATAR OWNER (Inisial) --}}
-                                <div class="flex-shrink-0">
-                                    <div class="avatar-circle bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center rounded-circle fw-bold" style="width: 50px; height: 50px;">
-                                        {{ substr($chat->owner->name, 0, 1) }}
-                                    </div>
-                                </div>
+                    @forelse($owners as $owner)
+    <a href="{{ route('user.chats.show', $owner->id) }}" class="list-group-item list-group-item-action p-3 chat-item border-bottom">
+        <div class="d-flex align-items-center">
+            <div class="flex-shrink-0">
+                <div class="avatar-circle bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center rounded-circle fw-bold" style="width: 50px; height: 50px;">
+                    {{ substr($owner->name, 0, 1) }}
+                </div>
+            </div>
+            <div class="flex-grow-1 ms-3 overflow-hidden">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h6 class="fw-bold text-dark mb-0 text-truncate">{{ $owner->name }}</h6>
+                    <small class="text-muted" style="font-size: 0.75rem;">-</small>
+                </div>
+            </div>
+            <div class="ms-2 text-muted opacity-50">
+                <i class="bi bi-chevron-right"></i>
+            </div>
+        </div>
+    </a>
+@empty
+    <div class="text-center py-5">
+        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+            <i class="bi bi-chat-square-text fs-1 text-muted opacity-50"></i>
+        </div>
+        <h6 class="fw-bold text-dark">Belum ada owner</h6>
+        <p class="text-muted small mb-4">Saat ini belum ada pemilik kos yang bisa dihubungi.</p>
+        <a href="{{ route('user.dashboard') }}" class="btn btn-primary fw-bold px-4">
+            <i class="bi bi-search me-2"></i> Cari Kos Dulu
+        </a>
+    </div>
+@endforelse
 
-                                {{-- KONTEN --}}
-                                <div class="flex-grow-1 ms-3 overflow-hidden">
-                                    <div class="d-flex justify-content-between align-items-center mb-1">
-                                        {{-- Nama Owner --}}
-                                        <h6 class="fw-bold text-dark mb-0 text-truncate">{{ $chat->owner->name }}</h6>
-                                        
-                                        {{-- Waktu (Format Relative) --}}
-                                        <small class="text-muted" style="font-size: 0.75rem;">
-                                            {{ $chat->updated_at->diffForHumans() }}
-                                        </small>
-                                    </div>
-                                    
-                                    {{-- Nama Properti --}}
-                                    <div class="d-flex align-items-center text-muted small">
-                                        <i class="bi bi-building-fill me-1 text-secondary opacity-75"></i> 
-                                        <span class="text-truncate fw-medium">{{ $chat->property->name }}</span>
-                                    </div>
-                                </div>
-
-                                {{-- CHEVRON --}}
-                                <div class="ms-2 text-muted opacity-50">
-                                    <i class="bi bi-chevron-right"></i>
-                                </div>
-
-                            </div>
-                        </a>
-                    @empty
-                        {{-- EMPTY STATE --}}
-                        <div class="text-center py-5">
-                            <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                                <i class="bi bi-chat-square-text fs-1 text-muted opacity-50"></i>
-                            </div>
-                            <h6 class="fw-bold text-dark">Belum ada percakapan</h6>
-                            <p class="text-muted small mb-4">Kamu belum memulai chat dengan pemilik kos manapun.</p>
-                            
-                            <a href="{{ route('user.dashboard') }}" class="btn btn-primary fw-bold px-4">
-                                <i class="bi bi-search me-2"></i> Cari Kos Dulu
-                            </a>
-                        </div>
-                    @endforelse
 
                 </div>
             </div>

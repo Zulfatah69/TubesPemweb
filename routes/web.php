@@ -16,6 +16,9 @@ use App\Http\Controllers\User\BookingPaymentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminBookingController;
+use App\Http\Controllers\Admin\AdminOwnerController;
+use App\Http\Controllers\User\UserChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,6 +112,18 @@ Route::middleware(['auth', 'role:user', 'blocked'])->group(function () {
 
     Route::get('/user/bookings', [UserBookingController::class, 'myBookings'])
         ->name('user.booking.my');
+      
+    Route::get('/user/chats', [UserChatController::class, 'index'])
+        ->name('user.chats');
+    
+    Route::get('/user/chats/{user}', [UserChatController::class, 'show'])
+        ->name('user.chats.show');
+     
+    Route::get('/user/chats/{owner}', [UserChatController::class, 'show'])
+        ->name('user.chats.show');
+    
+    Route::post('/user/chats/{owner}/send', [UserChatController::class, 'send'])
+        ->name('chat.send');
 });
 
 /*
@@ -123,8 +138,32 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
-    });
 
+        // Users
+        Route::get('/users', [AdminUserController::class, 'index'])
+            ->name('users.index');
+
+        Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])
+            ->name('users.edit');
+
+        Route::put('/users/{user}', [AdminUserController::class, 'update'])
+            ->name('users.update');
+
+        // Bookings
+        Route::get('/bookings', [AdminBookingController::class, 'index'])
+            ->name('bookings.index');  // <--- ini bikin route admin.bookings.index
+        
+        Route::get('/owners/{owner}/properties', [AdminOwnerController::class, 'properties'])
+            ->name('owners.properties');
+
+        Route::post('/users/{user}/block', [AdminUserController::class, 'block'])
+            ->name('users.block');
+        
+        // Hapus user
+        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])
+            ->name('users.destroy');
+
+    });
 /*
 |--------------------------------------------------------------------------
 | ROOT
