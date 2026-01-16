@@ -133,8 +133,14 @@ Route::middleware(['auth', 'role:user', 'blocked'])->group(function () {
 
 });
 
-Route::prefix('user')->name('user.')->group(function () {
+Route::prefix('user')
+    ->middleware(['auth', 'block'])
+    ->name('user.')
+    ->group(function () {
 
+    Route::get('/dashboard', [UserPropertyController::class, 'index'])
+            ->name('dashboard');
+            
     Route::get('/properties', [UserPropertyController::class, 'index'])
         ->name('property.index');
 
