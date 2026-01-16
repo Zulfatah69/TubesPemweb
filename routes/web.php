@@ -6,19 +6,23 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthOtpController;
 use App\Http\Controllers\ChatController;
+
 use App\Http\Controllers\Owner\OwnerChatController;
 use App\Http\Controllers\Owner\OwnerDashboardController;
-use App\Http\Controllers\Owner\PropertyController;
 use App\Http\Controllers\Owner\OwnerBookingController;
-use App\Http\Controllers\User\UserPropertyController;
+use App\Http\Controllers\Owner\PropertyController as OwnerPropertyController;
+
 use App\Http\Controllers\User\UserBookingController;
+use App\Http\Controllers\User\UserChatController;
 use App\Http\Controllers\User\BookingPaymentController;
-use App\Http\Controllers\PaymentController;
+
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminBookingController;
 use App\Http\Controllers\Admin\AdminOwnerController;
-use App\Http\Controllers\User\UserChatController;
+
+use App\Http\Controllers\PaymentController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -128,6 +132,26 @@ Route::middleware(['auth', 'role:user', 'blocked'])->group(function () {
         ->name('chat.messages');
 
 });
+
+Route::prefix('user')->name('user.')->group(function () {
+
+    Route::get('/properties', [UserPropertyController::class, 'index'])
+        ->name('property.index');
+
+    Route::get('/properties/{property}', [UserPropertyController::class, 'show'])
+        ->name('property.show');
+
+});
+
+Route::prefix('properties')->name('properties.')->group(function () {
+    Route::get('/', [OwnerPropertyController::class, 'index'])->name('index');
+    Route::get('/create', [OwnerPropertyController::class, 'create'])->name('create');
+    Route::post('/', [OwnerPropertyController::class, 'store'])->name('store');
+    Route::get('/{property}/edit', [OwnerPropertyController::class, 'edit'])->name('edit');
+    Route::put('/{property}', [OwnerPropertyController::class, 'update'])->name('update');
+    Route::delete('/{property}', [OwnerPropertyController::class, 'destroy'])->name('destroy');
+});
+
 
 /*
 |--------------------------------------------------------------------------

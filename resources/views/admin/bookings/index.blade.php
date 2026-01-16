@@ -16,7 +16,7 @@
             <p class="text-muted small mb-0">Pantau seluruh aktivitas penyewaan antar User dan Owner.</p>
         </div>
         <div>
-            <button class="btn btn-light border shadow-sm btn-sm">
+            <button class="btn btn-light border shadow-sm btn-sm btn-filter-deepsea">
                 <i class="bi bi-filter"></i> Filter
             </button>
         </div>
@@ -129,6 +129,22 @@
             </div>
         @endif
     </div>
+<style>
+    .btn-filter-deepsea {
+    color: #5F666E;          /* teks */
+}
 
+.btn-filter-deepsea i {
+    color: #5F666E;          /* icon */
+}
+
+.btn-filter-deepsea:hover {
+    color: #8C96A0;
+}
+
+.btn-filter-deepsea:hover i {
+    color: #8C96A0;
+}
+    </style>
 </div>
 @endsection
