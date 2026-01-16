@@ -116,14 +116,17 @@ Route::middleware(['auth', 'role:user', 'blocked'])->group(function () {
     Route::get('/user/chats', [UserChatController::class, 'index'])
         ->name('user.chats');
     
-    Route::get('/user/chats/{user}', [UserChatController::class, 'show'])
-        ->name('user.chats.show');
-     
+    // Hanya satu route GET untuk lihat chat dengan owner tertentu
     Route::get('/user/chats/{owner}', [UserChatController::class, 'show'])
         ->name('user.chats.show');
     
     Route::post('/user/chats/{owner}/send', [UserChatController::class, 'send'])
         ->name('chat.send');
+    
+    // Ambil pesan chat untuk owner tertentu (AJAX)
+    Route::get('/user/chats/{owner}/messages', [UserChatController::class, 'messages'])
+        ->name('chat.messages');
+
 });
 
 /*

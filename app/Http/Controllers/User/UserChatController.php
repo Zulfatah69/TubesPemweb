@@ -61,4 +61,22 @@ class UserChatController extends Controller
 
         return response()->json(['status' => 'success']);
     }
+
+    public function messages(User $owner)
+{
+    $user = auth()->user();
+
+    // Ambil chat antara user & owner
+    $chat = Chat::where(function($q) use ($user, $owner) {
+        $q->where('user_id', $user->id)->where('owner_id', $owner->id);
+    })->orWhere(function($q) use ($user, $owner) {
+        $q->where('user_id', $owner->id)->where('owner_id', $user->id);
+    })->first();
+
+    if (!$chat) return response()->json([]);
+
+    // Kirim semua messages
+    return response()->json($chat->messages()->with('sender')->get());
+}
+
 }
