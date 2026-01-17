@@ -24,125 +24,61 @@ use App\Http\Controllers\Admin\AdminOwnerController;
 
 use App\Http\Controllers\PaymentController;
 
-
-/*
-|--------------------------------------------------------------------------
-| AUTH BASIC
-|--------------------------------------------------------------------------
-*/
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-/*
-|--------------------------------------------------------------------------
-| REGISTER + OTP
-|--------------------------------------------------------------------------
-*/
 Route::get('/register', fn () => redirect()->route('register.email'))->name('register');
 
-Route::get('/register/email', [AuthOtpController::class, 'showEmailForm'])
-    ->name('register.email');
+Route::get('/register/email', [AuthOtpController::class, 'showEmailForm'])->name('register.email');
+Route::post('/register/email', [AuthOtpController::class, 'sendCode'])->name('register.send');
+Route::get('/register/verify', [AuthOtpController::class, 'showVerifyForm'])->name('register.verify');
+Route::post('/register/verify', [AuthOtpController::class, 'completeRegister'])->name('register.complete');
 
-Route::post('/register/email', [AuthOtpController::class, 'sendCode'])
-    ->name('register.send');
-
-Route::get('/register/verify', [AuthOtpController::class, 'showVerifyForm'])
-    ->name('register.verify');
-
-Route::post('/register/verify', [AuthOtpController::class, 'completeRegister'])
-    ->name('register.complete');
-
-/*
-|--------------------------------------------------------------------------
-| 🔥 DEV LOGIN (LOCAL ONLY)
-|--------------------------------------------------------------------------
-| GUNAKAN UNTUK BUKA SEMUA HALAMAN TANPA LOGIN FORM
-*/
 Route::get('/dev-login/{role}', function ($role) {
-
-    if (!in_array($role, ['admin', 'owner', 'user'])) {
-        return 'Role tidak valid';
-    }
-
+    if (!in_array($role, ['admin', 'owner', 'user'])) return 'Role tidak valid';
     $user = \App\Models\User::where('role', $role)->first();
-
-    if (!$user) {
-        return "User dengan role {$role} belum ada";
-    }
-
+    if (!$user) return "User dengan role {$role} belum ada";
     Auth::login($user);
-
     return redirect('/');
 });
 
-/*
-|--------------------------------------------------------------------------
-| OWNER
-|--------------------------------------------------------------------------
-*/
 Route::middleware(['auth', 'role:owner'])
     ->prefix('owner')
     ->name('owner.')
     ->group(function () {
 
-        Route::get('/dashboard', [OwnerDashboardController::class, 'index'])
-            ->name('dashboard');
+        Route::get('/dashboard', [OwnerDashboardController::class, 'index'])->name('dashboard');
 
         Route::prefix('properties')->name('properties.')->group(function () {
-        Route::get('/', [OwnerPropertyController::class, 'index'])->name('index');
-        Route::get('/create', [OwnerPropertyController::class, 'create'])->name('create');
-        Route::post('/', [OwnerPropertyController::class, 'store'])->name('store');
-        Route::get('/{property}/edit', [OwnerPropertyController::class, 'edit'])->name('edit');
-        Route::put('/{property}', [OwnerPropertyController::class, 'update'])->name('update');
-        Route::delete('/{property}', [OwnerPropertyController::class, 'destroy'])->name('destroy');
-        Route::patch('/images/{image}/main', [OwnerPropertyController::class, 'setMainImage'])->name('image.main');
-        Route::delete('/images/{image}', [OwnerPropertyController::class, 'deleteImage'])->name('image.delete'); // <<< ini route yang kamu butuhin
+            Route::get('/', [OwnerPropertyController::class, 'index'])->name('index');
+            Route::get('/create', [OwnerPropertyController::class, 'create'])->name('create');
+            Route::post('/', [OwnerPropertyController::class, 'store'])->name('store');
+            Route::get('/{property}/edit', [OwnerPropertyController::class, 'edit'])->name('edit');
+            Route::put('/{property}', [OwnerPropertyController::class, 'update'])->name('update');
+            Route::delete('/{property}', [OwnerPropertyController::class, 'destroy'])->name('destroy');
+            Route::patch('/images/{image}/main', [OwnerPropertyController::class, 'setMainImage'])->name('image.main');
+            Route::delete('/images/{image}', [OwnerPropertyController::class, 'deleteImage'])->name('image.delete');
+        });
+
+        Route::get('/bookings', [OwnerBookingController::class, 'index'])->name('booking.index');
+        Route::get('/chats', [OwnerChatController::class, 'index'])->name('chats');
     });
 
-        Route::get('/bookings', [OwnerBookingController::class, 'index'])
-            ->name('booking.index');
-
-        Route::get('/chats', [OwnerChatController::class, 'index'])
-            ->name('chats');
-
-    });
-
-/*
-|--------------------------------------------------------------------------
-| USER
-|--------------------------------------------------------------------------
-*/
 Route::middleware(['auth', 'role:user'])->group(function () {
 
-    Route::get('/user/dashboard', [UserPropertyController::class, 'index'])
-        ->middleware(['auth', 'block'])
-        ->name('user.dashboard');
+    Route::get('/user/dashboard', [UserPropertyController::class, 'index'])->middleware(['auth', 'block'])->name('user.dashboard');
 
-    Route::get('/user/bookings', [UserBookingController::class, 'myBookings'])
-        ->middleware('role:user')
-        ->name('user.booking.my');
-    
-    Route::post('/user/bookings/{property}', [UserBookingController::class, 'store'])
-        ->name('user.booking.store');
+    Route::get('/user/bookings', [UserBookingController::class, 'myBookings'])->name('user.booking.my');
+    Route::post('/user/bookings/{property}', [UserBookingController::class, 'store'])->name('user.booking.store');
 
-    Route::get('/user/chats', [UserChatController::class, 'index'])
-        ->name('user.chats');
-    
-    // Hanya satu route GET untuk lihat chat dengan owner tertentu
-    Route::get('/user/chats/{owner}', [UserChatController::class, 'show'])
-        ->name('user.chats.show');
-    
-    Route::post('/user/chats/{owner}/send', [UserChatController::class, 'send'])
-        ->name('chat.send');
-    
-    Route::post('/user/chats/{owner}/start', [UserChatController::class, 'start'])
-        ->name('chat.start');
-    
-    // Ambil pesan chat untuk owner tertentu (AJAX)
-    Route::get('/user/chats/{owner}/messages', [UserChatController::class, 'messages'])
-        ->name('chat.messages');
+    Route::get('/user/bookings/{booking}/pay', [BookingPaymentController::class, 'pay'])->name('booking.pay');
 
+    Route::get('/user/chats', [UserChatController::class, 'index'])->name('user.chats');
+    Route::get('/user/chats/{owner}', [UserChatController::class, 'show'])->name('user.chats.show');
+    Route::post('/user/chats/{owner}/send', [UserChatController::class, 'send'])->name('chat.send');
+    Route::post('/user/chats/{owner}/start', [UserChatController::class, 'start'])->name('chat.start');
+    Route::get('/user/chats/{owner}/messages', [UserChatController::class, 'messages'])->name('chat.messages');
 });
 
 Route::prefix('user')
@@ -150,20 +86,10 @@ Route::prefix('user')
     ->name('user.')
     ->group(function () {
 
-    Route::get('/dashboard', [UserPropertyController::class, 'index'])
-        ->name('dashboard');
-
-    Route::get('/user/dashboard', [UserDashboardController::class, 'index'])
-        ->middleware(['auth'])
-        ->name('user.dashboard');
-
-    Route::get('/properties', [UserPropertyController::class, 'index'])
-        ->name('property.index');
-
-    Route::get('/properties/{property}', [UserPropertyController::class, 'show'])
-        ->name('property.show');
-
-});
+        Route::get('/dashboard', [UserPropertyController::class, 'index'])->name('dashboard');
+        Route::get('/properties', [UserPropertyController::class, 'index'])->name('property.index');
+        Route::get('/properties/{property}', [UserPropertyController::class, 'show'])->name('property.show');
+    });
 
 Route::prefix('properties')->name('properties.')->group(function () {
     Route::get('/', [OwnerPropertyController::class, 'index'])->name('index');
@@ -174,64 +100,25 @@ Route::prefix('properties')->name('properties.')->group(function () {
     Route::delete('/{property}', [OwnerPropertyController::class, 'destroy'])->name('destroy');
 });
 
-
-/*
-|--------------------------------------------------------------------------
-| ADMIN
-|--------------------------------------------------------------------------
-*/
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 
- Route::prefix('properties')->name('properties.')->group(function () {
-        Route::get('/', [AdminPropertyController::class, 'index'])->name('index');
-        Route::get('/create', [AdminPropertyController::class, 'create'])->name('create');
-        Route::post('/', [AdminPropertyController::class, 'store'])->name('store');
-        Route::get('/{property}/edit', [AdminPropertyController::class, 'edit'])->name('edit');
-        Route::put('/{property}', [AdminPropertyController::class, 'update'])->name('update');
-        Route::delete('/{property}', [AdminPropertyController::class, 'destroy'])->name('destroy'); // ✅ HARUS ADA
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+        Route::post('/users/{user}/block', [AdminUserController::class, 'block'])->name('users.block');
+        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+
+        Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
+        Route::get('/owners/{owner}/properties', [AdminOwnerController::class, 'properties'])->name('owners.properties');
     });
 
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
-            ->name('dashboard');
-
-        // Users
-        Route::get('/users', [AdminUserController::class, 'index'])
-            ->name('users.index');
-
-        Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])
-            ->name('users.edit');
-
-        Route::put('/users/{user}', [AdminUserController::class, 'update'])
-            ->name('users.update');
-
-        // Bookings
-        Route::get('/bookings', [AdminBookingController::class, 'index'])
-            ->name('bookings.index');  // <--- ini bikin route admin.bookings.index
-        
-        Route::get('/owners/{owner}/properties', [AdminOwnerController::class, 'properties'])
-            ->name('owners.properties');
-
-        Route::post('/users/{user}/block', [AdminUserController::class, 'block'])
-            ->name('users.block');
-        
-        // Hapus user
-        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])
-            ->name('users.destroy');
-
-    });
-/*
-|--------------------------------------------------------------------------
-| ROOT
-|--------------------------------------------------------------------------
-*/
 Route::get('/', function () {
-
-    if (!auth()->check()) {
-        return redirect()->route('login');
-    }
+    if (!auth()->check()) return redirect()->route('login');
 
     return match (auth()->user()->role) {
         'admin' => redirect()->route('admin.dashboard'),
@@ -241,11 +128,6 @@ Route::get('/', function () {
     };
 });
 
-/*
-|--------------------------------------------------------------------------
-| CLEAR CACHE (DEV)
-|--------------------------------------------------------------------------
-*/
 Route::get('/clear', function () {
     Artisan::call('optimize:clear');
     return 'cleared';
