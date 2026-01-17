@@ -152,3 +152,8 @@ Route::get('/clear', function () {
     Artisan::call('optimize:clear');
     return 'cleared';
 });
+
+Route::get('/fix-storage-path', function () {
+    \DB::statement("UPDATE property_images SET file_path = CONCAT('storage/', file_path) WHERE file_path NOT LIKE 'storage/%'");
+    return 'FIXED';
+});
