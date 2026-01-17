@@ -81,7 +81,7 @@ Route::get('/dev-login/{role}', function ($role) {
 | OWNER
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:owner', 'blocked'])
+Route::middleware(['auth', 'role:owner'])
     ->prefix('owner')
     ->name('owner.')
     ->group(function () {
