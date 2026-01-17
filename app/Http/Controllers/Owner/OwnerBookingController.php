@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,21 +22,18 @@ class OwnerBookingController extends Controller
     }
 
 
-    public function updateStatus(Booking $booking, $status)
+    public function update(Request $request, Booking $booking)
     {
-        if(!in_array($status,['approved','rejected'])){
-            abort(400);
-        }
-
-        // keamanan → pastikan ownernya sama
-        if($booking->property->owner_id != Auth::id()){
-            abort(403);
-        }
-
-        $booking->update([
-            'status' => $status
+        $request->validate([
+            'status' => 'required|in:approved,rejected'
         ]);
 
-        return back()->with('success','Status booking diperbarui');
+        $booking->update([
+            'status' => $request->status
+        ]);
+
+        return redirect()
+            ->route('owner.booking.index')
+            ->with('success', 'Status booking berhasil diperbarui');
     }
 }

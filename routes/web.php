@@ -60,6 +60,9 @@ Route::middleware(['auth', 'role:owner'])
             Route::patch('/images/{image}/main', [OwnerPropertyController::class, 'setMainImage'])->name('image.main');
             Route::delete('/images/{image}', [OwnerPropertyController::class, 'deleteImage'])->name('image.delete');
         });
+        
+        Route::post('/bookings/{booking}/update', [OwnerBookingController::class, 'update'])
+            ->name('booking.update');
 
         Route::get('/bookings', [OwnerBookingController::class, 'index'])->name('booking.index');
         Route::get('/chats', [OwnerChatController::class, 'index'])->name('chats');

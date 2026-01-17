@@ -111,8 +111,10 @@
                                 @if($b->status == 'pending')
                                     <div class="d-flex gap-2 justify-content-end">
                                         @if($b->payment_status === 'paid')
-                                            <form method="POST" action="{{ route('owner.booking.update', [$b->id, 'approved']) }}">
+                                            <form method="POST" action="{{ route('owner.booking.update', $b->id) }}">
                                                 @csrf
+                                                <input type="hidden" name="status" value="approved">
+
                                                 <button class="btn btn-slate-800 btn-sm px-3 rounded-pill shadow-sm transition-all hover-scale">
                                                     Terima
                                                 </button>
@@ -123,8 +125,12 @@
                                             </button>
                                         @endif
 
-                                        <form method="POST" action="{{ route('owner.booking.update', [$b->id, 'rejected']) }}" onsubmit="return confirm('Apakah Anda yakin ingin menolak permohonan booking ini?');">
+                                        <form method="POST"
+                                            action="{{ route('owner.booking.update', $b->id) }}"
+                                            onsubmit="return confirm('Apakah Anda yakin ingin menolak permohonan booking ini?');">
                                             @csrf
+                                            <input type="hidden" name="status" value="rejected">
+
                                             <button class="btn btn-outline-danger btn-sm px-3 rounded-pill transition-all">
                                                 Tolak
                                             </button>
@@ -141,7 +147,7 @@
                                         </ul>
                                     </div>
                                 @endif
-                            </td>
+                            </td>  
                         </tr>
                     @empty
                         <tr>
