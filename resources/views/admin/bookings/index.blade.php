@@ -1,130 +1,149 @@
 @extends('layouts.app')
 
-@section('title', 'Monitoring Booking')
+@section('title', 'Admin Dashboard')
 
 @section('content')
+<style>
+    :root {
+        --slate-50: #f8fafc;
+        --slate-100: #f1f5f9;
+        --slate-200: #e2e8f0;
+        --slate-400: #94a3b8;
+        --slate-600: #475569;
+        --slate-800: #1e293b;
+        --slate-900: #0f172a;
+    }
+
+    /* Override Tombol */
+    .btn-slate-dark { background: var(--slate-800); color: white; border: none; transition: 0.3s; }
+    .btn-slate-dark:hover { background: var(--slate-900); color: white; transform: translateY(-1px); }
+    .btn-outline-slate { color: var(--slate-800); border: 1px solid var(--slate-800); transition: 0.3s; }
+    .btn-outline-slate:hover { background: var(--slate-100); color: var(--slate-800); }
+
+    /* Card Styling */
+    .card-stat { border: none; border-radius: 15px; transition: 0.3s; }
+    .card-stat:hover { transform: translateY(-3px); }
+    .icon-box { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
+    
+    /* Warna Ikon & Border Khusus Slate */
+    .bg-slate-soft { background-color: rgba(30, 41, 59, 0.1); color: var(--slate-800); }
+    .border-slate-theme { border-left: 5px solid var(--slate-800) !important; }
+</style>
+
 <div class="container py-4">
 
     {{-- HEADER --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="fw-bold text-dark mb-1">Monitoring Booking</h4>
-            <p class="text-muted small mb-0">Pantau seluruh aktivitas penyewaan antar User dan Owner.</p>
+            <h4 class="fw-bold text-slate-800 mb-1">Dashboard Admin</h4>
+            <p class="text-muted small mb-0">Ringkasan statistik aplikasi KosConnect.</p>
         </div>
-        <div>
-            <button class="btn btn-light border shadow-sm btn-sm">
-                <i class="bi bi-filter"></i> Filter
-            </button>
+        <div class="d-flex gap-2">
+            <a href="{{ route('admin.users.index') }}" class="btn btn-outline-slate btn-sm px-3">
+                <i class="bi bi-people me-1"></i> Users & Owners
+            </a>
+            <a href="{{ route('admin.bookings.index') }}" class="btn btn-slate-dark btn-sm px-3 shadow-sm">
+                <i class="bi bi-journal-bookmark me-1"></i> Monitoring Booking
+            </a>
         </div>
     </div>
 
-    {{-- ALERT --}}
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4">
-            <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
+    {{-- STATS CARDS --}}
+    <div class="row g-3 mb-4">
+        @php
+            $stats = [
+                ['label' => 'Total Users', 'value' => $totalUsers ?? 0, 'icon' => 'bi-person-fill'],
+                ['label' => 'Total Owners', 'value' => $totalOwners ?? 0, 'icon' => 'bi-briefcase-fill'],
+                ['label' => 'Total Kosan', 'value' => $totalProperties ?? 0, 'icon' => 'bi-building-fill'],
+                ['label' => 'Total Booking', 'value' => $totalBookings ?? 0, 'icon' => 'bi-calendar-check-fill'],
+            ];
+        @endphp
 
-    {{-- TABLE CARD --}}
-    <div class="card border-0 shadow-sm overflow-hidden">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="bg-light">
-                        <tr>
-                            <th class="ps-4 py-3 text-secondary text-uppercase small" width="5%">ID</th>
-                            <th class="py-3 text-secondary text-uppercase small" width="20%">Penyewa (User)</th>
-                            <th class="py-3 text-secondary text-uppercase small" width="25%">Detail Properti</th>
-                            <th class="py-3 text-secondary text-uppercase small" width="15%">Harga Sewa</th>
-                            <th class="py-3 text-secondary text-uppercase small" width="15%">Status</th>
-                            <th class="pe-4 py-3 text-secondary text-uppercase small text-end" width="20%">Tanggal Dibuat</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($bookings as $b)
-                        <tr>
-                            {{-- ID --}}
-                            <td class="ps-4 fw-bold text-muted">#{{ $b->id }}</td>
-
-                            {{-- USER --}}
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px;">
-                                        <span class="fw-bold small">{{ substr($b->user->name ?? 'U', 0, 1) }}</span>
-                                    </div>
-                                    <span class="fw-medium text-dark">{{ $b->user->name ?? '-' }}</span>
-                                </div>
-                            </td>
-
-                            {{-- PROPERTI & OWNER (Digabung biar rapi) --}}
-                            <td>
-                                <div class="fw-bold text-dark">{{ $b->property->name ?? '-' }}</div>
-                                <div class="small text-muted">
-                                    <i class="bi bi-person-fill text-secondary me-1"></i> 
-                                    Owner: {{ $b->property->owner->name ?? '-' }}
-                                </div>
-                            </td>
-
-                            {{-- HARGA --}}
-                            <td>
-                                <span class="fw-bold text-dark">Rp {{ number_format($b->property->price ?? 0, 0, ',', '.') }}</span>
-                            </td>
-
-                            {{-- STATUS (LOGIKA WARNA) --}}
-                            <td>
-                                @php
-                                    $statusColor = match($b->status) {
-                                        'approved', 'success', 'paid' => 'success',
-                                        'pending', 'unpaid' => 'warning',
-                                        'rejected', 'failed', 'cancelled' => 'danger',
-                                        default => 'secondary'
-                                    };
-                                    
-                                    $statusLabel = match($b->status) {
-                                        'approved' => 'Diterima',
-                                        'pending' => 'Menunggu',
-                                        'rejected' => 'Ditolak',
-                                        'paid' => 'Lunas',
-                                        'unpaid' => 'Belum Bayar',
-                                        default => ucfirst($b->status)
-                                    };
-                                @endphp
-                                <span class="badge bg-{{ $statusColor }} bg-opacity-10 text-{{ $statusColor }} px-3 py-2 rounded-pill">
-                                    <i class="bi bi-circle-fill me-1 small" style="font-size: 0.5rem;"></i> {{ $statusLabel }}
-                                </span>
-                            </td>
-
-                            {{-- TANGGAL --}}
-                            <td class="pe-4 text-end text-muted small">
-                                <div>{{ $b->created_at->format('d M Y') }}</div>
-                                <div>{{ $b->created_at->format('H:i') }} WIB</div>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="6" class="text-center py-5">
-                                <div class="d-flex flex-column align-items-center justify-content-center">
-                                    <div class="bg-light rounded-circle p-3 mb-3">
-                                        <i class="bi bi-inbox fs-1 text-muted opacity-50"></i>
-                                    </div>
-                                    <h6 class="text-muted">Belum ada data booking</h6>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+        @foreach($stats as $stat)
+        <div class="col-md-3">
+            <div class="card card-stat shadow-sm border-slate-theme">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="icon-box bg-slate-soft">
+                                <i class="{{ $stat['icon'] }} fs-4"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-slate-400 x-small mb-1 text-uppercase fw-bold tracking-wider" style="font-size: 0.7rem;">{{ $stat['label'] }}</p>
+                            <h4 class="fw-bold mb-0 text-slate-800">{{ $stat['value'] }}</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        {{-- PAGINATION --}}
-        @if($bookings->hasPages())
-            <div class="card-footer bg-white border-top py-3">
-                {{ $bookings->links() }}
-            </div>
-        @endif
+        @endforeach
     </div>
 
+    {{-- CHART SECTION --}}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card border-0 shadow-sm" style="border-radius: 15px;">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-0">
+                    <h6 class="mb-0 fw-bold text-slate-800">
+                        <i class="bi bi-bar-chart-line me-2"></i>Statistik Booking Bulanan
+                    </h6>
+                    <span class="badge bg-slate-100 text-slate-600 border-0 px-3 py-2 rounded-pill x-small">Tahun 2026</span>
+                </div>
+                <div class="card-body p-4">
+                    <canvas id="bookingChart" style="max-height: 350px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById('bookingChart').getContext('2d');
+
+        const labels = @json($chartLabels ?? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']);
+        const data = @json($chartData ?? [0, 0, 0, 0, 0, 0]);
+
+        // Gradien Slate Grey
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(30, 41, 59, 1)');   // Slate 800
+        gradient.addColorStop(1, 'rgba(241, 245, 249, 0.5)'); // Slate 100
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Booking',
+                    data: data,
+                    backgroundColor: gradient,
+                    borderColor: '#0f172a',
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    barPercentage: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { 
+                        beginAtZero: true, 
+                        grid: { color: '#f1f5f9' },
+                        ticks: { color: '#94a3b8' }
+                    },
+                    x: { 
+                        grid: { display: false },
+                        ticks: { color: '#1e293b', font: { weight: '600' } }
+                    }
+                }
+            }
+        });
+    });
+</script>
+@endpush

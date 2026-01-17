@@ -3,6 +3,52 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
+<style>
+    :root {
+        --slate-50: #f8fafc;
+        --slate-100: #f1f5f9;
+        --slate-800: #1e293b;
+        --slate-900: #0f172a;
+    }
+
+    /* Override Tombol Biru ke Slate */
+    .btn-slate-dark { 
+        background-color: var(--slate-800); 
+        color: white; 
+        border: none; 
+        transition: 0.3s; 
+        font-weight: 500;
+        border-radius: 8px;
+    }
+    .btn-slate-dark:hover { 
+        background-color: var(--slate-900); 
+        color: white; 
+    }
+    .btn-outline-slate { 
+        color: var(--slate-800); 
+        border: 1px solid var(--slate-800); 
+        font-weight: 500;
+        border-radius: 8px;
+    }
+    .btn-outline-slate:hover { 
+        background-color: var(--slate-50); 
+        color: var(--slate-800);
+    }
+
+    /* Ikon dan Box Styling */
+    .icon-box-slate { 
+        background-color: rgba(30, 41, 59, 0.1); 
+        color: var(--slate-800) !important; 
+        border-radius: 12px;
+        padding: 1rem;
+    }
+    
+    /* Border samping kartu yang tadinya warna-warni jadi Slate seragam */
+    .border-slate-theme { 
+        border-left: 5px solid var(--slate-800) !important; 
+    }
+</style>
+
 <div class="container py-4">
 
     {{-- HEADER --}}
@@ -12,18 +58,14 @@
             <p class="text-muted small mb-0">Ringkasan statistik aplikasi KosConnect.</p>
         </div>
         <div class="d-flex gap-2">
-            <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary btn-sm">
+            <a href="{{ route('admin.users.index') }}" class="btn btn-outline-slate btn-sm">
                 <i class="bi bi-people me-1"></i> Users & Owners
-            </a>
-            <a href="{{ route('admin.bookings.index') }}" class="btn btn-primary btn-sm">
-                <i class="bi bi-journal-bookmark me-1"></i> Monitoring Booking
             </a>
         </div>
     </div>
 
     {{-- STATS CARDS --}}
     <div class="row g-3 mb-4">
-        
         {{-- Total Users --}}
         <div class="col-md-3">
             <div class="card border-0 shadow-sm h-100 border-start border-4 border-primary">
@@ -122,56 +164,63 @@
 @endsection
 
 @push('scripts')
-{{-- Load Chart JS --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const ctx = document.getElementById('bookingChart');
+        const ctx = document.getElementById('bookingChart').getContext('2d');
 
+        // Data dari Controller
         const labels = @json($chartLabels ?? []);
         const data = @json($chartData ?? []);
 
+        // Membuat gradien warna Slate yang elegan
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(30, 41, 59, 0.9)');   // Slate 800
+        gradient.addColorStop(1, 'rgba(30, 41, 59, 0.1)');   // Transparent Slate
+
         new Chart(ctx, {
-            type: 'bar',
+            type: 'bar', // Gunakan 'bar' atau 'line'
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Jumlah Booking Masuk',
+                    label: 'Booking Masuk',
                     data: data,
-                    backgroundColor: 'rgba(13, 110, 253, 0.7)',
-                    borderColor: 'rgba(13, 110, 253, 1)',
-                    borderWidth: 1,
-                    borderRadius: 4,
-                    barPercentage: 0.6
+                    backgroundColor: gradient,
+                    borderColor: '#1e293b',
+                    borderWidth: 2,
+                    borderRadius: 8, // Membuat bar membulat di atas
+                    barPercentage: 0.5,
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        display: false
-                    },
+                    legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#333',
-                        padding: 10,
-                        cornerRadius: 8
+                        backgroundColor: '#1e293b',
+                        titleFont: { size: 14, weight: 'bold' },
+                        padding: 12,
+                        cornerRadius: 10,
+                        displayColors: false
                     }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        grid: {
-                            color: '#f0f0f0' 
-                        },
-                        ticks: {
-                            stepSize: 1 
+                        grid: { color: '#f1f5f9', drawBorder: false },
+                        ticks: { 
+                            color: '#94a3b8', 
+                            stepSize: 1,
+                            font: { family: 'Inter, sans-serif', size: 11 }
                         }
                     },
                     x: {
-                        grid: {
-                            display: false 
+                        grid: { display: false },
+                        ticks: { 
+                            color: '#64748b',
+                            font: { weight: 'bold', size: 11 }
                         }
                     }
                 }

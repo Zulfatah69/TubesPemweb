@@ -3,23 +3,26 @@
 @section('content')
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-lg-6 col-md-8">
+        <div class="col-lg-7 col-md-9">
 
             {{-- HEADER --}}
-            <div class="text-center mb-4">
-                <h4 class="fw-bold text-dark">Lengkapi Profil</h4>
-                <p class="text-muted">Kode verifikasi telah dikirim ke <span class="fw-bold text-primary">{{ $email }}</span></p>
+            <div class="text-center mb-5">
+                <h3 class="fw-bold text-slate-800 mb-2">Lengkapi Profil Anda</h3>
+                <p class="text-muted">
+                    Kode keamanan telah dikirim ke 
+                    <span class="badge bg-slate-100 text-slate-700 fw-bold px-2 py-1">{{ $email }}</span>
+                </p>
             </div>
 
-                @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @if(session('success'))
+                <div class="alert alert-success-custom d-flex align-items-center mb-4" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <div>{{ session('success') }}</div>
                 </div>
-                @endif
+            @endif
 
-            <div class="card border-0 shadow-sm">
-                <div class="card-body p-4">
+            <div class="card border-0 shadow-lg p-2" style="border-radius: 24px;">
+                <div class="card-body p-4 p-md-5">
 
                     <form method="POST" action="{{ route('register.complete') }}">
                         @csrf
@@ -27,97 +30,112 @@
                         {{-- HIDDEN EMAIL --}}
                         <input type="hidden" name="email" value="{{ $email }}">
 
-                        {{-- SEKSI 1: VERIFIKASI --}}
-                        <div class="mb-4 bg-light p-3 rounded-3 border border-secondary-subtle">
-                            <label class="form-label fw-bold small text-muted text-uppercase">Kode Verifikasi (OTP)</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-white text-primary border-end-0">
-                                    <i class="bi bi-shield-lock-fill"></i>
-                                </span>
-                                <input type="text" name="code" class="form-control border-start-0 ps-0 fw-bold letter-spacing-2" placeholder="Masukkan Kode" required autofocus>
+                        {{-- SEKSI 1: VERIFIKASI (OTP) --}}
+                        <div class="mb-5 bg-slate-50 p-4 rounded-4 border border-dashed border-slate-300">
+                            <label class="form-label fw-bold small text-slate-600 text-uppercase tracking-wider mb-3 d-block text-center">
+                                Kode Verifikasi (OTP)
+                            </label>
+                            <div class="d-flex justify-content-center">
+                                <div class="input-group custom-input-group shadow-sm" style="max-width: 300px;">
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="bi bi-shield-check text-slate-800"></i>
+                                    </span>
+                                    <input type="text" name="code" class="form-control border-start-0 ps-0 fw-bold text-center letter-spacing-4" placeholder="000000" maxlength="6" required autofocus>
+                                </div>
                             </div>
-                            <div class="form-text small">Cek inbox atau folder spam email kamu.</div>
+                            <div class="form-text text-center mt-3 small text-muted">
+                                <i class="bi bi-info-circle me-1"></i> Periksa kotak masuk atau folder spam Anda secara berkala.
+                            </div>
                         </div>
 
                         {{-- SEKSI 2: DATA DIRI --}}
-                        <h6 class="fw-bold mb-3 border-bottom pb-2">Informasi Akun</h6>
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="section-badge me-3">1</div>
+                            <h6 class="fw-bold text-slate-800 mb-0">Informasi Identitas</h6>
+                            <div class="flex-grow-1 ms-3 border-bottom border-slate-100"></div>
+                        </div>
                         
-                        <div class="row g-3 mb-3">
+                        <div class="row g-4 mb-4">
                             <div class="col-md-6">
-                                <label class="form-label small text-muted fw-bold">Nama Lengkap</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-person"></i></span>
-                                    <input name="name" class="form-control border-start-0 ps-0" placeholder="Nama Kamu" required>
+                                <label class="form-label small text-slate-600 fw-bold text-uppercase">Nama Lengkap</label>
+                                <div class="input-group custom-input-group">
+                                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-person"></i></span>
+                                    <input name="name" class="form-control border-start-0 ps-0" placeholder="Nama Sesuai KTP" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label small text-muted fw-bold">Username</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-at"></i></span>
-                                    <input name="username" class="form-control border-start-0 ps-0" placeholder="username_unik" required>
+                                <label class="form-label small text-slate-600 fw-bold text-uppercase">Username</label>
+                                <div class="input-group custom-input-group">
+                                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-at"></i></span>
+                                    <input name="username" class="form-control border-start-0 ps-0" placeholder="username_kamu" required>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small text-slate-600 fw-bold text-uppercase">Nomor WhatsApp Aktif</label>
+                                <div class="input-group custom-input-group">
+                                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-whatsapp"></i></span>
+                                    <input name="phone" type="number" class="form-control border-start-0 ps-0" placeholder="0812XXXXXXXX" required>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label small text-muted fw-bold">Nomor WhatsApp / HP</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-whatsapp"></i></span>
-                                <input name="phone" type="number" class="form-control border-start-0 ps-0" placeholder="0812..." required>
-                            </div>
+                        {{-- SEKSI 3: PILIH ROLE --}}
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="section-badge me-3">2</div>
+                            <h6 class="fw-bold text-slate-800 mb-0">Tipe Pengguna</h6>
+                            <div class="flex-grow-1 ms-3 border-bottom border-slate-100"></div>
                         </div>
 
-                        {{-- SEKSI 3: PILIH ROLE (DESIGN BARU) --}}
-                        <div class="mb-4">
-                            <label class="form-label fw-bold small text-muted text-uppercase mb-2">Saya mendaftar sebagai</label>
-                            <div class="row g-2">
-                                {{-- Opsi User --}}
-                                <div class="col-6">
-                                    <input type="radio" class="btn-check" name="role" id="roleUser" value="user" checked>
-                                    <label class="btn btn-outline-primary w-100 p-3 text-start h-100" for="roleUser">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <i class="bi bi-backpack4 fs-4 me-2"></i>
-                                            <span class="fw-bold">Pencari Kos</span>
-                                        </div>
-                                        <small class="d-block text-muted lh-sm" style="font-size: 0.75rem;">Saya ingin mencari dan menyewa kamar kos.</small>
-                                    </label>
-                                </div>
-                                
-                                {{-- Opsi Owner --}}
-                                <div class="col-6">
-                                    <input type="radio" class="btn-check" name="role" id="roleOwner" value="owner">
-                                    <label class="btn btn-outline-primary w-100 p-3 text-start h-100" for="roleOwner">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <i class="bi bi-building-gear fs-4 me-2"></i>
-                                            <span class="fw-bold">Pemilik Kos</span>
-                                        </div>
-                                        <small class="d-block text-muted lh-sm" style="font-size: 0.75rem;">Saya ingin mengiklankan dan mengelola kosan.</small>
-                                    </label>
-                                </div>
+                        <div class="row g-3 mb-5">
+                            <div class="col-sm-6">
+                                <input type="radio" class="btn-check" name="role" id="roleUser" value="user" checked>
+                                <label class="role-card btn btn-outline-slate w-100 p-4 text-start h-100 shadow-sm" for="roleUser">
+                                    <div class="role-icon bg-slate-100 mb-3">
+                                        <i class="bi bi-search"></i>
+                                    </div>
+                                    <div class="fw-bold text-slate-800 mb-1">Pencari Kos</div>
+                                    <p class="small text-muted mb-0 lh-sm">Saya ingin mencari, booking, dan menyewa kamar kos dengan mudah.</p>
+                                </label>
+                            </div>
+                            
+                            <div class="col-sm-6">
+                                <input type="radio" class="btn-check" name="role" id="roleOwner" value="owner">
+                                <label class="role-card btn btn-outline-slate w-100 p-4 text-start h-100 shadow-sm" for="roleOwner">
+                                    <div class="role-icon bg-slate-100 mb-3">
+                                        <i class="bi bi-building-up"></i>
+                                    </div>
+                                    <div class="fw-bold text-slate-800 mb-1">Pemilik Kos</div>
+                                    <p class="small text-muted mb-0 lh-sm">Saya ingin mengiklankan properti dan mengelola penyewa kos saya.</p>
+                                </label>
                             </div>
                         </div>
 
                         {{-- SEKSI 4: KEAMANAN --}}
-                        <h6 class="fw-bold mb-3 border-bottom pb-2">Keamanan</h6>
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="section-badge me-3">3</div>
+                            <h6 class="fw-bold text-slate-800 mb-0">Keamanan Password</h6>
+                            <div class="flex-grow-1 ms-3 border-bottom border-slate-100"></div>
+                        </div>
 
-                        <div class="mb-3">
-                            <label class="form-label small text-muted fw-bold">Password</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-lock"></i></span>
-                                <input type="password" name="password" class="form-control border-start-0 ps-0" placeholder="••••••••" required>
+                        <div class="row g-4 mb-5">
+                            <div class="col-md-6">
+                                <label class="form-label small text-slate-600 fw-bold text-uppercase">Password</label>
+                                <div class="input-group custom-input-group">
+                                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-key"></i></span>
+                                    <input type="password" name="password" class="form-control border-start-0 ps-0" placeholder="••••••••" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small text-slate-600 fw-bold text-uppercase">Konfirmasi</label>
+                                <div class="input-group custom-input-group">
+                                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-check-lg"></i></span>
+                                    <input type="password" name="password_confirmation" class="form-control border-start-0 ps-0" placeholder="••••••••" required>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label small text-muted fw-bold">Konfirmasi Password</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-check2-all"></i></span>
-                                <input type="password" name="password_confirmation" class="form-control border-start-0 ps-0" placeholder="Ulangi password" required>
-                            </div>
-                        </div>
-
-                        <button class="btn btn-primary w-100 py-2 fw-bold shadow-sm">
-                            Selesaikan Pendaftaran <i class="bi bi-arrow-right-circle ms-1"></i>
+                        <button class="btn btn-slate-800 w-100 py-3 fw-bold shadow transition-all rounded-3">
+                            Konfirmasi & Selesaikan Pendaftaran <i class="bi bi-arrow-right-short ms-1 fs-5"></i>
                         </button>
 
                     </form>
@@ -128,22 +146,97 @@
 </div>
 
 <style>
-    /* Styling khusus untuk input kode agar hurufnya berjarak (easier to read) */
-    .letter-spacing-2 {
-        letter-spacing: 2px;
+    :root {
+        --slate-800: #1e293b;
+        --slate-700: #334155;
+        --slate-600: #475569;
+        --slate-100: #f1f5f9;
+        --slate-50: #f8fafc;
     }
-    
-    /* Styling agar input group focus terlihat rapi */
-    .input-group:focus-within {
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        border-radius: 0.375rem;
+
+    body { background-color: var(--slate-50); }
+    .text-slate-800 { color: var(--slate-800); }
+    .text-slate-600 { color: var(--slate-600); }
+    .bg-slate-50 { background-color: var(--slate-50); }
+    .bg-slate-100 { background-color: var(--slate-100); }
+
+    .letter-spacing-4 { letter-spacing: 4px; }
+    .tracking-wider { letter-spacing: 0.05em; }
+
+    /* Input Styling */
+    .custom-input-group {
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
     }
-    .input-group:focus-within .form-control, 
-    .input-group:focus-within .input-group-text {
-        border-color: var(--bs-primary);
+    .custom-input-group:focus-within {
+        border-color: var(--slate-800);
+        box-shadow: 0 0 0 4px rgba(30, 41, 59, 0.08) !important;
     }
-    .input-group-text {
-        border-color: #dee2e6;
+    .custom-input-group .form-control { border: none; padding: 12px; }
+    .custom-input-group .input-group-text { border: none; padding-left: 15px; color: #94a3b8; }
+
+    /* Role Cards */
+    .role-card {
+        border: 2px solid #e2e8f0;
+        border-radius: 16px;
+        transition: all 0.2s ease;
+        background: white;
     }
+    .role-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 1.5rem;
+        color: var(--slate-800);
+        transition: all 0.2s ease;
+    }
+    .btn-check:checked + .role-card {
+        border-color: var(--slate-800);
+        background-color: var(--slate-50);
+    }
+    .btn-check:checked + .role-card .role-icon {
+        background-color: var(--slate-800);
+        color: white;
+    }
+
+    /* Section Badge */
+    .section-badge {
+        width: 28px;
+        height: 28px;
+        background-color: var(--slate-800);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        font-weight: bold;
+    }
+
+    .btn-slate-800 {
+        background-color: var(--slate-800);
+        color: white;
+        border: none;
+    }
+    .btn-slate-800:hover {
+        background-color: var(--slate-700);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .alert-success-custom {
+        background-color: #f0fdf4;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+        border-radius: 12px;
+        padding: 12px 16px;
+    }
+
+    .transition-all { transition: all 0.3s ease; }
 </style>
 @endsection
