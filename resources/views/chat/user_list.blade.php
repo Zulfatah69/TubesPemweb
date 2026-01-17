@@ -37,7 +37,7 @@
                 <div class="list-group list-group-flush">
                     
                     @forelse($chats as $chat)
-                        <a href="{{ route('chat.show', $chat->id) }}" class="list-group-item list-group-item-action p-4 chat-item border-slate-50">
+                        <a href="{{ route('user.chats.show', $chat->owner_id) }}" class="list-group-item list-group-item-action p-4 chat-item border-slate-50">
                             <div class="d-flex align-items-center">
                                 
                                 {{-- AVATAR OWNER (Gradient Slate) --}}

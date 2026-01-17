@@ -13,12 +13,17 @@ class UserChatController extends Controller
     // Daftar owner
     public function index()
     {
-        $owners = User::where('role', 'owner')
-            ->where('id', '!=', Auth::id())
+        $userId = Auth::id();
+
+        $chats = Chat::with(['owner', 'property'])
+            ->where('user_id', $userId)
+            ->orWhere('owner_id', $userId)
+            ->orderBy('updated_at', 'desc')
             ->get();
 
-        return view('chat.user_list', compact('owners'));
+        return view('chat.user_list', compact('chats'));
     }
+
 
     // Chat dengan owner tertentu
     public function show(User $owner)
