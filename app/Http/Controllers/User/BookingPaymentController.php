@@ -37,7 +37,7 @@ class BookingPaymentController extends Controller
 
         $params = [
             'transaction_details' => [
-                'order_id'     => $orderId,
+                'order_id'     => $booking->id,
                 'gross_amount' => (int) $booking->total_price,
             ],
             'customer_details' => [

@@ -166,3 +166,7 @@ Route::get('/debug-storage', function () {
         'public_path' => public_path('storage'),
     ];
 });
+
+use App\Http\Controllers\MidtransCallbackController;
+
+Route::post('/midtrans/callback', [MidtransCallbackController::class, 'handle']);
