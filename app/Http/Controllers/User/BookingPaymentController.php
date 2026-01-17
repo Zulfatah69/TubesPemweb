@@ -57,6 +57,7 @@ class BookingPaymentController extends Controller
         return view('user.bookings.pay', [
             'booking'   => $booking,
             'snapToken' => $snapToken,
+            'payment_status'    => 'paid',
         ]);
     }
 }
