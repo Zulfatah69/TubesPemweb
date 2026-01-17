@@ -43,92 +43,70 @@
         <div class="card-header bg-white py-3 border-bottom border-light">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="text-secondary fw-bold small text-uppercase tracking-wider">Daftar Inventaris Properti</span>
-                <span class="badge bg-light text-secondary border fw-normal">{{ $properties->count() }} Properti</span>
+                <span class="badge bg-light text-secondary border fw-normal">{{ $properties->total() }} Properti</span>
             </div>
         </div>
+
         <div class="card-body p-0">
             <table class="table table-striped mb-0">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>ID</th>
                         <th>Nama</th>
                         <th>Lokasi</th>
                         <th>Harga</th>
                         <th>Foto</th>
-                        <th>Aksi</th>
+                        <th class="text-end">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($properties as $property)
-                        <tr>
-                            <th class="ps-4 py-3 text-muted fw-semibold small" style="width: 80px;">ID</th>
-                            <th class="py-3 text-muted fw-semibold small">NAMA PROPERTI</th>
-                            <th class="py-3 text-muted fw-semibold small">LOKASI WILAYAH</th>
-                            <th class="py-3 text-muted fw-semibold small">HARGA SEWA</th>
-                            <th class="py-3 text-muted fw-semibold small text-center">MEDIA</th>
-                            <th class="pe-4 py-3 text-muted fw-semibold small text-end">KONTROL</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($properties as $p)
-                        <tr>
-                            {{-- ID --}}
-                            <td class="ps-4">
-                                <span class="text-secondary fw-medium">#{{ $p->id }}</span>
-                            </td>
+                @forelse($properties as $p)
+                    <tr>
+                        <td class="ps-4">#{{ $p->id }}</td>
 
-                            {{-- NAMA --}}
-                            <td>
-                                <div class="fw-bold text-slate-800">{{ $p->name }}</div>
-                                <div class="text-muted" style="font-size: 0.75rem;">Diposting pada {{ $p->created_at->format('d/m/Y') }}</div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-start">
-                                    <i class="bi bi-geo-alt text-secondary me-2 mt-1"></i>
-                                    <div>
-                                        <div class="text-slate-700 fw-medium small">{{ $p->district }}</div>
-                                        <div class="text-muted" style="font-size: 0.75rem;">{{ $p->city }}</div>
-                                    </div>
-                                </div>
-                            </td>
+                        <td>
+                            <div class="fw-bold text-slate-800">{{ $p->name }}</div>
+                            <div class="text-muted" style="font-size: 0.75rem;">
+                                {{ $p->created_at->format('d/m/Y') }}
+                            </div>
+                        </td>
 
-                            {{-- HARGA --}}
-                            <td>
-                                <div class="fw-bold text-slate-800">Rp {{ number_format($p->price, 0, ',', '.') }}</div>
-                                <div class="text-muted" style="font-size: 0.7rem;">Estimasi / Bulan</div>
-                            </td>
+                        <td>
+                            <div class="text-slate-700 fw-medium small">{{ $p->district }}</div>
+                            <div class="text-muted" style="font-size: 0.75rem;">{{ $p->city }}</div>
+                        </td>
 
-                            {{-- FOTO (COUNT) --}}
-                            <td class="text-center">
-                                <div class="badge bg-slate-100 text-slate-600 border px-3 py-2 rounded-2">
-                                    <i class="bi bi-camera me-1"></i> {{ $p->images->count() }} <span class="fw-normal opacity-75 ms-1">Foto</span>
-                                </div>
-                            </td>
+                        <td>
+                            <div class="fw-bold text-slate-800">
+                                Rp {{ number_format($p->price, 0, ',', '.') }}
+                            </div>
+                            <div class="text-muted" style="font-size: 0.7rem;">/ bulan</div>
+                        </td>
 
-                            {{-- AKSI --}}
-                            <td class="pe-4 text-end">
-                                <form action="{{ route('admin.properties.destroy', $p->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus properti ini secara permanen? Seluruh data gambar dan transaksi terkait akan hilang.')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger px-3 py-2" style="border-radius: 6px;">
-                                        <i class="bi bi-trash3 me-1"></i> Hapus Properti
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center py-5">
-                                <div class="py-5">
-                                    <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 80px; height: 80px;">
-                                        <i class="bi bi-house-dash fs-1 text-muted opacity-50"></i>
-                                    </div>
-                                    <h5 class="text-slate-700 fw-bold">Belum Ada Properti</h5>
-                                    <p class="text-muted small mx-auto" style="max-width: 300px;">Owner ini belum mendaftarkan unit kosan atau properti apapun ke dalam sistem.</p>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
+                        <td class="text-center">
+                            <span class="badge bg-slate-100 text-slate-600 border px-3 py-2">
+                                {{ $p->images->count() }} Foto
+                            </span>
+                        </td>
+
+                        <td class="pe-4 text-end">
+                            <form action="{{ route('admin.properties.destroy', $p->id) }}" method="POST"
+                                  onsubmit="return confirm('Yakin hapus properti ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-outline-danger px-3 py-2">
+                                    <i class="bi bi-trash3"></i> Hapus
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" class="text-center py-5 text-muted">
+                            Belum ada properti
+                        </td>
+                    </tr>
+                @endforelse
                 </tbody>
             </table>
         </div>
