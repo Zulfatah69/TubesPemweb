@@ -7,11 +7,9 @@ use App\Models\Property;
 use App\Models\PropertyImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class PropertyController extends Controller
 {
-    // List semua properti milik owner
     public function index()
     {
         $properties = Property::where('owner_id', Auth::id())
@@ -21,13 +19,11 @@ class PropertyController extends Controller
         return view('owner.properties.index', compact('properties'));
     }
 
-    // Form tambah properti
     public function create()
     {
         return view('owner.properties.create');
     }
 
-    // Simpan properti baru
     public function store(Request $request)
     {
         $data = $this->validateProperty($request);
@@ -42,7 +38,6 @@ class PropertyController extends Controller
             ->with('success', 'Properti ditambahkan');
     }
 
-    // Form edit properti
     public function edit(Property $property)
     {
         $this->authorizeOwner($property);
@@ -51,13 +46,11 @@ class PropertyController extends Controller
         return view('owner.properties.edit', compact('property'));
     }
 
-    // Update properti
     public function update(Request $request, Property $property)
     {
         $this->authorizeOwner($property);
 
         $data = $this->validateProperty($request);
-
         $property->update($data);
 
         $this->uploadPhotos($request, $property);
@@ -65,13 +58,15 @@ class PropertyController extends Controller
         return back()->with('success', 'Properti diperbarui');
     }
 
-    // Delete properti beserta fotonya
     public function destroy(Property $property)
     {
         $this->authorizeOwner($property);
 
         foreach ($property->images as $image) {
-            Storage::disk('public')->delete($image->file_path);
+            $file = public_path($image->file_path);
+            if (file_exists($file)) {
+                unlink($file);
+            }
             $image->delete();
         }
 
@@ -81,36 +76,43 @@ class PropertyController extends Controller
             ->with('success', 'Properti dihapus');
     }
 
-    // Upload foto properti
     private function uploadPhotos(Request $request, Property $property)
     {
         if (!$request->hasFile('photos')) return;
 
         $existingCount = $property->images()->count();
 
+        $uploadPath = public_path('uploads/properties');
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0755, true);
+        }
+
         foreach ($request->file('photos') as $index => $photo) {
-            $path = $photo->store('properties', 'public');
+
+            $filename = uniqid() . '.' . $photo->getClientOriginalExtension();
+            $photo->move($uploadPath, $filename);
 
             PropertyImage::create([
                 'property_id' => $property->id,
-                'file_path' => $path,
+                'file_path' => 'uploads/properties/' . $filename,
                 'is_main' => ($existingCount === 0 && $index === 0),
             ]);
         }
     }
 
-    // Hapus foto
     public function deleteImage(PropertyImage $image)
     {
         $property = $image->property;
         $this->authorizeOwner($property);
 
-        Storage::disk('public')->delete($image->file_path);
+        $file = public_path($image->file_path);
+        if (file_exists($file)) {
+            unlink($file);
+        }
 
         $wasMain = $image->is_main;
         $image->delete();
 
-        // jika yang dihapus adalah main, set main baru
         if ($wasMain) {
             PropertyImage::where('property_id', $property->id)
                 ->first()?->update(['is_main' => true]);
@@ -119,7 +121,6 @@ class PropertyController extends Controller
         return back()->with('success', 'Foto berhasil dihapus');
     }
 
-    // Set foto utama
     public function setMain(PropertyImage $image)
     {
         $property = $image->property;
@@ -133,11 +134,6 @@ class PropertyController extends Controller
         return back()->with('success', 'Foto utama diubah');
     }
 
-    // ----------------------
-    // Helper functions
-    // ----------------------
-
-    // Validasi properti
     private function validateProperty(Request $request): array
     {
         return $request->validate([
@@ -156,7 +152,6 @@ class PropertyController extends Controller
         ]);
     }
 
-    // Pastikan property milik owner
     private function authorizeOwner(Property $property)
     {
         abort_if($property->owner_id !== Auth::id(), 403);
