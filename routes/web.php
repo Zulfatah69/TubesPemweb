@@ -105,7 +105,7 @@ Route::middleware(['auth', 'role:owner'])
 
         Route::get('/chats', [OwnerChatController::class, 'index'])
             ->name('chats');
-            
+
     });
 
 /*
@@ -122,7 +122,10 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user/bookings', [UserBookingController::class, 'myBookings'])
         ->middleware('role:user')
         ->name('user.booking.my');
-      
+    
+    Route::post('/user/bookings/{property}', [UserBookingController::class, 'store'])
+        ->name('user.booking.store');
+
     Route::get('/user/chats', [UserChatController::class, 'index'])
         ->name('user.chats');
     
@@ -132,6 +135,9 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     
     Route::post('/user/chats/{owner}/send', [UserChatController::class, 'send'])
         ->name('chat.send');
+    
+    Route::post('/user/chats/{owner}/start', [UserChatController::class, 'start'])
+        ->name('chat.start');
     
     // Ambil pesan chat untuk owner tertentu (AJAX)
     Route::get('/user/chats/{owner}/messages', [UserChatController::class, 'messages'])

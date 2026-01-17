@@ -8,7 +8,7 @@
     {{-- HEADER --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="fw-bold text-dark mb-1">Edit Properti</h4>
+            <h4 class="fw-bold text">Edit Properti</h4>
             <p class="text-muted small mb-0">Perbarui informasi, alamat, dan foto kosan.</p>
         </div>
         <a href="{{ route('owner.properties.index') }}" class="btn btn-outline-secondary btn-sm px-3">
@@ -29,7 +29,7 @@
                 {{-- 1. INFORMASI UMUM --}}
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-header bg-white py-3">
-                        <h6 class="mb-0 fw-bold text-primary"><i class="bi bi-pencil-square me-2"></i>Informasi Umum</h6>
+                        <h6 class="mb-0 fw-bold" style="color: #5f666e;"><i class="bi bi-pencil-square me-2"></i>Informasi Umum</h6>
                     </div>
                     <div class="card-body p-4">
                         <div class="mb-4">
@@ -77,7 +77,7 @@
                 {{-- 2. ALAMAT LENGKAP --}}
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-header bg-white py-3">
-                        <h6 class="mb-0 fw-bold text-primary"><i class="bi bi-map me-2"></i>Alamat Detail</h6>
+                        <h6 class="mb-0 fw-bold" style="color: #5f666e;;"><i class="bi bi-map me-2"></i>Alamat Detail</h6>
                     </div>
                     <div class="card-body p-4">
                         <div class="row mb-3">
@@ -122,7 +122,7 @@
                 {{-- 3. FASILITAS --}}
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-header bg-white py-3">
-                        <h6 class="mb-0 fw-bold text-primary"><i class="bi bi-stars me-2"></i>Fasilitas</h6>
+                        <h6 class="mb-0 fw-bold" style="color: #5f666e;;"><i class="bi bi-stars me-2"></i>Fasilitas</h6>
                     </div>
                     <div class="card-body p-4">
                         @php
@@ -145,7 +145,7 @@
                         </div>
 
                         <div>
-                            <label class="form-label fw-bold small text-muted">Fasilitas Tambahan</label>
+                            <label class="form-label fw-bold small text" style="color: #5f666e;;">Fasilitas Tambahan</label>
                             <input type="text" name="custom_facilities" class="form-control" 
                                    placeholder="Pisahkan dengan koma (cth: TV, Kulkas)"
                                    value="{{ old('custom_facilities', is_array($property->custom_facilities) ? implode(',', $property->custom_facilities) : $property->custom_facilities) }}">
@@ -160,17 +160,19 @@
                 
                 {{-- TOMBOL SIMPAN (Sticky) --}}
                 <div class="card border-0 shadow-sm mb-4 sticky-top" style="top: 20px; z-index: 10;">
-                    <div class="card-body p-3">
-                        <button class="btn btn-success w-100 fw-bold py-2">
-                            <i class="bi bi-save me-2"></i> Simpan Perubahan
-                        </button>
-                    </div>
-                </div>
+    <div class="card-body p-3">
+        <button class="btn w-100 fw-bold py-2" 
+                style="background-color: #9AA6B2; color: #ffffff; border: none; box-shadow: none;">
+            <i class="bi bi-save me-2"></i> Simpan Perubahan
+        </button>
+    </div>
+</div>
+
 
                 {{-- MANAJEMEN FOTO --}}
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-white py-3">
-                        <h6 class="mb-0 fw-bold text-primary"><i class="bi bi-images me-2"></i>Galeri Foto</h6>
+                        <h6 class="mb-0 fw-bold" style="color: #5f666e;;"><i class="bi bi-images me-2"></i>Galeri Foto</h6>
                     </div>
                     <div class="card-body p-3">
                         
@@ -311,5 +313,27 @@
     }
 
 </script>
+<style>
+    /* Style default untuk kategori radio button: transparan, border abu */
+.btn-group .btn-check + .btn {
+    background-color: transparent;   /* transparan */
+    color: #5F666E;                  /* teks abu */
+    border: 1px solid #9AA6B2;       /* border abu */
+}
 
+/* Saat tombol dipilih */
+.btn-group .btn-check:checked + .btn {
+    background-color: transparent;   /* tetap transparan */
+    border-color: #415879;           /* border tema */
+    color: #415879;                  /* teks ikut border */
+}
+
+/* Hover efek: hanya border berubah */
+.btn-group .btn-check + .btn:hover {
+    background-color: transparent;   /* tetap transparan */
+    border-color: #415879;           /* border tema */
+    color: #415879;                  /* teks ikut border */
+}
+
+</style>
 @endpush

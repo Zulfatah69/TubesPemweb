@@ -79,4 +79,16 @@ class UserChatController extends Controller
     return response()->json($chat->messages()->with('sender')->get());
 }
 
+public function start(Property $property)
+{
+    // Cek apakah chat sudah ada, atau buat baru
+    $chat = Chat::firstOrCreate([
+        'user_id' => auth()->id(),
+        'owner_id' => $property->owner_id,
+        'property_id' => $property->id,
+    ]);
+
+    return redirect()->route('user.chats.show', $property->owner_id);
+}
+
 }

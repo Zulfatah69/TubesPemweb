@@ -42,7 +42,7 @@
         
         {{-- HEADER INFO --}}
         <div class="mb-4">
-            <h2 class="fw-bold text-dark mb-2">{{ $property->name }}</h2>
+            <h2 class="fw-bold text">{{ $property->name }}</h2>
             <div class="text-muted d-flex align-items-center gap-2">
                 <i class="bi bi-geo-alt-fill text-danger"></i> 
                 <span>{{ $property->district }}, {{ $property->city }}, {{ $property->province }}</span>
@@ -88,7 +88,7 @@
         {{-- FASILITAS --}}
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-body p-4">
-                <h5 class="fw-bold mb-3">Fasilitas Utama</h5>
+                <h5 class="fw-bold mb-3" style="color: #5f666e;">Fasilitas Utama</h5>
                 @if($property->facilities)
                     <div class="d-flex flex-wrap gap-2">
                         @foreach($property->facilities as $f)
@@ -102,22 +102,21 @@
                 @endif
 
                 @if($property->custom_facilities)
-                    <h5 class="fw-bold mt-4 mb-3">Fasilitas Tambahan</h5>
-                    <div class="d-flex flex-wrap gap-2">
-                        @foreach($property->custom_facilities as $f)
-                            <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-3 py-2 rounded-pill fw-normal">
-                                <i class="bi bi-plus-circle me-1"></i> {{ $f }}
-                            </span>
-                        @endforeach
-                    </div>
-                @endif
+    <h5 class="fw-bold mt-4 mb-3"style="color: #5f666e;">Fasilitas Tambahan</h5>
+    <div class="d-flex flex-wrap gap-2">
+        @foreach(is_array($property->custom_facilities) ? $property->custom_facilities : explode(',', $property->custom_facilities) as $f)
+            <span class="badge bg-secondary">{{ trim($f) }}</span>
+        @endforeach
+    </div>
+@endif
+
             </div>
         </div>
 
         {{-- DESKRIPSI --}}
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-body p-4">
-                <h5 class="fw-bold mb-3">Deskripsi Kos</h5>
+                <h5 class="fw-bold mb-3"style="color: #5f666e;">Deskripsi Kos</h5>
                 <div class="text-secondary" style="white-space: pre-line; line-height: 1.6;">
                     {{ $property->description ?? 'Pemilik belum menambahkan deskripsi detail untuk kos ini.' }}
                 </div>
@@ -163,17 +162,19 @@
                             <textarea name="note" class="form-control" rows="2" placeholder="Contoh: 1"></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-success w-100 py-2 fw-bold mb-3 shadow-sm">
-                            <i class="bi bi-calendar-check me-2"></i> Ajukan Sewa
-                        </button>
+                        <button type="submit" class="btn w-100 py-2 fw-bold mb-3 shadow-sm"
+        style="background-color: #9AA6B2; color: #ffffff; border: none;">
+    <i class="bi bi-calendar-check me-2" style="color: #ffffff;"></i> Ajukan Sewa
+</button>
                     </form>
 
                     {{-- TOMBOL CHAT --}}
                     <form method="POST" action="{{ route('chat.start', $property->id) }}">
                         @csrf
-                        <button type="submit" class="btn btn-outline-primary w-100 py-2 fw-bold">
-                            <i class="bi bi-chat-dots me-2"></i> Chat Pemilik
-                        </button>
+                        <button type="submit" class="btn w-100 py-2 fw-bold"
+        style="border: 1px solid #9AA6B2; color: #9AA6B2; background-color: transparent;">
+    <i class="bi bi-chat-dots me-2" style="color: #9AA6B2;"></i> Chat Pemilik
+</button>
                     </form>
 
                     <div class="text-center mt-3">
@@ -193,7 +194,7 @@
                     </div>
                     <div>
                         <small class="text-muted d-block">Pemilik Kos</small>
-                        <span class="fw-bold text-dark">Admin / Owner</span>
+                        <span class="fw-bold" style="color: #5f666c;">Admin / Owner</span>
                     </div>
                 </div>
             </div>
