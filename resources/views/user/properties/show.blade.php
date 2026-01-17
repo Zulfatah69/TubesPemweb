@@ -78,6 +78,7 @@
                         <button class="carousel-control-next" type="button" data-bs-target="#carouselPhotos" data-bs-slide="next">
                             <span class="carousel-control-next-icon bg-slate-800 rounded-circle p-3" aria-hidden="true" style="background-size: 50%;"></span>
                         </button>
+
                     </div>
                 @else
                     <div class="bg-slate-50 d-flex align-items-center justify-content-center text-slate-300" style="height: 400px;">
@@ -88,7 +89,6 @@
                     </div>
                 @endif
             </div>
-
             {{-- FASILITAS --}}
             <div class="mb-5">
                 <h4 class="fw-bold text-slate-800 mb-4">Fasilitas Properti</h4>
@@ -133,7 +133,6 @@
                                 <span class="text-slate-400 fw-medium">/ bulan</span>
                             </div>
                         </div>
-
                         <hr class="border-slate-50 my-4">
 
                         {{-- FORM BOOKING --}}
@@ -176,7 +175,6 @@
                                 <span class="text-slate-500" style="font-size: 0.7rem;">Data Transaksi Terenkripsi</span>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

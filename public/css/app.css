@@ -1,0 +1,259 @@
+/* =====================================================
+   APP CSS – COLOR OVERRIDE ONLY (like login page)
+   ===================================================== */
+
+:root {
+    --bs-primary: #BCCCDC;           /* warna utama navbar / highlight */
+    --bs-primary-rgb: 188, 204, 220;
+    --bs-secondary: #6C757D;
+     --bs-success: #2F6F73 !important;   /* deep sea green */
+    --bs-warning: #5B8FA8 !important;   /* ocean blue */
+    --bs-danger:  #2B3A4A !important;  
+
+    --kosan-bg-section: #F8FAFC;    /* background body */
+    --kosan-text-main: #5F666E;     /* teks utama */
+    --kosan-text-muted: #7A828A;    /* teks muted */
+    --kosan-border: #BCCCDC;        /* border card, input */
+    --kosan-card-bg: #FFFFFF;       /* card bg */
+    --kosan-btn-primary: #9AA6B2;   /* tombol primary */
+    --kosan-btn-primary-hover: #8C96A0;
+}
+
+/* ===========================
+   Body & Main Layout
+   =========================== */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--kosan-bg-section);
+    color: var(--kosan-text-main);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+/* ===========================
+   Navbar
+   =========================== */
+.navbar {
+    background-color: var(--bs-primary) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,.06);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--kosan-text-main) !important;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: var(--kosan-text-main) !important;
+    transition: all 0.2s;
+}
+
+.nav-link:hover {
+    color: #3f454b !important;
+    transform: translateY(-1px);
+}
+
+.nav-link.active {
+    font-weight: 700;
+    color: #3f454b !important;
+}
+
+/* ===========================
+   Cards
+   =========================== */
+.card {
+    background-color: var(--kosan-card-bg);
+    border: 1px solid var(--kosan-border);
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    transition: all 0.2s ease;
+}
+
+.card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1) !important;
+}
+
+/* ===========================
+   Buttons
+   =========================== */
+.btn-primary {
+    background-color: var(--kosan-btn-primary) !important;
+    border-color: var(--kosan-btn-primary) !important;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--kosan-btn-primary-hover) !important;
+    border-color: var(--kosan-btn-primary-hover) !important;
+}
+
+/* ===========================
+   Text
+   =========================== */
+h4, h5, h6 {
+    font-weight: 600;
+}
+
+.text-muted {
+    color: var(--kosan-text-muted) !important;
+}
+
+/* ===========================
+   Footer
+   =========================== */
+footer {
+    background-color: var(--kosan-card-bg);
+    border-top: 1px solid var(--kosan-border);
+    margin-top: auto;
+}
+
+/* ===========================
+   Inputs
+   =========================== */
+.form-control {
+    background-color: var(--kosan-bg-section);
+    color: var(--kosan-text-main);
+    border: 1px solid var(--kosan-border);
+}
+
+.form-control::placeholder {
+    color: #8a9199;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.15rem rgba(154,166,178,.45);
+}
+
+/* input group icon */
+.input-group-text {
+    background-color: var(--kosan-bg-section);
+    border: 1px solid var(--kosan-border);
+    color: var(--kosan-card-bg);
+}
+
+/* ===================== USER DASHBOARD ===================== */
+.user-dashboard {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    background-color: var(--kosan-bg-section);
+}
+
+/* ===================== ROW ===================== */
+.dashboard-row {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
+
+/* ===================== FILTER ===================== */
+.filter-col {
+    max-width: 280px;
+}
+
+.filter-card {
+    background: var(--kosan-card-bg);
+    border: 1px solid var(--kosan-border);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    padding: 0;
+}
+
+.filter-card .card-header {
+    border-bottom: 1px solid var(--kosan-border);
+}
+
+.filter-card .card-title {
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;  /* biar icon + teks rata tengah */
+    gap: 0.5rem;
+}
+
+/* ===================== PROPERTY LIST ===================== */
+.content-col {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* biar semua card di tengah */
+    gap: 1.5rem;
+}
+
+.property-wrapper {
+    max-width: 350px;
+}
+
+/* ===================== PROPERTY CARD ===================== */
+.property-card {
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--kosan-card-bg);
+    border: 1px solid var(--kosan-border);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.property-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--kosan-secondary);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.15);
+}
+
+.property-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* ===================== PRICE ===================== */
+.property-card .price {
+    color: var(--kosan-secondary);
+    font-weight: 800;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(188,204,220,0.3);
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 992px) {
+    .dashboard-row {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .filter-col {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .content-col {
+        justify-content: center;
+    }
+}
+
+/* ===================== TABLE HEADER ===================== */
+.table thead th {
+    background-color: var(--kosan-card-bg);   /* background card */
+    color:#5F666E;
+    font-weight: 700;
+    text-align: center;                       /* rata tengah */
+}
+
+.table tbody td {
+    text-align: center;                       /* isi tabel rata tengah */
+    color: #5F666E; 
+    vertical-align: middle;
+}
+
+

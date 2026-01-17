@@ -2,6 +2,10 @@
 
 @section('title', 'Tambah Properti')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/add-property.css') }}">
+@endpush
+
 @section('content')
 <div class="container py-5">
 
@@ -72,7 +76,6 @@
                         </div>
                     </div>
                 </div>
-
                 {{-- 2. ALAMAT --}}
                 <div class="card border-0 shadow-sm mb-4" style="border-radius: 20px;">
                     <div class="card-header bg-white py-3 border-bottom border-slate-50">
@@ -135,7 +138,6 @@
 
             {{-- KOLOM KANAN (SIDEBAR) --}}
             <div class="col-lg-4">
-                
                 {{-- ACTIONS --}}
                 <div class="card border-0 shadow-sm mb-4 sticky-top" style="top: 2rem; border-radius: 20px; z-index: 10;">
                     <div class="card-body p-4">
@@ -147,7 +149,7 @@
                         </p>
                     </div>
                 </div>
-
+                
                 {{-- MEDIA --}}
                 <div class="card border-0 shadow-sm" style="border-radius: 20px;">
                     <div class="card-header bg-white py-3 border-bottom border-slate-50">
@@ -276,4 +278,24 @@
         });
     });
 </script>
+
+<style>
+/* Style untuk gender radio button */
+.btn-group .btn-check:checked + .btn {
+    background-color: #415879; /* warna tema saat dipilih */
+    border-color: #415879;     /* ganti warna border */
+    color: white;              /* teks putih */
+}
+
+.btn-group .btn {
+    border-color: #9AA6B2;    /* warna border default */
+    color: #5F666E;            /* teks default */
+}
+
+/* Saat hover */
+.btn-group .btn:hover {
+    border-color: #415879;
+    color: grey;
+}
+</style>
 @endpush

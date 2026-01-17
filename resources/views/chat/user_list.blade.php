@@ -77,7 +77,6 @@
                                 <div class="ms-3 text-slate-300">
                                     <i class="bi bi-chevron-right small"></i>
                                 </div>
-
                             </div>
                         </a>
                     @empty
@@ -94,7 +93,6 @@
                             </a>
                         </div>
                     @endforelse
-
                 </div>
             </div>
 
@@ -168,5 +166,4 @@
         transition: all 0.2s ease;
     }
 </style>
-
 @endsection

@@ -1,0 +1,118 @@
+/* =====================================================
+   ADMIN - MONITORING BOOKINGS
+   Palette:
+   #9AA6B2 | #BCCCDC | #D9EAFD | #F8FAFC
+   ===================================================== */
+
+/* BASE */
+body {
+    background-color: #F8FAFC;
+    color: #2f3a45;
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* TEXT */
+.text-muted {
+    color: #9AA6B2 !important;
+}
+
+/* HEADER */
+h4 {
+    color: #2f3a45;
+}
+
+/* CARD */
+.card {
+    background-color: #ffffff;
+    border: 1px solid #BCCCDC;
+    border-radius: 14px;
+}
+
+.card-footer {
+    background-color: #ffffff;
+    border-top: 1px solid #BCCCDC;
+}
+
+/* TABLE */
+.table thead {
+    background-color: #D9EAFD;
+}
+
+.table thead th {
+    color: #4b5b6a;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid #BCCCDC;
+}
+
+.table tbody tr:hover {
+    background-color: #F8FAFC;
+}
+
+/* AVATAR */
+.bg-primary {
+    background-color: #D9EAFD !important;
+}
+
+.text-primary {
+    color: #4b6fae !important;
+}
+
+/* BADGE */
+.badge {
+    font-weight: 500;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+}
+
+.badge.bg-success {
+    background-color: rgba(217, 234, 253, 0.9) !important;
+    color: #3a5c87 !important;
+}
+
+.badge.bg-warning {
+    background-color: rgba(188, 204, 220, 0.8) !important;
+    color: #4a5f73 !important;
+}
+
+.badge.bg-danger {
+    background-color: rgba(188, 204, 220, 0.6) !important;
+    color: #6b3a3a !important;
+}
+
+.badge.bg-secondary {
+    background-color: #F8FAFC !important;
+    color: #9AA6B2 !important;
+}
+
+/* BUTTON */
+.btn-light {
+    background-color: #F8FAFC;
+    border: 1px solid #BCCCDC;
+    color: #4b5b6a;
+}
+
+.btn-light:hover {
+    background-color: #D9EAFD;
+}
+
+/* ALERT */
+.alert-success {
+    background-color: #D9EAFD;
+    border: 1px solid #BCCCDC;
+    color: #2f3a45;
+}
+
+/* PAGINATION */
+.page-link {
+    border: 1px solid #BCCCDC;
+    color: #4b5b6a;
+}
+
+.page-item.active .page-link {
+    background-color: #D9EAFD;
+    border-color: #9AA6B2;
+    color: #2f3a45;
+}
+
+/*update css */

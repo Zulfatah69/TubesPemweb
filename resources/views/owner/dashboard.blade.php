@@ -2,7 +2,9 @@
 
 @section('title', 'Dashboard Pemilik')
 
-@section('content')
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/dash-owner.css') }}">
+@endpush
 
 <div class="container py-5">
 
@@ -19,7 +21,7 @@
 
     {{-- STATISTIK CARDS --}}
     <div class="row g-4 mb-5">
-        
+
         {{-- Total Properti --}}
         <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100" style="border-radius: 20px;">
@@ -54,7 +56,7 @@
             </div>
         </div>
 
-        {{-- Menunggu Konfirmasi (Pending) --}}
+        {{-- Perlu Konfirmasi --}}
         <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100" style="border-radius: 20px;">
                 <div class="card-body p-4 d-flex align-items-center">
@@ -75,10 +77,11 @@
         </div>
     </div>
 
+
     {{-- MENU PINTAS (QUICK ACTIONS) --}}
     <h5 class="fw-bold text-slate-700 mb-4">Navigasi Cepat</h5>
     <div class="row g-4">
-        
+
         {{-- Tombol Chat --}}
         <div class="col-md-6 col-lg-4">
             <a href="{{ route('owner.chats') }}" class="card text-decoration-none action-card border-0 shadow-sm h-100">
@@ -140,10 +143,10 @@
                 </div>
             </a>
         </div>
-
     </div>
 
 </div>
+<<<<<<< HEAD
 
 <style>
     :root {

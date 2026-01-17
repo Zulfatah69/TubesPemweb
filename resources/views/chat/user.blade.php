@@ -3,13 +3,12 @@
 @section('title', 'Chat Room')
 
 @section('content')
-
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-md-9 col-lg-7">
 
             <div class="card border-0 shadow-lg overflow-hidden" style="height: 85vh; border-radius: 24px;">
-                
+        
                 {{-- HEADER CHAT --}}
                 <div class="card-header bg-white border-bottom p-3 px-4 d-flex align-items-center justify-content-between sticky-top z-1">
                     <div class="d-flex align-items-center">
@@ -126,7 +125,6 @@
 
 <script>
 const chatBox = document.getElementById('chat-box');
-const chatId = {{ $chat->id }};
 const authId = {{ auth()->id() }};
 
 function scrollToBottom() {

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash; // <-- tambahkan ini
 use Illuminate\Validation\ValidationException;
 
 class AuthOtpController extends Controller
@@ -88,7 +89,7 @@ class AuthOtpController extends Controller
                 'phone' => $request->phone,
                 'email' => $request->email,
                 'role' => $request->role,
-                'password' => $request->password,
+                'password' => Hash::make($request->password), // <-- hash password
                 'email_verified_at' => now(),
             ]);
 

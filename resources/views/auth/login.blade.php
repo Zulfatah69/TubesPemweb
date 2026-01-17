@@ -8,7 +8,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 
+<<<<<<< HEAD
     <style>
         :root {
             --slate-800: #1e293b;
@@ -141,8 +144,13 @@
                 <div class="login-header-icon">
                     <i class="bi bi-houses-fill fs-2"></i>
                 </div>
+<<<<<<< HEAD
                 <h3 class="fw-bold text-slate-800 mb-1">KosConnect</h3>
                 <p class="text-muted small">Kelola hunian dengan lebih cerdas</p>
+=======
+                <h4 class="fw-bold">Selamat Datang</h4>
+                <p class="text-muted small">Silakan masuk untuk melanjutkan</p>
+>>>>>>> b626b07137739ad0653c30b57a5dfc190e6620e8
             </div>
 
             <div class="card card-login bg-white p-4 p-md-5">

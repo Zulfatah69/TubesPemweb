@@ -10,37 +10,40 @@ use Illuminate\Support\Facades\Auth;
 
 class UserBookingController extends Controller
 {
+    // Method untuk menyimpan booking baru
     public function store(Request $request, Property $property)
     {
+        // Validasi input
         $request->validate(
             [
                 'start_date' => 'required|date',
                 'months'     => 'nullable|integer|min:1',
-                'note'       => 'nullable|string',
+                'note'       => 'nullable|string|max:255',
             ],
             [
                 'start_date.required' => 'Tanggal mulai wajib diisi',
                 'start_date.date'     => 'Format tanggal tidak valid',
                 'months.min'          => 'Minimal sewa 1 bulan',
+                'note.string'         => 'Catatan harus berupa teks',
+                'note.max'            => 'Catatan maksimal 255 karakter',
             ]
         );
 
         $months = $request->months ?? 1;
 
+        // Cek apakah user sudah memiliki booking aktif di properti ini
         $exists = Booking::where('user_id', Auth::id())
             ->where('property_id', $property->id)
             ->whereIn('status', ['pending', 'approved'])
             ->exists();
 
         if ($exists) {
-            return back()->with(
-                'error',
-                'Anda sudah memiliki booking aktif pada properti ini'
-            );
+            return back()->with('error', 'Anda sudah memiliki booking aktif pada properti ini');
         }
 
         $totalPrice = $property->price * $months;
 
+        #buat booking baru
         Booking::create([
             'user_id'        => Auth::id(),
             'property_id'    => $property->id,

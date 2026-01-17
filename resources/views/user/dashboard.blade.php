@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Dashboard User')
+
 @section('content')
 <div class="container py-4">
     <div class="row">
@@ -119,8 +121,10 @@
                 @endforelse
             </div>
         </div>
+
     </div>
 </div>
+
 
 {{-- JAVASCRIPT UNTUK API WILAYAH --}}
 <script>

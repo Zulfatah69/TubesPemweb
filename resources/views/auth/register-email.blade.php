@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/register-email.css') }}">
+@endpush
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center align-items-center" style="min-height: 85vh;">
@@ -18,7 +22,6 @@
             <div class="card border-0 shadow-lg" style="border-radius: 20px;">
                 <div class="card-body p-4 p-md-5">
 
-                    {{-- ALERT ERROR --}}
                     @if($errors->any())
                         <div class="alert alert-danger-custom d-flex align-items-center mb-4" role="alert">
                             <i class="bi bi-exclamation-triangle-fill me-2"></i>
@@ -26,7 +29,6 @@
                         </div>
                     @endif
 
-                    {{-- ALERT SUCCESS --}}
                     @if(session('success'))
                         <div class="alert alert-success-custom d-flex align-items-center mb-4" role="alert">
                             <i class="bi bi-check-circle-fill me-2"></i>
@@ -58,15 +60,13 @@
                                 <span>Kami akan mengirimkan 6-digit kode OTP untuk memastikan keamanan email Anda.</span>
                             </div>
                         </div>
-
                         <button type="submit" class="btn btn-slate-800 w-100 py-3 fw-bold shadow-sm transition-all mb-2">
                             Kirim Kode OTP <i class="bi bi-arrow-right ms-2"></i>
                         </button>
-
                     </form>
+
                 </div>
             </div>
-
             {{-- FOOTER LINK --}}
             <div class="text-center mt-5">
                 <p class="text-muted small">
@@ -78,7 +78,6 @@
         </div>
     </div>
 </div>
-
 <style>
     /* Slate Palette & Core Variables */
     :root {

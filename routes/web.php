@@ -1,97 +1,232 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthOtpController;
 use App\Http\Controllers\ChatController;
+
 use App\Http\Controllers\Owner\OwnerChatController;
 use App\Http\Controllers\Owner\OwnerDashboardController;
-use App\Http\Controllers\Owner\PropertyController;
 use App\Http\Controllers\Owner\OwnerBookingController;
-use App\Http\Controllers\User\UserPropertyController;
+use App\Http\Controllers\Owner\PropertyController as OwnerPropertyController;
+
 use App\Http\Controllers\User\UserBookingController;
+use App\Http\Controllers\User\UserChatController;
 use App\Http\Controllers\User\BookingPaymentController;
-use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\User\UserPropertyController;
+
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminBookingController;
+use App\Http\Controllers\Admin\AdminOwnerController;
 
+use App\Http\Controllers\PaymentController;
+
+
+/*
+|--------------------------------------------------------------------------
+| AUTH BASIC
+|--------------------------------------------------------------------------
+*/
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+/*
+|--------------------------------------------------------------------------
+| REGISTER + OTP
+|--------------------------------------------------------------------------
+*/
 Route::get('/register', fn () => redirect()->route('register.email'))->name('register');
-Route::get('/register/email', [AuthOtpController::class, 'showEmailForm'])->name('register.email');
-Route::post('/register/email', [AuthOtpController::class, 'sendCode'])->name('register.send');
-Route::get('/register/verify', [AuthOtpController::class, 'showVerifyForm'])->name('register.verify');
-Route::post('/register/verify', [AuthOtpController::class, 'completeRegister'])->name('register.complete');
 
-Route::middleware(['auth', 'role:owner', 'blocked'])
+Route::get('/register/email', [AuthOtpController::class, 'showEmailForm'])
+    ->name('register.email');
+
+Route::post('/register/email', [AuthOtpController::class, 'sendCode'])
+    ->name('register.send');
+
+Route::get('/register/verify', [AuthOtpController::class, 'showVerifyForm'])
+    ->name('register.verify');
+
+Route::post('/register/verify', [AuthOtpController::class, 'completeRegister'])
+    ->name('register.complete');
+
+/*
+|--------------------------------------------------------------------------
+| 🔥 DEV LOGIN (LOCAL ONLY)
+|--------------------------------------------------------------------------
+| GUNAKAN UNTUK BUKA SEMUA HALAMAN TANPA LOGIN FORM
+*/
+Route::get('/dev-login/{role}', function ($role) {
+
+    if (!in_array($role, ['admin', 'owner', 'user'])) {
+        return 'Role tidak valid';
+    }
+
+    $user = \App\Models\User::where('role', $role)->first();
+
+    if (!$user) {
+        return "User dengan role {$role} belum ada";
+    }
+
+    Auth::login($user);
+
+    return redirect('/');
+});
+
+/*
+|--------------------------------------------------------------------------
+| OWNER
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:owner'])
     ->prefix('owner')
     ->name('owner.')
     ->group(function () {
 
-        Route::get('/dashboard', [OwnerDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [OwnerDashboardController::class, 'index'])
+            ->name('dashboard');
 
         Route::prefix('properties')->name('properties.')->group(function () {
-            Route::get('/', [PropertyController::class, 'index'])->name('index');
-            Route::get('/create', [PropertyController::class, 'create'])->name('create');
-            Route::post('/', [PropertyController::class, 'store'])->name('store');
-            Route::get('/{property}/edit', [PropertyController::class, 'edit'])->name('edit');
-            Route::put('/{property}', [PropertyController::class, 'update'])->name('update');
-            Route::delete('/{property}', [PropertyController::class, 'destroy'])->name('destroy');
-
-            Route::post('/image/{image}/set-main', [PropertyController::class, 'setMain'])->name('image.main');
-            Route::delete('/image/{image}', [PropertyController::class, 'deleteImage'])->name('image.delete');
-        });
-
-        Route::get('/bookings', [OwnerBookingController::class, 'index'])->name('booking.index');
-        Route::post('/bookings/{booking}/{status}', [OwnerBookingController::class, 'updateStatus'])->name('booking.update');
-
-        Route::get('/chats', [OwnerChatController::class, 'index'])->name('chats');
-        Route::get('/chat/{chat}', [OwnerChatController::class, 'show'])->name('chat.show');
-        Route::post('/chat/{chat}/send', [OwnerChatController::class, 'send'])->name('chat.send');
+        Route::get('/', [OwnerPropertyController::class, 'index'])->name('index');
+        Route::get('/create', [OwnerPropertyController::class, 'create'])->name('create');
+        Route::post('/', [OwnerPropertyController::class, 'store'])->name('store');
+        Route::get('/{property}/edit', [OwnerPropertyController::class, 'edit'])->name('edit');
+        Route::put('/{property}', [OwnerPropertyController::class, 'update'])->name('update');
+        Route::delete('/{property}', [OwnerPropertyController::class, 'destroy'])->name('destroy');
+        Route::patch('/images/{image}/main', [OwnerPropertyController::class, 'setMainImage'])->name('image.main');
+        Route::delete('/images/{image}', [OwnerPropertyController::class, 'deleteImage'])->name('image.delete'); // <<< ini route yang kamu butuhin
     });
 
-Route::middleware(['auth', 'role:user', 'blocked'])->group(function () {
+        Route::get('/bookings', [OwnerBookingController::class, 'index'])
+            ->name('booking.index');
 
-    Route::get('/user/dashboard', [UserPropertyController::class, 'index'])->name('user.dashboard');
-    Route::get('/user/property/{property}', [UserPropertyController::class, 'show'])->name('user.property.show');
+        Route::get('/chats', [OwnerChatController::class, 'index'])
+            ->name('chats');
 
-    Route::post('/user/property/{property}/booking', [UserBookingController::class, 'store'])->name('user.booking.store');
-    Route::get('/user/bookings', [UserBookingController::class, 'myBookings'])->name('user.booking.my');
+    });
 
-    Route::get('/booking/{booking}/pay', [BookingPaymentController::class, 'pay'])->name('booking.pay');
+/*
+|--------------------------------------------------------------------------
+| USER
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:user'])->group(function () {
 
-    Route::post('/chat/start/{property}', [ChatController::class, 'start'])->name('chat.start');
-    Route::get('/chat/{chat}', [ChatController::class, 'show'])->name('chat.show');
-    Route::post('/chat/{chat}/send', [ChatController::class, 'send'])->name('chat.send');
-    Route::get('/chat/{chat}/messages', [ChatController::class, 'messages'])->name('chat.messages');
-    Route::get('/user/chats', [ChatController::class, 'index'])->name('user.chats');
+    Route::get('/user/dashboard', [UserPropertyController::class, 'index'])
+        ->middleware(['auth', 'block'])
+        ->name('user.dashboard');
+
+    Route::get('/user/bookings', [UserBookingController::class, 'myBookings'])
+        ->middleware('role:user')
+        ->name('user.booking.my');
+    
+    Route::post('/user/bookings/{property}', [UserBookingController::class, 'store'])
+        ->name('user.booking.store');
+
+    Route::get('/user/chats', [UserChatController::class, 'index'])
+        ->name('user.chats');
+    
+    // Hanya satu route GET untuk lihat chat dengan owner tertentu
+    Route::get('/user/chats/{owner}', [UserChatController::class, 'show'])
+        ->name('user.chats.show');
+    
+    Route::post('/user/chats/{owner}/send', [UserChatController::class, 'send'])
+        ->name('chat.send');
+    
+    Route::post('/user/chats/{owner}/start', [UserChatController::class, 'start'])
+        ->name('chat.start');
+    
+    // Ambil pesan chat untuk owner tertentu (AJAX)
+    Route::get('/user/chats/{owner}/messages', [UserChatController::class, 'messages'])
+        ->name('chat.messages');
+
 });
 
-Route::post('/midtrans/webhook', [PaymentController::class, 'handle'])->name('midtrans.webhook');
+Route::prefix('user')
+    ->middleware(['auth', 'block'])
+    ->name('user.')
+    ->group(function () {
 
+    Route::get('/dashboard', [UserPropertyController::class, 'index'])
+        ->name('dashboard');
+
+    Route::get('/user/dashboard', [UserDashboardController::class, 'index'])
+        ->middleware(['auth'])
+        ->name('user.dashboard');
+
+    Route::get('/properties', [UserPropertyController::class, 'index'])
+        ->name('property.index');
+
+    Route::get('/properties/{property}', [UserPropertyController::class, 'show'])
+        ->name('property.show');
+
+});
+
+Route::prefix('properties')->name('properties.')->group(function () {
+    Route::get('/', [OwnerPropertyController::class, 'index'])->name('index');
+    Route::get('/create', [OwnerPropertyController::class, 'create'])->name('create');
+    Route::post('/', [OwnerPropertyController::class, 'store'])->name('store');
+    Route::get('/{property}/edit', [OwnerPropertyController::class, 'edit'])->name('edit');
+    Route::put('/{property}', [OwnerPropertyController::class, 'update'])->name('update');
+    Route::delete('/{property}', [OwnerPropertyController::class, 'destroy'])->name('destroy');
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-
-        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
-        Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
-        Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
-        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
-        Route::post('/users/{user}/block', [AdminUserController::class, 'toggleBlock'])->name('users.block');
-
-        Route::get('/owners/{user}/properties', [AdminDashboardController::class, 'properties'])->name('owners.properties');
-
-        Route::get('/bookings', [AdminUserController::class, 'bookings'])->name('bookings.index');
-
-        Route::delete('/properties/{property}', [AdminDashboardController::class, 'destroyProperty'])->name('properties.destroy');
+ Route::prefix('properties')->name('properties.')->group(function () {
+        Route::get('/', [AdminPropertyController::class, 'index'])->name('index');
+        Route::get('/create', [AdminPropertyController::class, 'create'])->name('create');
+        Route::post('/', [AdminPropertyController::class, 'store'])->name('store');
+        Route::get('/{property}/edit', [AdminPropertyController::class, 'edit'])->name('edit');
+        Route::put('/{property}', [AdminPropertyController::class, 'update'])->name('update');
+        Route::delete('/{property}', [AdminPropertyController::class, 'destroy'])->name('destroy'); // ✅ HARUS ADA
     });
 
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+            ->name('dashboard');
+
+        // Users
+        Route::get('/users', [AdminUserController::class, 'index'])
+            ->name('users.index');
+
+        Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])
+            ->name('users.edit');
+
+        Route::put('/users/{user}', [AdminUserController::class, 'update'])
+            ->name('users.update');
+
+        // Bookings
+        Route::get('/bookings', [AdminBookingController::class, 'index'])
+            ->name('bookings.index');  // <--- ini bikin route admin.bookings.index
+        
+        Route::get('/owners/{owner}/properties', [AdminOwnerController::class, 'properties'])
+            ->name('owners.properties');
+
+        Route::post('/users/{user}/block', [AdminUserController::class, 'block'])
+            ->name('users.block');
+        
+        // Hapus user
+        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])
+            ->name('users.destroy');
+
+    });
+/*
+|--------------------------------------------------------------------------
+| ROOT
+|--------------------------------------------------------------------------
+*/
 Route::get('/', function () {
 
     if (!auth()->check()) {
@@ -106,11 +241,12 @@ Route::get('/', function () {
     };
 });
 
+/*
+|--------------------------------------------------------------------------
+| CLEAR CACHE (DEV)
+|--------------------------------------------------------------------------
+*/
 Route::get('/clear', function () {
-    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
-    Artisan::call('config:clear');
-    Artisan::call('cache:clear');
-    Artisan::call('route:clear');
-
+    Artisan::call('optimize:clear');
     return 'cleared';
 });

@@ -54,7 +54,7 @@
     {{-- HEADER --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="fw-bold text-dark mb-1">Dashboard Admin</h4>
+            <h4 class="fw-bold">Dashboard Admin</h4>
             <p class="text-muted small mb-0">Ringkasan statistik aplikasi KosConnect.</p>
         </div>
         <div class="d-flex gap-2">
@@ -78,7 +78,7 @@
                         </div>
                         <div>
                             <p class="text-muted small mb-1 text-uppercase fw-bold">Total Users</p>
-                            <h4 class="fw-bold mb-0 text-dark">{{ $totalUsers ?? 0 }}</h4>
+                            <h4 class="fw-bold mb-0 stat-number">{{ $totalUsers ?? 0 }}</h4>
                         </div>
                     </div>
                 </div>
@@ -148,8 +148,8 @@
         <div class="col-lg-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-bold text-dark">
-                        <i class="bi bi-bar-chart-line me-2 text-primary"></i>Statistik Booking Bulanan
+                    <h6 class="mb-0 fw-bold statistik-title">
+                        <i class="bi bi-bar-chart-line me-2 statistik-icon"></i>Statistik Booking Bulanan
                     </h6>
                     <span class="badge bg-light text-muted border">Tahun Ini</span>
                 </div>
@@ -225,7 +225,8 @@
                     }
                 }
             }
-        });
+        }
     });
+});
 </script>
 @endpush

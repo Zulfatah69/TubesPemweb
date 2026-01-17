@@ -2,6 +2,10 @@
 
 @section('title', 'Admin Dashboard')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/bookings.css') }}">
+@endpush
+
 @section('content')
 <style>
     :root {
@@ -45,10 +49,6 @@
             <a href="{{ route('admin.bookings.index') }}" class="btn btn-slate-dark btn-sm px-3 shadow-sm">
                 <i class="bi bi-journal-bookmark me-1"></i> Monitoring Booking
             </a>
-        </div>
-    </div>
-
-    {{-- STATS CARDS --}}
     <div class="row g-3 mb-4">
         @php
             $stats = [
@@ -79,7 +79,10 @@
         </div>
         @endforeach
     </div>
-
+<style>
+    .btn-filter-deepsea {
+    color: #5F666E;          /* teks */
+}
     {{-- CHART SECTION --}}
     <div class="row">
         <div class="col-lg-12">

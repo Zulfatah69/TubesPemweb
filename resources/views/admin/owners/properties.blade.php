@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Properti Owner')
+@section('title', 'Properti Owner')
 
 @section('content')
 <div class="container py-5">
@@ -47,9 +47,19 @@
             </div>
         </div>
         <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="bg-light">
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nama</th>
+                        <th>Lokasi</th>
+                        <th>Harga</th>
+                        <th>Foto</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($properties as $property)
                         <tr>
                             <th class="ps-4 py-3 text-muted fw-semibold small" style="width: 80px;">ID</th>
                             <th class="py-3 text-muted fw-semibold small">NAMA PROPERTI</th>
@@ -72,8 +82,6 @@
                                 <div class="fw-bold text-slate-800">{{ $p->name }}</div>
                                 <div class="text-muted" style="font-size: 0.75rem;">Diposting pada {{ $p->created_at->format('d/m/Y') }}</div>
                             </td>
-
-                            {{-- LOKASI --}}
                             <td>
                                 <div class="d-flex align-items-start">
                                     <i class="bi bi-geo-alt text-secondary me-2 mt-1"></i>
@@ -108,7 +116,7 @@
                                 </form>
                             </td>
                         </tr>
-                        @empty
+                    @empty
                         <tr>
                             <td colspan="6" class="text-center py-5">
                                 <div class="py-5">
@@ -120,11 +128,14 @@
                                 </div>
                             </td>
                         </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
+    </div>
+
+    <div class="mt-3">
+        {{ $properties->links() }}
     </div>
 
 </div>
@@ -167,3 +178,4 @@
     }
 </style>
 @endsection
+
