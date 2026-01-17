@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="{{ asset('css/dash-owner.css') }}">
 @endpush
 
+@section('content')
+
 <div class="container py-5">
 
     {{-- HEADER DASHBOARD --}}
