@@ -13,7 +13,7 @@
                     <i class="bi bi-collection-fill fs-4"></i>
                 </div>
                 <div>
-                    <h3 class="fw-bold text-slate-800 mb-1">Portofolio: {{ $user->name }}</h3>
+                    <h3 class="fw-bold text-slate-800 mb-1">Portofolio: {{ $owner->name }}</h3>
                     <p class="text-muted mb-0 small">Menampilkan semua unit properti yang dikelola oleh owner ini.</p>
                 </div>
             </div>
