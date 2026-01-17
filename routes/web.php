@@ -177,6 +177,15 @@ Route::middleware(['auth', 'role:admin'])
     ->name('admin.')
     ->group(function () {
 
+ Route::prefix('properties')->name('properties.')->group(function () {
+        Route::get('/', [AdminPropertyController::class, 'index'])->name('index');
+        Route::get('/create', [AdminPropertyController::class, 'create'])->name('create');
+        Route::post('/', [AdminPropertyController::class, 'store'])->name('store');
+        Route::get('/{property}/edit', [AdminPropertyController::class, 'edit'])->name('edit');
+        Route::put('/{property}', [AdminPropertyController::class, 'update'])->name('update');
+        Route::delete('/{property}', [AdminPropertyController::class, 'destroy'])->name('destroy'); // ✅ HARUS ADA
+    });
+
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
 
