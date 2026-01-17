@@ -90,13 +90,14 @@ Route::middleware(['auth', 'role:owner'])
             ->name('dashboard');
 
         Route::prefix('properties')->name('properties.')->group(function () {
-            Route::get('/', [PropertyController::class, 'index'])->name('index');
-            Route::get('/create', [PropertyController::class, 'create'])->name('create');
-            Route::post('/', [PropertyController::class, 'store'])->name('store');
-            Route::get('/{property}/edit', [PropertyController::class, 'edit'])->name('edit');
-            Route::put('/{property}', [PropertyController::class, 'update'])->name('update');
-            Route::delete('/{property}', [PropertyController::class, 'destroy'])->name('destroy');
-        });
+        Route::get('/', [OwnerPropertyController::class, 'index'])->name('index');
+        Route::get('/create', [OwnerPropertyController::class, 'create'])->name('create');
+        Route::post('/', [OwnerPropertyController::class, 'store'])->name('store');
+        Route::get('/{property}/edit', [OwnerPropertyController::class, 'edit'])->name('edit');
+        Route::put('/{property}', [OwnerPropertyController::class, 'update'])->name('update');
+        Route::delete('/{property}', [OwnerPropertyController::class, 'destroy'])->name('destroy');
+    });
+
 
         Route::get('/bookings', [OwnerBookingController::class, 'index'])
             ->name('booking.index');
