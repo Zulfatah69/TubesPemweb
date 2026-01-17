@@ -128,8 +128,14 @@ Route::middleware(['auth', 'role:admin'])
         Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
 
         Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
-        Route::get('/owners/{owner}/properties', [AdminOwnerController::class, 'properties'])->name('owners.properties');
+
+        Route::get('/owners/{owner}/properties', [AdminOwnerController::class, 'properties'])
+            ->name('owners.properties');
+
+        Route::delete('/properties/{property}', [\App\Http\Controllers\Admin\AdminPropertyController::class, 'destroy'])
+            ->name('properties.destroy');
     });
+
 
 Route::get('/', function () {
     if (!auth()->check()) return redirect()->route('login');
