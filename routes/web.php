@@ -104,6 +104,9 @@ Route::middleware(['auth', 'role:owner'])
 
         Route::get('/chats', [OwnerChatController::class, 'index'])
             ->name('chats');
+        
+          Route::patch('/images/{image}/main', [OwnerPropertyController::class, 'setMainImage'])->name('image.main');
+        Route::delete('/images/{image}', [OwnerPropertyController::class, 'deleteImage'])->name('image.delete'); // <<< ini route yang kamu butuhin
     });
 
 /*
