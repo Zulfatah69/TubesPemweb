@@ -39,42 +39,35 @@ class UserChatController extends Controller
         return view('chat.user', compact('owner', 'chat'));
     }
 
-    public function send(Request $request, Chat $chat)
+    public function send(Chat $chat, Request $request)
     {
-        $owner = Auth::user();
+        $user = auth()->user();
 
-        if ($chat->owner_id !== $owner->id) {
-            abort(403);
-        }
+        if ($chat->user_id !== $user->id) abort(403);
 
-        $request->validate([
-            'message' => 'required|string',
+        $data = $request->validate([
+            'message' => 'required|string|max:2000'
         ]);
 
         $chat->messages()->create([
-            'sender_id' => $owner->id,
-            'message' => $request->message,
+            'sender_id' => $user->id,
+            'message' => $data['message'],
         ]);
 
-        // ✅ PENTING
         $chat->touch();
 
-        return back();
+        return response()->json(['status' => 'success']);
     }
 
-    public function messages(User $owner)
+    public function messages(Chat $chat)
     {
-        $user = Auth::user();
+        $user = auth()->user();
 
-        $chat = Chat::where(function ($q) use ($user, $owner) {
-            $q->where('user_id', $user->id)->where('owner_id', $owner->id);
-        })->orWhere(function ($q) use ($user, $owner) {
-            $q->where('user_id', $owner->id)->where('owner_id', $user->id);
-        })->first();
+        if ($chat->user_id !== $user->id) abort(403);
 
-        if (!$chat) return response()->json([]);
-
-        return response()->json($chat->messages()->with('sender')->get());
+        return response()->json(
+            $chat->messages()->with('sender')->orderBy('id')->get()
+        );
     }
 
     public function start(User $owner, Request $request)

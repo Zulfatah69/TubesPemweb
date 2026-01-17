@@ -80,10 +80,19 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user/bookings/{booking}/pay', [BookingPaymentController::class, 'pay'])->name('booking.pay');
 
     Route::get('/user/chats', [UserChatController::class, 'index'])->name('user.chats');
-    Route::get('/user/chats/{owner}', [UserChatController::class, 'show'])->name('user.chats.show');
-    Route::post('/user/chats/{owner}/send', [UserChatController::class, 'send'])->name('chat.send');
-    Route::post('/user/chats/{owner}/start', [UserChatController::class, 'start'])->name('chat.start');
-    Route::get('/user/chats/{owner}/messages', [UserChatController::class, 'messages'])->name('chat.messages');
+
+    Route::get('/user/chats/{chat}', [UserChatController::class, 'show'])
+        ->name('user.chats.show');
+
+    Route::post('/user/chats/{chat}/send', [UserChatController::class, 'send'])
+        ->name('chat.send');
+
+    Route::get('/user/chats/{chat}/messages', [UserChatController::class, 'messages'])
+        ->name('chat.messages');
+
+    Route::post('/user/chats/start/{owner}', [UserChatController::class, 'start'])
+        ->name('chat.start');
+
 });
 
 Route::prefix('user')
