@@ -96,17 +96,16 @@ Route::middleware(['auth', 'role:owner'])
         Route::get('/{property}/edit', [OwnerPropertyController::class, 'edit'])->name('edit');
         Route::put('/{property}', [OwnerPropertyController::class, 'update'])->name('update');
         Route::delete('/{property}', [OwnerPropertyController::class, 'destroy'])->name('destroy');
+        Route::patch('/images/{image}/main', [OwnerPropertyController::class, 'setMainImage'])->name('image.main');
+        Route::delete('/images/{image}', [OwnerPropertyController::class, 'deleteImage'])->name('image.delete'); // <<< ini route yang kamu butuhin
     });
-
 
         Route::get('/bookings', [OwnerBookingController::class, 'index'])
             ->name('booking.index');
 
         Route::get('/chats', [OwnerChatController::class, 'index'])
             ->name('chats');
-        
-          Route::patch('/images/{image}/main', [OwnerPropertyController::class, 'setMainImage'])->name('image.main');
-        Route::delete('/images/{image}', [OwnerPropertyController::class, 'deleteImage'])->name('image.delete'); // <<< ini route yang kamu butuhin
+            
     });
 
 /*
