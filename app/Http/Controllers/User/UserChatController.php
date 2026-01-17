@@ -39,27 +39,27 @@ class UserChatController extends Controller
         return view('chat.user', compact('owner', 'chat'));
     }
 
-    public function send(User $owner, Request $request)
+    public function send(Request $request, Chat $chat)
     {
-        $user = Auth::user();
+        $owner = Auth::user();
 
-        $data = $request->validate([
-            'message' => 'required|string|max:2000',
-            'property_id' => 'required|integer'
-        ]);
+        if ($chat->owner_id !== $owner->id) {
+            abort(403);
+        }
 
-        $chat = Chat::firstOrCreate([
-            'user_id' => $user->id,
-            'owner_id' => $owner->id,
-            'property_id' => $data['property_id'],
+        $request->validate([
+            'message' => 'required|string',
         ]);
 
         $chat->messages()->create([
-            'sender_id' => $user->id,
-            'message' => $data['message'],
+            'sender_id' => $owner->id,
+            'message' => $request->message,
         ]);
 
-        return response()->json(['status' => 'success']);
+        // ✅ PENTING
+        $chat->touch();
+
+        return back();
     }
 
     public function messages(User $owner)
