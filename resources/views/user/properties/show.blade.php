@@ -162,13 +162,15 @@
                         </form>
 
                         {{-- CHAT --}}
-                        <form method="POST" action="{{ route('chat.start', $property->id) }}">
+                        <form method="POST" action="{{ route('chat.start', $property->owner_id) }}">
                             @csrf
+                            <input type="hidden" name="property_id" value="{{ $property->id }}">
+
                             <button type="submit" class="btn btn-white border border-slate-200 text-slate-600 w-100 py-3 rounded-pill fw-bold hover-bg-slate">
                                 <i class="bi bi-chat-left-dots me-2"></i> Tanya Pemilik
                             </button>
                         </form>
-
+                        
                         <div class="text-center mt-4">
                             <div class="d-inline-flex align-items-center gap-2 py-1 px-3 bg-slate-50 rounded-pill">
                                 <i class="bi bi-shield-lock-fill text-emerald-500 x-small"></i>

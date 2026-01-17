@@ -5,12 +5,12 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Chat;
+use App\Models\Property;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserChatController extends Controller
 {
-    // Daftar owner
     public function index()
     {
         $userId = Auth::id();
@@ -24,24 +24,21 @@ class UserChatController extends Controller
         return view('chat.user_list', compact('chats'));
     }
 
-
-    // Chat dengan owner tertentu
     public function show(User $owner)
     {
         $user = Auth::user();
 
         if ($owner->id === $user->id) abort(404);
 
-        $chat = Chat::where(function($q) use ($user, $owner) {
+        $chat = Chat::where(function ($q) use ($user, $owner) {
             $q->where('user_id', $user->id)->where('owner_id', $owner->id);
-        })->orWhere(function($q) use ($user, $owner) {
+        })->orWhere(function ($q) use ($user, $owner) {
             $q->where('user_id', $owner->id)->where('owner_id', $user->id);
-        })->first(); // ambil 1 chat aja
+        })->first();
 
         return view('chat.user', compact('owner', 'chat'));
     }
 
-    // Kirim pesan
     public function send(User $owner, Request $request)
     {
         $user = Auth::user();
@@ -51,14 +48,12 @@ class UserChatController extends Controller
             'property_id' => 'required|integer'
         ]);
 
-        // Ambil atau buat chat
         $chat = Chat::firstOrCreate([
             'user_id' => $user->id,
-            'owner_id'=> $owner->id,
+            'owner_id' => $owner->id,
             'property_id' => $data['property_id'],
         ]);
 
-        // Simpan pesan
         $chat->messages()->create([
             'sender_id' => $user->id,
             'message' => $data['message'],
@@ -68,32 +63,30 @@ class UserChatController extends Controller
     }
 
     public function messages(User $owner)
-{
-    $user = auth()->user();
+    {
+        $user = Auth::user();
 
-    // Ambil chat antara user & owner
-    $chat = Chat::where(function($q) use ($user, $owner) {
-        $q->where('user_id', $user->id)->where('owner_id', $owner->id);
-    })->orWhere(function($q) use ($user, $owner) {
-        $q->where('user_id', $owner->id)->where('owner_id', $user->id);
-    })->first();
+        $chat = Chat::where(function ($q) use ($user, $owner) {
+            $q->where('user_id', $user->id)->where('owner_id', $owner->id);
+        })->orWhere(function ($q) use ($user, $owner) {
+            $q->where('user_id', $owner->id)->where('owner_id', $user->id);
+        })->first();
 
-    if (!$chat) return response()->json([]);
+        if (!$chat) return response()->json([]);
 
-    // Kirim semua messages
-    return response()->json($chat->messages()->with('sender')->get());
-}
+        return response()->json($chat->messages()->with('sender')->get());
+    }
 
-public function start(Property $property)
-{
-    // Cek apakah chat sudah ada, atau buat baru
-    $chat = Chat::firstOrCreate([
-        'user_id' => auth()->id(),
-        'owner_id' => $property->owner_id,
-        'property_id' => $property->id,
-    ]);
+    public function start(User $owner, Request $request)
+    {
+        $propertyId = $request->input('property_id');
 
-    return redirect()->route('user.chats.show', $property->owner_id);
-}
+        $chat = Chat::firstOrCreate([
+            'user_id' => auth()->id(),
+            'owner_id' => $owner->id,
+            'property_id' => $propertyId,
+        ]);
 
+        return redirect()->route('user.chats.show', $owner->id);
+    }
 }
