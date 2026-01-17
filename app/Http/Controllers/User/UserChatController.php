@@ -24,19 +24,17 @@ class UserChatController extends Controller
         return view('chat.user_list', compact('chats'));
     }
 
-    public function show(User $owner)
+    public function show(Chat $chat)
     {
-        $user = Auth::user();
+        $user = auth()->user();
 
-        if ($owner->id === $user->id) abort(404);
+        if ($chat->user_id !== $user->id) {
+            abort(403);
+        }
 
-        $chat = Chat::where(function ($q) use ($user, $owner) {
-            $q->where('user_id', $user->id)->where('owner_id', $owner->id);
-        })->orWhere(function ($q) use ($user, $owner) {
-            $q->where('user_id', $owner->id)->where('owner_id', $user->id);
-        })->first();
+        $chat->load(['messages.sender', 'owner', 'property']);
 
-        return view('chat.user', compact('owner', 'chat'));
+        return view('chat.user', compact('chat'));
     }
 
     public function send(Chat $chat, Request $request)
@@ -80,6 +78,6 @@ class UserChatController extends Controller
             'property_id' => $propertyId,
         ]);
 
-        return redirect()->route('user.chats.show', $owner->id);
+        return redirect()->route('user.chats.show', $chat->id);
     }
 }
