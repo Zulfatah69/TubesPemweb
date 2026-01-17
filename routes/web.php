@@ -67,6 +67,7 @@ Route::middleware(['auth', 'role:owner'])
         Route::get('/bookings', [OwnerBookingController::class, 'index'])->name('booking.index');
         Route::get('/chats', [OwnerChatController::class, 'index'])->name('chats');
         Route::get('/chats/{chat}', [OwnerChatController::class, 'show'])->name('chat.show');
+        Route::post('/chats/{chat}/send', [OwnerChatController::class, 'send'])->name('chat.send');
     });
 
 Route::middleware(['auth', 'role:user'])->group(function () {
