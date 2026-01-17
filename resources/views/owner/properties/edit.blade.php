@@ -166,7 +166,7 @@
                                 @foreach($property->images as $image)
                                     <div class="col-6">
                                         <div class="photo-item position-relative rounded-3 overflow-hidden border border-slate-100 shadow-sm">
-                                            <img src="{{ asset('storage/' . $image->file_path) }}" class="w-100 object-fit-cover" style="height: 110px;">
+                                            <img src="{{ asset(Storage::url($image->file_path)) }}" class="w-100 object-fit-cover" style="height: 110px;">
                                             
                                             @if($image->is_main)
                                                 <span class="position-absolute top-0 start-0 badge bg-slate-800 m-1" style="font-size: 0.6rem;">Utama</span>
