@@ -157,3 +157,12 @@ Route::get('/fix-storage-path', function () {
     \DB::statement("UPDATE property_images SET file_path = CONCAT('storage/', file_path) WHERE file_path NOT LIKE 'storage/%'");
     return 'FIXED';
 });
+
+Route::get('/debug-storage', function () {
+    return [
+        'exists_public_storage' => file_exists(public_path('storage')),
+        'exists_sample_file' => file_exists(public_path('storage/properties')),
+        'storage_path' => storage_path('app/public'),
+        'public_path' => public_path('storage'),
+    ];
+});
