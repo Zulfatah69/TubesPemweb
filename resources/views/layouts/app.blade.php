@@ -18,8 +18,25 @@
     <!-- CSS Global (Bootstrap + app.css) -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
-    <!-- CSS spesifik halaman -->
-    @stack('page-css')
+    {{-- Optional Inline CSS Variables --}}
+    <style>
+        :root {
+            -bs-primary: #BCCCDC;           /* warna utama navbar / highlight */
+            --bs-primary-rgb: 188, 204, 220;
+            --bs-secondary: #6C757D;
+            --bs-success: #2F6F73 !important;   /* deep sea green */
+            --bs-warning: #5B8FA8 !important;   /* ocean blue */
+            --bs-danger:  #2B3A4A !important;  
+
+            --kosan-bg-section: #F8FAFC;    /* background body */
+            --kosan-text-main: #5F666E;     /* teks utama */
+            --kosan-text-muted: #7A828A;    /* teks muted */
+            --kosan-border: #BCCCDC;        /* border card, input */
+            --kosan-card-bg: #FFFFFF;       /* card bg */
+            --kosan-btn-primary: #9AA6B2;   /* tombol primary */
+            --kosan-btn-primary-hover: #8C96A0;
+        }
+    </style>
 </head>
 
 <body>

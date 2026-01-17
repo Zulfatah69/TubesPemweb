@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/dash-user.css') }}">
+@endpush
+
 @section('title', 'Booking Saya')
 
 @section('content')

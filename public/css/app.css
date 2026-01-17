@@ -142,3 +142,119 @@ footer {
     border: 1px solid var(--kosan-border);
     color: var(--kosan-card-bg);
 }
+
+/* ===================== USER DASHBOARD ===================== */
+.user-dashboard {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    background-color: var(--kosan-bg-section);
+}
+
+/* ===================== ROW ===================== */
+.dashboard-row {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
+
+/* ===================== FILTER ===================== */
+.filter-col {
+    max-width: 280px;
+}
+
+.filter-card {
+    background: var(--kosan-card-bg);
+    border: 1px solid var(--kosan-border);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    padding: 0;
+}
+
+.filter-card .card-header {
+    border-bottom: 1px solid var(--kosan-border);
+}
+
+.filter-card .card-title {
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;  /* biar icon + teks rata tengah */
+    gap: 0.5rem;
+}
+
+/* ===================== PROPERTY LIST ===================== */
+.content-col {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* biar semua card di tengah */
+    gap: 1.5rem;
+}
+
+.property-wrapper {
+    max-width: 350px;
+}
+
+/* ===================== PROPERTY CARD ===================== */
+.property-card {
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--kosan-card-bg);
+    border: 1px solid var(--kosan-border);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.property-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--kosan-secondary);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.15);
+}
+
+.property-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* ===================== PRICE ===================== */
+.property-card .price {
+    color: var(--kosan-secondary);
+    font-weight: 800;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(188,204,220,0.3);
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 992px) {
+    .dashboard-row {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .filter-col {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .content-col {
+        justify-content: center;
+    }
+}
+
+/* ===================== TABLE HEADER ===================== */
+.table thead th {
+    background-color: var(--kosan-card-bg);   /* background card */
+    color:#2B3A4A;
+    font-weight: 700;
+    text-align: center;                       /* rata tengah */
+    border-bottom: 2px solid var(--kosan-border);
+}
+
+.table tbody td {
+    text-align: center;                       /* isi tabel rata tengah */
+    color: #5F666E; 
+    vertical-align: middle;
+}
+
+

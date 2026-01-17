@@ -135,8 +135,8 @@
 }
 
 .btn-users-owner:hover {
-    background-color: #9AA6B2;
-    color: #fff;
+    background-color: #8C96A0;  /* ganti hover jadi abu */
+    color: #fff;                 /* teks ikut abu gelap biar kontras */
 }
 
 .btn-users-owner:hover i {
@@ -160,57 +160,69 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const ctx = document.getElementById('bookingChart');
+document.addEventListener("DOMContentLoaded", function() {
+    const ctx = document.getElementById('bookingChart');
 
-        const labels = @json($chartLabels ?? []);
-        const data = @json($chartData ?? []);
+    const labels = @json($chartLabels ?? []);
+    const data = @json($chartData ?? []);
 
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Jumlah Booking Masuk',
-                    data: data,
-                    backgroundColor: 'rgba(13, 110, 253, 0.7)',
-                    borderColor: 'rgba(13, 110, 253, 1)',
-                    borderWidth: 1,
-                    borderRadius: 4,
-                    barPercentage: 0.6
-                }]
+    // Ambil warna dari CSS variable
+    const style = getComputedStyle(document.documentElement);
+    const primaryColor = style.getPropertyValue('--bs-primary').trim() || 'rgba(13,110,253,0.7)';
+    const primaryBorder = style.getPropertyValue('--bs-primary').trim() || 'rgba(13,110,253,1)';
+    const secondaryColor = style.getPropertyValue('--bs-secondary').trim() || '#6C757D';
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Jumlah Booking Masuk',
+                data: data,
+                backgroundColor: primaryColor,
+                borderColor: primaryBorder,
+                borderWidth: 1,
+                borderRadius: 4,
+                barPercentage: 0.6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: secondaryColor,
+                    padding: 10,
+                    cornerRadius: 8,
+                    titleColor: '#fff',
+                    bodyColor: '#fff'
+                }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(188,204,220,0.3)' // warna grid konsisten dengan --kosan-border
                     },
-                    tooltip: {
-                        backgroundColor: '#333',
-                        padding: 10,
-                        cornerRadius: 8
+                    ticks: {
+                        stepSize: 1,
+                        color: style.getPropertyValue('--kosan-text-main').trim() || '#5F666E'
                     }
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: '#f0f0f0' 
-                        },
-                        ticks: {
-                            stepSize: 1 
-                        }
+                x: {
+                    grid: {
+                        display: false
                     },
-                    x: {
-                        grid: {
-                            display: false 
-                        }
+                    ticks: {
+                        color: style.getPropertyValue('--kosan-text-main').trim() || '#5F666E'
                     }
                 }
             }
-        });
+        }
     });
+});
 </script>
 @endpush

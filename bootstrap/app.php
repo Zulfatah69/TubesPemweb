@@ -14,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'role'    => \App\Http\Middleware\RoleMiddleware::class,
-            'blocked' => \App\Http\Middleware\BlockMiddleware::class,
+            'block' => \App\Http\Middleware\BlockMiddleware::class,
         ]);
 
     

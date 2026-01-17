@@ -15,6 +15,7 @@ use App\Http\Controllers\Owner\PropertyController as OwnerPropertyController;
 use App\Http\Controllers\User\UserBookingController;
 use App\Http\Controllers\User\UserChatController;
 use App\Http\Controllers\User\BookingPaymentController;
+use App\Http\Controllers\User\UserPropertyController;
 
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -109,12 +110,14 @@ Route::middleware(['auth', 'role:owner', 'blocked'])
 | USER
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:user', 'blocked'])->group(function () {
+Route::middleware(['auth', 'role:user'])->group(function () {
 
     Route::get('/user/dashboard', [UserPropertyController::class, 'index'])
+        ->middleware(['auth', 'block'])
         ->name('user.dashboard');
 
     Route::get('/user/bookings', [UserBookingController::class, 'myBookings'])
+        ->middleware('role:user')
         ->name('user.booking.my');
       
     Route::get('/user/chats', [UserChatController::class, 'index'])
@@ -139,8 +142,12 @@ Route::prefix('user')
     ->group(function () {
 
     Route::get('/dashboard', [UserPropertyController::class, 'index'])
-            ->name('dashboard');
-            
+        ->name('dashboard');
+
+    Route::get('/user/dashboard', [UserDashboardController::class, 'index'])
+        ->middleware(['auth'])
+        ->name('user.dashboard');
+
     Route::get('/properties', [UserPropertyController::class, 'index'])
         ->name('property.index');
 
