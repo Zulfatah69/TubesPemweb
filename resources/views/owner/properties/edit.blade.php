@@ -26,7 +26,6 @@
             <div class="col-lg-8">
                 
                 {{-- 1. INFORMASI UMUM --}}
-<<<<<<< HEAD
                 <div class="card border-0 shadow-sm mb-4" style="border-radius: 20px;">
                     <div class="card-header bg-white py-3 border-bottom border-slate-50">
                         <h6 class="mb-0 fw-bold text-slate-700"><i class="bi bi-pencil-square me-2 text-slate-400"></i>Informasi Properti</h6>

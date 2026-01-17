@@ -11,10 +11,8 @@
             {{-- HEADER --}}
             <div class="d-flex justify-content-between align-items-end mb-4">
                 <div>
-<<<<<<< HEAD
                     <h3 class="fw-bold text-slate-800 mb-1">Pesan Masuk</h3>
                     <p class="text-muted small mb-0">Kelola komunikasi dengan calon penyewa properti Anda.</p>
-=======
                 </div>
                 <a href="{{ route('owner.dashboard') }}" class="btn btn-white shadow-sm btn-sm rounded-pill px-3 border border-slate-200 text-slate-700">
                     <i class="bi bi-arrow-left me-1"></i> Dashboard

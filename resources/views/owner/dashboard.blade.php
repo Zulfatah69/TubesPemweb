@@ -146,7 +146,6 @@
     </div>
 
 </div>
-<<<<<<< HEAD
 
 <style>
     :root {

@@ -108,7 +108,6 @@
                         <i class="bi bi-house-add text-slate-300 display-4"></i>
                     </div>
                 </div>
-<<<<<<< HEAD
                 <h4 class="fw-bold text-slate-800">Etalase Masih Kosong</h4>
                 <p class="text-slate-500 mb-5 mx-auto" style="max-width: 400px;">Anda belum mendaftarkan properti. Daftarkan kosan Anda sekarang untuk mulai menjangkau ribuan calon penyewa.</p>
                 <a href="{{ route('owner.properties.create') }}" class="btn btn-slate-800 px-5 py-3 rounded-pill fw-bold shadow-slate">
