@@ -9,7 +9,7 @@
     {{-- HEADER --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="fw-bold text-dark mb-1">Properti Saya</h4>
+            <h4 class="fw-bold text">Properti Saya</h4>
             <p class="text-muted small mb-0">Kelola daftar kosan yang Anda sewakan.</p>
         </div>
         <a href="{{ route('owner.properties.create') }}" class="btn btn-primary fw-bold shadow-sm">
@@ -113,7 +113,7 @@
                         <i class="bi bi-building-add fs-1 text-muted opacity-50"></i>
                     </div>
                 </div>
-                <h5 class="fw-bold text-dark">Belum Ada Properti</h5>
+                <h5 class="fw-bold text" style= "color: #5F666E;">Belum Ada Properti</h5>
                 <p class="text-muted mb-4">Mulai sewakan kosanmu dan temukan penyewa dengan mudah.</p>
                 <a href="{{ route('owner.properties.create') }}" class="btn btn-primary px-4 fw-bold">
                     <i class="bi bi-plus-lg me-2"></i> Tambah Properti Baru

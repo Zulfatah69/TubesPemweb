@@ -7,7 +7,7 @@
     <div class="col-lg-3 mb-4">
         <div class="card border-0 shadow-sm sticky-top" style="top: 90px;">
             <div class="card-header bg-white border-bottom py-3">
-                <h5 class="fw-bold mb-0">
+                <h5 class="fw-bold mb-0" style="color: #5F666E;">
                     <i class="bi bi-funnel"></i> Filter
                 </h5>
             </div>

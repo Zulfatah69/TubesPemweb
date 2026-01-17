@@ -11,7 +11,7 @@
             {{-- HEADER --}}
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h4 class="fw-bold text-dark mb-1">Pesan Masuk</h4>
+                    <h4 class="fw-bold text">Pesan Masuk</h4>
                     <p class="text-muted small mb-0">Daftar percakapan dengan calon penyewa.</p>
                 </div>
                 {{-- Tombol Kembali --}}

@@ -12,7 +12,7 @@
     {{-- HEADER --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="fw-bold text-dark mb-1">Tambah Properti</h4>
+            <h4 class="fw-bold text" style= "color: #5F666E;">Tambah Properti</h4>
             <p class="text-muted small mb-0">Isi form di bawah untuk menambahkan kosan baru.</p>
         </div>
         <a href="{{ route('owner.properties.index') }}" class="btn btn-outline-secondary btn-sm px-3">
@@ -31,7 +31,7 @@
                 {{-- 1. INFORMASI UMUM --}}
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-header bg-white py-3">
-                        <h6 class="mb-0 fw-bold text-primary"><i class="bi bi-pencil-square me-2"></i>Informasi Umum</h6>
+                        <h6 class="mb-0 fw-bold" style= "color: #5F666E;"><i class="bi bi-pencil-square me-2" style= "color: #5F666E;"></i>Informasi Umum</h6>
                     </div>
                     <div class="card-body p-4">
                         <div class="mb-4">
@@ -78,7 +78,7 @@
                 {{-- 2. ALAMAT LENGKAP --}}
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-header bg-white py-3">
-                        <h6 class="mb-0 fw-bold text-primary"><i class="bi bi-map me-2"></i>Alamat Detail</h6>
+                        <h6 class="mb-0 fw-bold" style= "color: #5F666E;"><i class="bi bi-map me-2" style= "color: #5F666E;"></i>Alamat Detail</h6>
                     </div>
                     <div class="card-body p-4">
                         <div class="row mb-3">
@@ -112,7 +112,7 @@
                 {{-- 3. FASILITAS --}}
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-header bg-white py-3">
-                        <h6 class="mb-0 fw-bold text-primary"><i class="bi bi-stars me-2"></i>Fasilitas</h6>
+                        <h6 class="mb-0 fw-bold" style= "color: #5F666E;"><i class="bi bi-stars me-2" style= "color: #5F666E;"></i>Fasilitas</h6>
                     </div>
                     <div class="card-body p-4">
                         @php
@@ -145,9 +145,9 @@
             <div class="col-lg-4">
                 
                 {{-- TOMBOL SIMPAN (Sticky) --}}
-                <div class="card border-0 shadow-sm mb-4 sticky-top" style="top: 20px; z-index: 10;">
+                <div class="card border-0 shadow-sm mb-4 sticky-top" style="color: top: 20px; z-index: 10;">
                     <div class="card-body p-3">
-                        <button class="btn btn-success w-100 fw-bold py-2">
+                        <button class="btn btn-success w-100 fw-bold py-2" style="background-color: #9AA6B2; color: white; outline: none; box-shadow: none; border: none;" >
                             <i class="bi bi-plus-lg me-2"></i> Simpan Properti
                         </button>
                     </div>
@@ -156,7 +156,7 @@
                 {{-- UPLOAD FOTO --}}
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-white py-3">
-                        <h6 class="mb-0 fw-bold text-primary"><i class="bi bi-images me-2"></i>Upload Foto</h6>
+                        <h6 class="mb-0 fw-bold" style= "color: #5F666E;"><i class="bi bi-images me-2"></i>Upload Foto</h6>
                     </div>
                     <div class="card-body p-4 text-center">
                         <div class="mb-3">
@@ -219,4 +219,24 @@
         });
     });
 </script>
+
+<style>
+/* Style untuk gender radio button */
+.btn-group .btn-check:checked + .btn {
+    background-color: #415879; /* warna tema saat dipilih */
+    border-color: #415879;     /* ganti warna border */
+    color: white;              /* teks putih */
+}
+
+.btn-group .btn {
+    border-color: #9AA6B2;    /* warna border default */
+    color: #5F666E;            /* teks default */
+}
+
+/* Saat hover */
+.btn-group .btn:hover {
+    border-color: #415879;
+    color: grey;
+}
+</style>
 @endpush

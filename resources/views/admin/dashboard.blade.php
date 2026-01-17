@@ -168,8 +168,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Ambil warna dari CSS variable
     const style = getComputedStyle(document.documentElement);
-    const primaryColor = style.getPropertyValue('--bs-primary').trim() || 'rgba(13,110,253,0.7)';
-    const primaryBorder = style.getPropertyValue('--bs-primary').trim() || 'rgba(13,110,253,1)';
+    const primaryColor = style.getPropertyValue('--bs-primary').trim() || 'rgba(121, 127, 138, 0.7)';
+    const primaryBorder = style.getPropertyValue('--bs-primary').trim() || 'rgb(142, 165, 199)';
     const secondaryColor = style.getPropertyValue('--bs-secondary').trim() || '#6C757D';
 
     new Chart(ctx, {

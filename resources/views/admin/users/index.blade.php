@@ -8,7 +8,7 @@
     {{-- HEADER --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="fw-bold text-dark mb-1">Manajemen Pengguna</h4>
+            <h4 class="fw-bold text">Manajemen Pengguna</h4>
             <p class="text-muted small mb-0">Kelola data User, Owner, dan Admin dalam satu tempat.</p>
         </div>
         <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary btn-sm">
@@ -78,11 +78,11 @@
                             <td>
                                 <div class="d-flex align-items-center">
                                     <div class="rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold text-white shadow-sm" 
-                                         style="width: 40px; height: 40px; background-color: {{ $u->role == 'owner' ? '#0d6efd' : ($u->role == 'admin' ? '#212529' : '#198754') }};">
+                                         style="width: 40px; height: 40px; background-color: {{ $u->role == 'owner' ? '#8191a8' : ($u->role == 'admin' ? '#6f7377' : '#6b8d7d') }};">
                                         {{ substr($u->name, 0, 1) }}
                                     </div>
                                     <div>
-                                        <div class="fw-bold text-dark">{{ $u->name }}</div>
+                                        <div class="fw-bold text" >{{ $u->name }}</div>
                                         <div class="small text-muted">{{ $u->email }}</div>
                                     </div>
                                 </div>
