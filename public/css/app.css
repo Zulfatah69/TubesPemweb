@@ -245,10 +245,9 @@ footer {
 /* ===================== TABLE HEADER ===================== */
 .table thead th {
     background-color: var(--kosan-card-bg);   /* background card */
-    color:#2B3A4A;
+    color:#5F666E;
     font-weight: 700;
     text-align: center;                       /* rata tengah */
-    border-bottom: 2px solid var(--kosan-border);
 }
 
 .table tbody td {
