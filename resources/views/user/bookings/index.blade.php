@@ -27,7 +27,7 @@
                         $img = $booking->property->images->first(); 
                     @endphp
                     @if($img)
-                        <img src="{{ asset('storage/'.$img->file_path) }}" class="w-100 h-100 object-fit-cover position-absolute" alt="Property">
+                        <img src="{{ asset($img->file_path) }}" class="w-100 h-100 object-fit-cover position-absolute" alt="Property">
                     @else
                         <div class="d-flex align-items-center justify-content-center h-100 text-slate-300">
                             <i class="bi bi-image fs-1"></i>

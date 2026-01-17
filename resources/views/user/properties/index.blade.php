@@ -99,7 +99,7 @@
                         <div class="position-relative overflow-hidden" style="height: 220px;">
                             <a href="{{ route('user.property.show', $p->id) }}">
                                 @php $img = $p->images->first(); @endphp
-                                <img src="{{ $img ? asset('storage/'.$img->file_path) : 'https://placehold.co/600x400?text=No+Image' }}"
+                                <img src="{{ $img ? asset($img->file_path) : 'https://placehold.co/600x400?text=No+Image' }}"
                                      class="w-100 h-100 object-fit-cover transition-transform">
                             </a>
 

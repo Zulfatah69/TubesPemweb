@@ -85,7 +85,7 @@
                         {{-- IMAGE --}}
                         <div class="position-relative" style="height: 200px;">
                             @php $img = $p->images->first(); @endphp
-                            <img src="{{ $img ? asset('storage/'.$img->file_path) : 'https://placehold.co/600x400?text=No+Image' }}"
+                            <img src="{{ $img ? asset($img->file_path) : 'https://placehold.co/600x400?text=No+Image' }}"
                                  class="w-100 h-100 object-fit-cover transition-transform">
                             
                             <div class="position-absolute bottom-0 start-0 p-3 w-100" style="background: linear-gradient(transparent, rgba(0,0,0,0.6))">
